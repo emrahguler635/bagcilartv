@@ -5,7 +5,7 @@ const channels = [
         name: "TRT 1",
         category: "Ulusal",
         streamUrl: "https://tv-trt1.medya.trt.com.tr/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TRT_1_logo.svg/1200px-TRT_1_logo.svg.png",
+        logo: "logos/trt1.png",
         description: "Türkiye'nin ilk ulusal televizyon kanalı"
     },
     {
