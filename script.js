@@ -69,7 +69,7 @@ const channels = [
         name: "TRT World",
         category: "Uluslararası",
         streamUrl: "https://tv-trtworld.medya.trt.com.tr/master.m3u8",
-        logo: "https://via.placeholder.com/56x56/667eea/ffffff?text=TRT",
+        logo: "logos/trtworld.png",
         description: "İngilizce uluslararası haber kanalı"
     },
     {
@@ -77,7 +77,7 @@ const channels = [
         name: "TRT Arabi",
         category: "Uluslararası",
         streamUrl: "https://tv-trtarabi.medya.trt.com.tr/master.m3u8",
-        logo: "https://via.placeholder.com/56x56/667eea/ffffff?text=TRT",
+        logo: "logos/trtarabi.png",
         description: "Arapça uluslararası haber kanalı"
     },
     {
@@ -85,7 +85,7 @@ const channels = [
         name: "TRT Türk",
         category: "Uluslararası",
         streamUrl: "https://tv-trtturk.medya.trt.com.tr/master.m3u8",
-        logo: "https://via.placeholder.com/56x56/667eea/ffffff?text=TRT",
+        logo: "logos/trtturk.png",
         description: "Türkçe uluslararası haber kanalı"
     },
     {
@@ -109,122 +109,180 @@ const channels = [
         name: "TRT 4K",
         category: "Ulusal",
         streamUrl: "https://tv-trt4k.medya.trt.com.tr/master.m3u8",
-        logo: "https://via.placeholder.com/56x56/667eea/ffffff?text=TRT",
+        logo: "logos/trt4k.png",
         description: "4K Ultra HD yayın kanalı"
     },
     {
         id: 15,
-        name: "EuroNews Türkçe",
-        category: "Haber",
-        streamUrl: "https://rakuten-euronews-1-tr.samsung.wurl.tv/playlist.m3u8",
-        logo: "https://via.placeholder.com/56x56/3182ce/ffffff?text=EN",
-        description: "EuroNews Türkçe - Açık yayın. Uluslararası haber kanalı."
+        name: "ATV",
+        category: "Ulusal",
+        streamUrl: "",
+        webUrl: "https://www.atv.com.tr/canli-yayin",
+        logo: "logos/atv.png",
+        description: "ATV - Ulusal yayın kanalı"
     },
     {
         id: 16,
-        name: "Bloomberg HT",
-        category: "Ekonomi",
-        streamUrl: "https://live.blutv.com/blutv_bloomberght/live.m3u8",
-        logo: "https://via.placeholder.com/56x56/000000/ffffff?text=BH",
-        description: "Bloomberg HT - Ekonomi ve finans kanalı."
+        name: "Kanal D",
+        category: "Ulusal",
+        streamUrl: "",
+        webUrl: "https://www.kanald.com.tr/canli-yayin",
+        logo: "logos/kanald.png",
+        description: "Kanal D - Ulusal yayın kanalı"
     },
     {
         id: 17,
-        name: "A Haber",
-        category: "Haber",
-        streamUrl: "https://tv.ahaber.com.tr/live/ahaber/playlist.m3u8",
-        logo: "https://via.placeholder.com/56x56/e53e3e/ffffff?text=AH",
-        description: "A Haber - Haber kanalı."
+        name: "Star TV",
+        category: "Ulusal",
+        streamUrl: "https://dogus-live.daioncdn.net/startv/startv.m3u8",
+        logo: "logos/startv.png",
+        description: "Star TV - Ulusal yayın kanalı"
     },
     {
         id: 18,
-        name: "Kral TV",
-        category: "Müzik",
-        streamUrl: "https://edge1.socialsmart.tv/kral/playlist.m3u8",
-        logo: "https://via.placeholder.com/56x56/ff6b35/ffffff?text=KR",
-        description: "Kral TV - Müzik kanalı."
+        name: "Show TV",
+        category: "Ulusal",
+        streamUrl: "https://dogus-live.daioncdn.net/showtv/showtv.m3u8",
+        logo: "logos/showtv.png",
+        description: "Show TV - Ulusal yayın kanalı"
     },
     {
         id: 19,
-        name: "PowerTürk TV",
-        category: "Müzik",
-        streamUrl: "https://edge1.socialsmart.tv/powerturktv/playlist.m3u8",
-        logo: "https://via.placeholder.com/56x56/ff6b35/ffffff?text=PT",
-        description: "PowerTürk TV - Türkçe müzik kanalı."
+        name: "FOX TV",
+        category: "Ulusal",
+        streamUrl: "https://dogus-live.daioncdn.net/foxtv/foxtv.m3u8",
+        logo: "logos/foxtv.png",
+        description: "FOX TV - Ulusal yayın kanalı"
     },
     {
         id: 20,
+        name: "TV8",
+        category: "Ulusal",
+        streamUrl: "",
+        webUrl: "https://www.tv8.com.tr/canli-yayin",
+        logo: "logos/tv8.png",
+        description: "TV8 - Ulusal yayın kanalı"
+    },
+    {
+        id: 21,
+        name: "Kanal 7",
+        category: "Ulusal",
+        streamUrl: "https://dogus-live.daioncdn.net/kanal7/kanal7.m3u8",
+        logo: "logos/kanal7.png",
+        description: "Kanal 7 - Ulusal yayın kanalı"
+    },
+    {
+        id: 22,
+        name: "CNN Türk",
+        category: "Haber",
+        streamUrl: "",
+        webUrl: "https://www.cnnturk.com/canli-yayin",
+        logo: "logos/cnnturk.png",
+        description: "CNN Türk - Haber kanalı"
+    },
+    {
+        id: 23,
+        name: "NTV",
+        category: "Haber",
+        streamUrl: "https://dogus-live.daioncdn.net/ntv/ntv.m3u8",
+        logo: "logos/ntv.png",
+        description: "NTV - Haber kanalı"
+    },
+    {
+        id: 24,
+        name: "Habertürk",
+        category: "Haber",
+        streamUrl: "",
+        webUrl: "https://www.haberturk.com/canliyayin",
+        logo: "logos/haberturk.png",
+        description: "Habertürk - Haber kanalı"
+    },
+    {
+        id: 25,
+        name: "A Haber",
+        category: "Haber",
+        streamUrl: "https://tv.ahaber.com.tr/live/ahaber/playlist.m3u8",
+        logo: "logos/ahaber.png",
+        description: "A Haber - Haber kanalı."
+    },
+    {
+        id: 26,
+        name: "Kral TV",
+        category: "Müzik",
+        streamUrl: "https://edge1.socialsmart.tv/kral/playlist.m3u8",
+        logo: "logos/kraltv.png",
+        description: "Kral TV - Müzik kanalı."
+    },
+    {
+        id: 27,
+        name: "PowerTürk TV",
+        category: "Müzik",
+        streamUrl: "https://edge1.socialsmart.tv/powerturktv/playlist.m3u8",
+        logo: "logos/powerturk.png",
+        description: "PowerTürk TV - Türkçe müzik kanalı."
+    },
+    {
+        id: 28,
         name: "Mekke TV",
         category: "Dini",
         streamUrl: "",
         youtubeUrl: "https://www.youtube.com/watch?v=2Gub8-cSH9c",
-        logo: "https://via.placeholder.com/56x56/38a169/ffffff?text=MK",
+        logo: "logos/mekke.png",
         description: "Mekke TV - Kabe'den canlı yayın. YouTube üzerinden izleyebilirsiniz."
     },
     {
-        id: 21,
+        id: 29,
         name: "Medine TV",
         category: "Dini",
         streamUrl: "",
         youtubeUrl: "https://www.youtube.com/watch?v=-jWCvRuC254",
-        logo: "https://via.placeholder.com/56x56/38a169/ffffff?text=MD",
+        logo: "logos/medine.png",
         description: "Medine TV - Mescid-i Nebevi'den canlı yayın. YouTube üzerinden izleyebilirsiniz."
     },
     {
-        id: 22,
-        name: "France 24",
+        id: 30,
+        name: "Sözcü TV",
         category: "Haber",
-        streamUrl: "https://static-cdn1.ustream.tv/ustreamVideo/6540154/streams/live/playlist.m3u8",
-        logo: "https://via.placeholder.com/56x56/0052a4/ffffff?text=F24",
-        description: "France 24 - Fransız uluslararası haber kanalı"
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=ztmY_cCtUl0",
+        logo: "logos/sozcutv.png",
+        description: "Sözcü TV - Bağımsız haber kanalı"
     },
     {
-        id: 23,
-        name: "DW News",
+        id: 31,
+        name: "Halk TV",
         category: "Haber",
-        streamUrl: "https://dwstream3-lh.akamaihd.net/i/dwstream3_live@124409/master.m3u8",
-        logo: "https://via.placeholder.com/56x56/000000/ffffff?text=DW",
-        description: "DW News - Alman uluslararası haber kanalı"
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=ZSWPj9szKb8",
+        logo: "logos/halktv.png",
+        description: "Halk TV - Bağımsız haber kanalı"
     },
     {
-        id: 24,
-        name: "Al Jazeera English",
+        id: 32,
+        name: "TELE1",
         category: "Haber",
-        streamUrl: "https://live-hls-web-aje.getaj.net/AJE/index.m3u8",
-        logo: "https://via.placeholder.com/56x56/000000/ffffff?text=AJ",
-        description: "Al Jazeera English - Katar uluslararası haber kanalı"
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=fNqmmqNNGp8",
+        logo: "logos/tele1.png",
+        description: "TELE1 - Bağımsız haber kanalı"
     },
     {
-        id: 25,
-        name: "CGTN",
+        id: 33,
+        name: "Ulusal Kanal",
         category: "Haber",
-        streamUrl: "https://live.cgtn.com/1000/prog_index.m3u8",
-        logo: "https://via.placeholder.com/56x56/cc0000/ffffff?text=CG",
-        description: "CGTN - Çin uluslararası haber kanalı"
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=dK96AZbCns0",
+        logo: "logos/ulusal.png",
+        description: "Ulusal Kanal - Bağımsız haber kanalı"
     },
     {
-        id: 26,
-        name: "NHK World-Japan",
+        id: 34,
+        name: "KRT TV",
         category: "Haber",
-        streamUrl: "https://nhkwlive-ojp.akamaized.net/hls/live/2003458/nhkwlive-ojp-en/index.m3u8",
-        logo: "https://via.placeholder.com/56x56/cc0000/ffffff?text=NH",
-        description: "NHK World-Japan - Japon uluslararası haber kanalı"
-    },
-    {
-        id: 27,
-        name: "Arirang TV",
-        category: "Haber",
-        streamUrl: "https://amdlive-ch01-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/playlist.m3u8",
-        logo: "https://via.placeholder.com/56x56/003876/ffffff?text=AR",
-        description: "Arirang TV - Güney Kore uluslararası haber kanalı"
-    },
-    {
-        id: 28,
-        name: "TV5Monde",
-        category: "Haber",
-        streamUrl: "https://tv5mondehlslive.akamaized.net/hls/live/2023913/event01/index.m3u8",
-        logo: "https://via.placeholder.com/56x56/0052a4/ffffff?text=TV5",
-        description: "TV5Monde - Fransız uluslararası haber kanalı"
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=v5srSbD2WBk",
+        logo: "logos/krttv.png",
+        description: "KRT TV - Kürtçe haber kanalı"
     }
 ];
 
@@ -403,28 +461,30 @@ function selectChannel(channel) {
     // Yayın akışını güncelle
     createProgramGuide(channel.id);
 
-    // Eğer YouTube veya web linki varsa, video oynatıcıyı gizle ve buton göster
+    // Eğer YouTube veya web linki varsa, video oynatıcıyı iframe ile göster
     if (channel.youtubeUrl) {
-        videoWrapper.style.display = 'none';
+        videoWrapper.innerHTML = `<iframe width="100%" height="400" src="https://www.youtube.com/embed/${channel.youtubeUrl.split('v=')[1]}?autoplay=1&mute=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = `${channel.description}<br><br><a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px;'>YouTube'da İzle</a>`;
         return;
     } else if (channel.webUrl) {
-        videoWrapper.style.display = 'none';
+        videoWrapper.innerHTML = `<iframe width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>`;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = `${channel.description}<br><br><a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#3182ce;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px;'>Web'de İzle</a>`;
         return;
-    } else {
-        videoWrapper.style.display = '';
     }
 
     // Eğer streamUrl yoksa video oynatıcıyı gizle
     if (!channel.streamUrl) {
-        videoWrapper.style.display = 'none';
+        videoWrapper.innerHTML = '';
         currentChannel.textContent = channel.name + ' - Yayın Hatası';
         channelDescription.textContent = 'Bu kanal şu anda yayında değil.';
         return;
     }
+
+    // Video player'ı her seçimde yeniden oluştur
+    videoWrapper.innerHTML = `<video id="videoPlayer" controls style="width:100%;height:400px;border-radius:10px;background:#000;"></video>`;
+    const videoPlayer = document.getElementById('videoPlayer');
 
     currentChannel.textContent = `${channel.name} - Yükleniyor...`;
     channelDescription.textContent = channel.description;
@@ -434,9 +494,10 @@ function selectChannel(channel) {
         window.hls = null;
     }
 
+    // HLS.js veya native desteği kontrolü
     if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
         videoPlayer.src = channel.streamUrl;
-    } else if (Hls.isSupported()) {
+    } else if (window.Hls && Hls.isSupported()) {
         window.hls = new Hls();
         window.hls.loadSource(channel.streamUrl);
         window.hls.attachMedia(videoPlayer);
@@ -447,14 +508,26 @@ function selectChannel(channel) {
         return;
     }
 
+    // Oynatma ve hata yönetimi
+    videoPlayer.addEventListener('canplay', () => {
+        currentChannel.textContent = channel.name;
+    });
+    videoPlayer.addEventListener('error', (e) => {
+        currentChannel.textContent = `${channel.name} - Yayın Hatası`;
+        channelDescription.textContent = 'Bu kanal şu anda yayında değil veya erişim sağlanamıyor.';
+    });
+    videoPlayer.addEventListener('stalled', () => {
+        currentChannel.textContent = `${channel.name} - Bağlantı Sorunu`;
+        channelDescription.textContent = 'Video yükleme durdu. Lütfen internet bağlantınızı kontrol edin.';
+    });
+
     const playPromise = videoPlayer.play();
     if (playPromise !== undefined) {
         playPromise.then(() => {
             currentChannel.textContent = channel.name;
         }).catch(error => {
-            console.log('Video oynatma hatası:', error);
             currentChannel.textContent = `${channel.name} - Yayın bulunamadı`;
-            channelDescription.textContent = 'Bu kanal şu anda yayında değil veya erişim sağlanamıyor. Lütfen Demo kanalları deneyin.';
+            channelDescription.textContent = 'Bu kanal şu anda yayında değil veya erişim sağlanamıyor.';
             videoPlayer.src = '';
         });
     }
