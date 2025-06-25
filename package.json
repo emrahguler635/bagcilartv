@@ -1,0 +1,23 @@
+{
+  "name": "tv-kanal-uygulamasi",
+  "version": "1.0.0",
+  "description": "Türkiye TV kanalları canlı izleme uygulaması",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000"
+  },
+  "keywords": [
+    "tv",
+    "canlı",
+    "yayın",
+    "türkiye",
+    "kanal"
+  ],
+  "author": "Güler TV",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kullaniciadi/tv-kanal-uygulamasi.git"
+  }
+} 
