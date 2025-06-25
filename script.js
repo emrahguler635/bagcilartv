@@ -21,7 +21,7 @@ const channels = [
         name: "TRT Spor",
         category: "Spor",
         streamUrl: "https://tv-trtspor1.medya.trt.com.tr/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TRT_Spor_logo.svg/1200px-TRT_Spor_logo.svg.png",
+        logo: "logos/trtspor.png",
         description: "Spor haberleri ve canlı maç yayınları"
     },
     {
