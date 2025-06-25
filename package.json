@@ -19,5 +19,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/kullaniciadi/tv-kanal-uygulamasi.git"
-  }
+  },
+  "logo": "logos/trt1.png",
+  "logo": "logos/trtspor.png",
+  "logo": "logos/atv.png"
 } 

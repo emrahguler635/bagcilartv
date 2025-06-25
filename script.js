@@ -13,7 +13,7 @@ const channels = [
         name: "TRT Haber",
         category: "Haber",
         streamUrl: "https://tv-trthaber.medya.trt.com.tr/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TRT_Haber_logo.svg/1200px-TRT_Haber_logo.svg.png",
+        logo: "logos/trthaber.png",
         description: "7/24 haber kanalı"
     },
     {
@@ -29,7 +29,7 @@ const channels = [
         name: "TRT Çocuk",
         category: "Çocuk",
         streamUrl: "https://tv-trtcocuk.medya.trt.com.tr/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TRT_%C3%87ocuk_logo.svg/1200px-TRT_%C3%87ocuk_logo.svg.png",
+        logo: "logos/trtcocuk.png",
         description: "Çocuklar için eğitici ve eğlenceli içerik"
     },
     {
@@ -37,7 +37,7 @@ const channels = [
         name: "TRT Belgesel",
         category: "Belgesel",
         streamUrl: "https://tv-trtbelgesel.medya.trt.com.tr/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TRT_Belgesel_logo.svg/1200px-TRT_Belgesel_logo.svg.png",
+        logo: "logos/trtbelgesel.png",
         description: "Belgesel ve kültür programları"
     },
     {
@@ -45,7 +45,7 @@ const channels = [
         name: "TRT Müzik",
         category: "Müzik",
         streamUrl: "https://tv-trtmuzik.medya.trt.com.tr/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TRT_M%C3%BCzik_logo.svg/1200px-TRT_M%C3%BCzik_logo.svg.png",
+        logo: "logos/trtmuzik.png",
         description: "Türk müziği ve kültür programları"
     },
     {
@@ -53,7 +53,7 @@ const channels = [
         name: "TRT Avaz",
         category: "Uluslararası",
         streamUrl: "https://tv-trtavaz.medya.trt.com.tr/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TRT_Avaz_logo.svg/1200px-TRT_Avaz_logo.svg.png",
+        logo: "logos/trtavas.png",
         description: "Uluslararası Türkçe yayın kanalı"
     },
     {
@@ -61,175 +61,245 @@ const channels = [
         name: "TRT Kurdî",
         category: "Yerel",
         streamUrl: "https://tv-trtkurdi.medya.trt.com.tr/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/TRT_Kurd%C3%AE_logo.svg/1200px-TRT_Kurd%C3%AE_logo.svg.png",
+        logo: "logos/trtkurdi.png",
         description: "Kürtçe yayın yapan kanal"
     },
-    // Demo için çalışan stream'ler
     {
         id: 9,
-        name: "Demo Kanal 1",
-        category: "Demo",
-        streamUrl: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/7/75/Big_Buck_Bunny_icon.png",
-        description: "Test stream - Big Buck Bunny"
+        name: "TRT World",
+        category: "Uluslararası",
+        streamUrl: "https://tv-trtworld.medya.trt.com.tr/master.m3u8",
+        logo: "https://via.placeholder.com/56x56/667eea/ffffff?text=TRT",
+        description: "İngilizce uluslararası haber kanalı"
     },
     {
         id: 10,
-        name: "Demo Kanal 2",
-        category: "Demo",
-        streamUrl: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Akamai_logo.png",
-        description: "Test stream - Akamai"
+        name: "TRT Arabi",
+        category: "Uluslararası",
+        streamUrl: "https://tv-trtarabi.medya.trt.com.tr/master.m3u8",
+        logo: "https://via.placeholder.com/56x56/667eea/ffffff?text=TRT",
+        description: "Arapça uluslararası haber kanalı"
     },
     {
         id: 11,
-        name: "Demo Kanal 3",
-        category: "Demo",
-        streamUrl: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/3/3c/Tears_of_Steel_logo.png",
-        description: "Test stream - Tears of Steel"
+        name: "TRT Türk",
+        category: "Uluslararası",
+        streamUrl: "https://tv-trtturk.medya.trt.com.tr/master.m3u8",
+        logo: "https://via.placeholder.com/56x56/667eea/ffffff?text=TRT",
+        description: "Türkçe uluslararası haber kanalı"
     },
     {
         id: 12,
-        name: "ATV",
-        category: "Ulusal",
-        streamUrl: "https://edge1.socialsmart.tv/atv/playlist.m3u8", // Demo/test link
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/ATV_logo_2013.png",
-        description: "ATV - Demo/Deneme yayınıdır. Gerçek yayın olmayabilir."
+        name: "TRT 2",
+        category: "Kültür",
+        streamUrl: "https://tv-trt2.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trt2.png",
+        description: "Kültür-sanat ve belgesel kanalı"
     },
     {
         id: 13,
-        name: "Kanal D",
-        category: "Ulusal",
-        streamUrl: "https://dogus-live.daioncdn.net/kanald/kanald.m3u8", // Demo/test link
-        logo: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Kanal_D_logo_2018.png",
-        description: "Kanal D - Demo/Deneme yayınıdır. Gerçek yayın olmayabilir."
+        name: "TRT 3",
+        category: "Spor",
+        streamUrl: "https://tv-trt3.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trt3.png",
+        description: "Spor ve gençlik kanalı"
     },
     {
         id: 14,
-        name: "Show TV",
+        name: "TRT 4K",
         category: "Ulusal",
-        streamUrl: "https://dogus-live.daioncdn.net/showtv/showtv.m3u8", // Demo/test link
-        logo: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Show_TV_logo_2018.png",
-        description: "Show TV - Demo/Deneme yayınıdır. Gerçek yayın olmayabilir."
+        streamUrl: "https://tv-trt4k.medya.trt.com.tr/master.m3u8",
+        logo: "https://via.placeholder.com/56x56/667eea/ffffff?text=TRT",
+        description: "4K Ultra HD yayın kanalı"
     },
     {
         id: 15,
-        name: "Star TV",
-        category: "Ulusal",
-        streamUrl: "https://dogus-live.daioncdn.net/startv/startv.m3u8", // Demo/test link
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Star_TV_logo_2012.png",
-        description: "Star TV - Demo/Deneme yayınıdır. Gerçek yayın olmayabilir."
-    },
-    {
-        id: 16,
-        name: "FOX TV",
-        category: "Ulusal",
-        streamUrl: "https://dogus-live.daioncdn.net/foxtv/foxtv.m3u8", // Demo/test link
-        logo: "https://upload.wikimedia.org/wikipedia/commons/6/67/FOX_Turkey_logo.png",
-        description: "FOX TV - Demo/Deneme yayınıdır. Gerçek yayın olmayabilir."
-    },
-    {
-        id: 17,
-        name: "TV8",
-        category: "Ulusal",
-        streamUrl: "https://dogus-live.daioncdn.net/tv8/tv8.m3u8", // Demo/test link
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2e/TV8_logo_2013.png",
-        description: "TV8 - Demo/Deneme yayınıdır. Gerçek yayın olmayabilir."
-    },
-    {
-        id: 18,
-        name: "Kanal 7",
-        category: "Ulusal",
-        streamUrl: "https://dogus-live.daioncdn.net/kanal7/kanal7.m3u8", // Demo/test link
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Kanal_7_logo.png",
-        description: "Kanal 7 - Demo/Deneme yayınıdır. Gerçek yayın olmayabilir."
-    },
-    {
-        id: 19,
-        name: "CNN Türk",
-        category: "Haber",
-        streamUrl: "",
-        webUrl: "https://www.cnnturk.com/canli-yayin",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/6/6e/CNN_T%C3%BCrk_logo.png",
-        description: "CNN Türk - Resmi web sitesinden canlı izleyebilirsiniz."
-    },
-    {
-        id: 20,
-        name: "NTV",
-        category: "Haber",
-        streamUrl: "https://dogus-live.daioncdn.net/ntv/ntv.m3u8", // Demo/test link
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2e/NTV_logo_2017.png",
-        description: "NTV - Demo/Deneme yayınıdır. Gerçek yayın olmayabilir."
-    },
-    {
-        id: 21,
-        name: "Habertürk",
-        category: "Haber",
-        streamUrl: "",
-        webUrl: "https://www.haberturk.com/canliyayin",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Habert%C3%BCrk_logo.png",
-        description: "Habertürk - Resmi web sitesinden canlı izleyebilirsiniz."
-    },
-    {
-        id: 22,
         name: "EuroNews Türkçe",
         category: "Haber",
         streamUrl: "https://rakuten-euronews-1-tr.samsung.wurl.tv/playlist.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Euronews_2016_logo.svg",
+        logo: "https://via.placeholder.com/56x56/3182ce/ffffff?text=EN",
         description: "EuroNews Türkçe - Açık yayın. Uluslararası haber kanalı."
     },
     {
-        id: 23,
+        id: 16,
         name: "Bloomberg HT",
         category: "Ekonomi",
         streamUrl: "https://live.blutv.com/blutv_bloomberght/live.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Bloomberg_HT_logo.png",
+        logo: "https://via.placeholder.com/56x56/000000/ffffff?text=BH",
         description: "Bloomberg HT - Ekonomi ve finans kanalı."
     },
     {
-        id: 24,
+        id: 17,
         name: "A Haber",
         category: "Haber",
         streamUrl: "https://tv.ahaber.com.tr/live/ahaber/playlist.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/A_Haber_logo.png",
+        logo: "https://via.placeholder.com/56x56/e53e3e/ffffff?text=AH",
         description: "A Haber - Haber kanalı."
     },
     {
-        id: 25,
+        id: 18,
         name: "Kral TV",
         category: "Müzik",
         streamUrl: "https://edge1.socialsmart.tv/kral/playlist.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Kral_TV_logo.png",
+        logo: "https://via.placeholder.com/56x56/ff6b35/ffffff?text=KR",
         description: "Kral TV - Müzik kanalı."
     },
     {
-        id: 26,
+        id: 19,
         name: "PowerTürk TV",
         category: "Müzik",
         streamUrl: "https://edge1.socialsmart.tv/powerturktv/playlist.m3u8",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Power_T%C3%BCrk_TV_logo.png",
+        logo: "https://via.placeholder.com/56x56/ff6b35/ffffff?text=PT",
         description: "PowerTürk TV - Türkçe müzik kanalı."
     },
     {
-        id: 27,
+        id: 20,
         name: "Mekke TV",
         category: "Dini",
         streamUrl: "",
         youtubeUrl: "https://www.youtube.com/watch?v=2Gub8-cSH9c",
-        logo: "https://i.imgur.com/6QK6wQp.png",
+        logo: "https://via.placeholder.com/56x56/38a169/ffffff?text=MK",
         description: "Mekke TV - Kabe'den canlı yayın. YouTube üzerinden izleyebilirsiniz."
     },
     {
-        id: 28,
+        id: 21,
         name: "Medine TV",
         category: "Dini",
         streamUrl: "",
         youtubeUrl: "https://www.youtube.com/watch?v=-jWCvRuC254",
-        logo: "https://i.imgur.com/1Q9Z1ZB.png",
+        logo: "https://via.placeholder.com/56x56/38a169/ffffff?text=MD",
         description: "Medine TV - Mescid-i Nebevi'den canlı yayın. YouTube üzerinden izleyebilirsiniz."
+    },
+    {
+        id: 22,
+        name: "France 24",
+        category: "Haber",
+        streamUrl: "https://static-cdn1.ustream.tv/ustreamVideo/6540154/streams/live/playlist.m3u8",
+        logo: "https://via.placeholder.com/56x56/0052a4/ffffff?text=F24",
+        description: "France 24 - Fransız uluslararası haber kanalı"
+    },
+    {
+        id: 23,
+        name: "DW News",
+        category: "Haber",
+        streamUrl: "https://dwstream3-lh.akamaihd.net/i/dwstream3_live@124409/master.m3u8",
+        logo: "https://via.placeholder.com/56x56/000000/ffffff?text=DW",
+        description: "DW News - Alman uluslararası haber kanalı"
+    },
+    {
+        id: 24,
+        name: "Al Jazeera English",
+        category: "Haber",
+        streamUrl: "https://live-hls-web-aje.getaj.net/AJE/index.m3u8",
+        logo: "https://via.placeholder.com/56x56/000000/ffffff?text=AJ",
+        description: "Al Jazeera English - Katar uluslararası haber kanalı"
+    },
+    {
+        id: 25,
+        name: "CGTN",
+        category: "Haber",
+        streamUrl: "https://live.cgtn.com/1000/prog_index.m3u8",
+        logo: "https://via.placeholder.com/56x56/cc0000/ffffff?text=CG",
+        description: "CGTN - Çin uluslararası haber kanalı"
+    },
+    {
+        id: 26,
+        name: "NHK World-Japan",
+        category: "Haber",
+        streamUrl: "https://nhkwlive-ojp.akamaized.net/hls/live/2003458/nhkwlive-ojp-en/index.m3u8",
+        logo: "https://via.placeholder.com/56x56/cc0000/ffffff?text=NH",
+        description: "NHK World-Japan - Japon uluslararası haber kanalı"
+    },
+    {
+        id: 27,
+        name: "Arirang TV",
+        category: "Haber",
+        streamUrl: "https://amdlive-ch01-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/playlist.m3u8",
+        logo: "https://via.placeholder.com/56x56/003876/ffffff?text=AR",
+        description: "Arirang TV - Güney Kore uluslararası haber kanalı"
+    },
+    {
+        id: 28,
+        name: "TV5Monde",
+        category: "Haber",
+        streamUrl: "https://tv5mondehlslive.akamaized.net/hls/live/2023913/event01/index.m3u8",
+        logo: "https://via.placeholder.com/56x56/0052a4/ffffff?text=TV5",
+        description: "TV5Monde - Fransız uluslararası haber kanalı"
     }
 ];
+
+// Yayın Akışı Verileri (Demo veriler)
+const programSchedules = {
+    1: [ // TRT 1
+        { time: "06:00", title: "TRT 1 Günaydın", description: "Sabah haberleri ve günlük program" },
+        { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğitici programlar" },
+        { time: "10:00", title: "Gün Ortası Haberleri", description: "Günün önemli gelişmeleri" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Detaylı haber bülteni" },
+        { time: "14:00", title: "Türk Dizisi", description: "Popüler Türk dizisi" },
+        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğlenceli programlar" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Günün sonu haberleri" },
+        { time: "20:00", title: "Ana Haber Bülteni", description: "Günün en önemli haberleri" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" },
+        { time: "23:00", title: "Gece Kuşağı", description: "Gece programları" }
+    ],
+    2: [ // TRT Haber
+        { time: "00:00", title: "Haber Bülteni", description: "Güncel haberler" },
+        { time: "02:00", title: "Ekonomi Haberleri", description: "Ekonomi ve finans haberleri" },
+        { time: "04:00", title: "Dünya Haberleri", description: "Uluslararası gelişmeler" },
+        { time: "06:00", title: "Sabah Haberleri", description: "Günün ilk haberleri" },
+        { time: "08:00", title: "Ekonomi Raporu", description: "Detaylı ekonomi analizi" },
+        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
+        { time: "12:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "14:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "16:00", title: "Dünya Raporu", description: "Uluslararası haberler" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Günün özeti" },
+        { time: "20:00", title: "Ana Haber", description: "Günün en önemli haberleri" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
+    ],
+    3: [ // TRT Spor
+        { time: "06:00", title: "Spor Haberleri", description: "Günün spor haberleri" },
+        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
+        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
+        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
+        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
+        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
+        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
+        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
+        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
+    ],
+    4: [ // TRT Çocuk
+        { time: "06:00", title: "Sabah Çizgi Film", description: "Çocuk çizgi filmleri" },
+        { time: "08:00", title: "Eğitici Program", description: "Eğitici içerikler" },
+        { time: "10:00", title: "Çizgi Film Kuşağı", description: "Popüler çizgi filmler" },
+        { time: "12:00", title: "Öğle Çizgi Film", description: "Öğle çizgi film kuşağı" },
+        { time: "14:00", title: "Eğitici İçerik", description: "Eğitici programlar" },
+        { time: "16:00", title: "Akşam Çizgi Film", description: "Akşam çizgi film kuşağı" },
+        { time: "18:00", title: "Çocuk Programı", description: "Çocuk programları" },
+        { time: "20:00", title: "Gece Çizgi Film", description: "Gece çizgi film kuşağı" }
+    ],
+    5: [ // TRT Belgesel
+        { time: "06:00", title: "Doğa Belgeseli", description: "Doğa ve vahşi yaşam" },
+        { time: "08:00", title: "Tarih Belgeseli", description: "Tarihi belgeseller" },
+        { time: "10:00", title: "Bilim Belgeseli", description: "Bilimsel belgeseller" },
+        { time: "12:00", title: "Kültür Belgeseli", description: "Kültür ve sanat" },
+        { time: "14:00", title: "Coğrafya Belgeseli", description: "Coğrafi belgeseller" },
+        { time: "16:00", title: "Teknoloji Belgeseli", description: "Teknoloji belgeselleri" },
+        { time: "18:00", title: "Tarih Belgeseli", description: "Tarihi içerikler" },
+        { time: "20:00", title: "Doğa Belgeseli", description: "Akşam doğa belgeseli" },
+        { time: "22:00", title: "Bilim Belgeseli", description: "Gece bilim belgeseli" }
+    ],
+    6: [ // TRT Müzik
+        { time: "06:00", title: "Sabah Müziği", description: "Sabah müzik kuşağı" },
+        { time: "08:00", title: "Türk Halk Müziği", description: "Halk müziği programı" },
+        { time: "10:00", title: "Klasik Müzik", description: "Klasik müzik kuşağı" },
+        { time: "12:00", title: "Öğle Müziği", description: "Öğle müzik programı" },
+        { time: "14:00", title: "Türk Sanat Müziği", description: "Sanat müziği programı" },
+        { time: "16:00", title: "Pop Müzik", description: "Pop müzik kuşağı" },
+        { time: "18:00", title: "Akşam Müziği", description: "Akşam müzik programı" },
+        { time: "20:00", title: "Müzik Gecesi", description: "Gece müzik kuşağı" },
+        { time: "22:00", title: "Gece Müziği", description: "Gece müzik programı" }
+    ]
+};
 
 // DOM elementleri
 const channelList = document.getElementById('channelList');
@@ -239,9 +309,59 @@ const currentChannel = document.getElementById('currentChannel');
 const channelDescription = document.getElementById('channelDescription');
 const fullscreenBtn = document.getElementById('fullscreenBtn');
 const muteBtn = document.getElementById('muteBtn');
+const programList = document.getElementById('programList');
+const programDate = document.getElementById('programDate');
 
 let currentChannelId = null;
 let filteredChannels = [...channels];
+
+// Tarih formatını güncelle
+function updateProgramDate() {
+    const now = new Date();
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    programDate.textContent = now.toLocaleDateString('tr-TR', options);
+}
+
+// Yayın akışını oluştur
+function createProgramGuide(channelId) {
+    programList.innerHTML = '';
+    
+    const programs = programSchedules[channelId];
+    if (!programs) {
+        programList.innerHTML = '<div style="text-align: center; color: #718096; padding: 20px;">Bu kanal için yayın akışı bulunamadı.</div>';
+        return;
+    }
+    
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes(); // Dakika cinsinden şu anki zaman
+    
+    programs.forEach(program => {
+        const programTime = program.time.split(':');
+        const programMinutes = parseInt(programTime[0]) * 60 + parseInt(programTime[1]);
+        
+        const programItem = document.createElement('div');
+        programItem.className = 'program-item';
+        
+        // Şu anki programı vurgula (30 dakika tolerans ile)
+        const isCurrent = Math.abs(currentTime - programMinutes) <= 30;
+        if (isCurrent) {
+            programItem.classList.add('current');
+        }
+        
+        programItem.innerHTML = `
+            <div class="program-time">${program.time}</div>
+            <div class="program-title">${program.title}</div>
+            <div class="program-description">${program.description}</div>
+        `;
+        
+        programList.appendChild(programItem);
+    });
+}
 
 // Kanal listesini oluştur
 function createChannelList(channelsToShow = channels) {
@@ -279,6 +399,9 @@ function selectChannel(channel) {
     
     currentChannelId = channel.id;
     const videoWrapper = document.getElementById('videoWrapper');
+
+    // Yayın akışını güncelle
+    createProgramGuide(channel.id);
 
     // Eğer YouTube veya web linki varsa, video oynatıcıyı gizle ve buton göster
     if (channel.youtubeUrl) {
@@ -434,6 +557,7 @@ document.addEventListener('keydown', (e) => {
 // Sayfa yüklendiğinde kanal listesini oluştur
 document.addEventListener('DOMContentLoaded', () => {
     createChannelList();
+    updateProgramDate();
     
     // İlk kanalı otomatik seç (isteğe bağlı)
     // selectChannel(channels[0]);
