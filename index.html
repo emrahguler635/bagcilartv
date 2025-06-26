@@ -26,29 +26,28 @@
             </div>
             
             <div class="content">
-                <div class="video-container">
-                    <div id="videoWrapper">
-                        <video id="videoPlayer" controls>
-                            <source src="" type="video/mp4">
-                            Tarayıcınız video oynatmayı desteklemiyor.
-                        </video>
+                <div class="video-side">
+                    <div class="video-container">
+                        <div id="videoWrapper">
+                            <video id="videoPlayer" controls>
+                                <source src="" type="video/mp4">
+                                Tarayıcınız video oynatmayı desteklemiyor.
+                            </video>
+                        </div>
+                        <div class="video-info">
+                            <h2 id="currentChannel">Kanal seçin</h2>
+                            <p id="channelDescription">Sol taraftan bir kanal seçin</p>
+                        </div>
                     </div>
-                    <div class="video-info">
-                        <h2 id="currentChannel">Kanal seçin</h2>
-                        <p id="channelDescription">Sol taraftan bir kanal seçin</p>
+                    <div class="controls">
+                        <button id="fullscreenBtn" class="control-btn">
+                            <i class="fas fa-expand"></i> Tam Ekran
+                        </button>
+                        <button id="muteBtn" class="control-btn">
+                            <i class="fas fa-volume-up"></i> Ses
+                        </button>
                     </div>
                 </div>
-                
-                <div class="controls">
-                    <button id="fullscreenBtn" class="control-btn">
-                        <i class="fas fa-expand"></i> Tam Ekran
-                    </button>
-                    <button id="muteBtn" class="control-btn">
-                        <i class="fas fa-volume-up"></i> Ses
-                    </button>
-                </div>
-                
-                <!-- Yayın Akışı Bölümü - Sağ Taraf -->
                 <div class="program-guide">
                     <div class="program-header">
                         <h3><i class="fas fa-calendar-alt"></i> Yayın Akışı</h3>

@@ -463,14 +463,20 @@ function selectChannel(channel) {
 
     // Eğer YouTube veya web linki varsa, video oynatıcıyı iframe ile göster
     if (channel.youtubeUrl) {
-        videoWrapper.innerHTML = `<iframe width="100%" height="400" src="https://www.youtube.com/embed/${channel.youtubeUrl.split('v=')[1]}?autoplay=1&mute=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
+        videoWrapper.innerHTML = `<iframe id="youtubeIframe" width="100%" height="400" src="https://www.youtube.com/embed/${channel.youtubeUrl.split('v=')[1]}?autoplay=1&mute=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = `${channel.description}<br><br><a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px;'>YouTube'da İzle</a>`;
+        
+        // YouTube için özel kontrol butonları
+        updateControlButtons('youtube', channel.youtubeUrl);
         return;
     } else if (channel.webUrl) {
-        videoWrapper.innerHTML = `<iframe width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>`;
+        videoWrapper.innerHTML = `<iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>`;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = `${channel.description}<br><br><a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#3182ce;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px;'>Web'de İzle</a>`;
+        
+        // Web için özel kontrol butonları
+        updateControlButtons('web', channel.webUrl);
         return;
     }
 
@@ -549,23 +555,68 @@ searchInput.addEventListener('input', (e) => {
 
 // Tam ekran butonu
 fullscreenBtn.addEventListener('click', () => {
-    if (videoPlayer.requestFullscreen) {
-        videoPlayer.requestFullscreen();
-    } else if (videoPlayer.webkitRequestFullscreen) {
-        videoPlayer.webkitRequestFullscreen();
-    } else if (videoPlayer.msRequestFullscreen) {
-        videoPlayer.msRequestFullscreen();
+    const videoPlayer = document.getElementById('videoPlayer');
+    const youtubeIframe = document.getElementById('youtubeIframe');
+    const webIframe = document.getElementById('webIframe');
+    
+    if (videoPlayer && videoPlayer.src) {
+        // Normal video player için
+        if (videoPlayer.requestFullscreen) {
+            videoPlayer.requestFullscreen();
+        } else if (videoPlayer.webkitRequestFullscreen) {
+            videoPlayer.webkitRequestFullscreen();
+        } else if (videoPlayer.msRequestFullscreen) {
+            videoPlayer.msRequestFullscreen();
+        }
+    } else if (youtubeIframe) {
+        // YouTube iframe için
+        if (youtubeIframe.requestFullscreen) {
+            youtubeIframe.requestFullscreen();
+        } else if (youtubeIframe.webkitRequestFullscreen) {
+            youtubeIframe.webkitRequestFullscreen();
+        } else if (youtubeIframe.msRequestFullscreen) {
+            youtubeIframe.msRequestFullscreen();
+        }
+    } else if (webIframe) {
+        // Web iframe için
+        if (webIframe.requestFullscreen) {
+            webIframe.requestFullscreen();
+        } else if (webIframe.webkitRequestFullscreen) {
+            webIframe.webkitRequestFullscreen();
+        } else if (webIframe.msRequestFullscreen) {
+            webIframe.msRequestFullscreen();
+        }
     }
 });
 
 // Ses açma/kapama butonu
 muteBtn.addEventListener('click', () => {
-    if (videoPlayer.muted) {
-        videoPlayer.muted = false;
-        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ses';
-    } else {
-        videoPlayer.muted = true;
-        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Ses';
+    const videoPlayer = document.getElementById('videoPlayer');
+    const youtubeIframe = document.getElementById('youtubeIframe');
+    const webIframe = document.getElementById('webIframe');
+    
+    if (videoPlayer && videoPlayer.src) {
+        // Normal video player için
+        if (videoPlayer.muted) {
+            videoPlayer.muted = false;
+            muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ses';
+        } else {
+            videoPlayer.muted = true;
+            muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Ses';
+        }
+    } else if (youtubeIframe) {
+        // YouTube iframe için - yeni sekmede aç
+        const currentUrl = youtubeIframe.src;
+        const isMuted = currentUrl.includes('mute=1');
+        const newUrl = isMuted ? currentUrl.replace('mute=1', 'mute=0') : currentUrl.replace('mute=0', 'mute=1');
+        youtubeIframe.src = newUrl;
+        
+        muteBtn.innerHTML = isMuted ? 
+            '<i class="fas fa-volume-up"></i> Ses' : 
+            '<i class="fas fa-volume-mute"></i> Ses';
+    } else if (webIframe) {
+        // Web iframe için - bilgi mesajı
+        alert('Web kanalları için ses kontrolü web sitesi üzerinden yapılmalıdır.');
     }
 });
 
@@ -668,4 +719,15 @@ document.addEventListener('keydown', (e) => {
             selectChannel(filteredChannels[newIndex]);
         }
     }
-}); 
+});
+
+// YouTube için özel kontrol butonları
+function updateControlButtons(type, url) {
+    if (type === 'youtube') {
+        // YouTube için ses butonunu güncelle
+        muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Ses (YouTube)';
+    } else if (type === 'web') {
+        // Web için butonları güncelle
+        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ses (Web)';
+    }
+} 
