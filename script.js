@@ -713,9 +713,30 @@ document.addEventListener('keydown', e => {
         if (filteredChannels[newIndex]) selectChannel(filteredChannels[newIndex]);
     }
 });
+async function fetchKapalicarsi() {
+    try {
+        const res = await fetch('https://corsproxy.io/?https://canlidoviz.com/altin-fiyatlari/kapali-carsi');
+        const html = await res.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        function getValue(label) {
+            const td = Array.from(doc.querySelectorAll('td')).find(td => td.textContent.trim().toLowerCase().includes(label));
+            return td ? td.nextElementSibling?.textContent.trim() : null;
+        }
+        const dolar = getValue('dolar');
+        const euro = getValue('euro');
+        const gram = getValue('gram altın');
+        const ceyrek = getValue('çeyrek altın');
+        document.getElementById('kapalicarsiInfo').textContent =
+            `Dolar: ${dolar || '-'} ₺ | Euro: ${euro || '-'} ₺ | Gram Altın: ${gram || '-'} ₺ | Çeyrek Altın: ${ceyrek || '-'} ₺`;
+    } catch (e) {
+        document.getElementById('kapalicarsiInfo').textContent = 'Kapalıçarşı verisi alınamadı';
+    }
+}
 document.addEventListener('DOMContentLoaded', () => {
     createChannelList();
     updateProgramDate();
+    fetchKapalicarsi();
     // Hava durumu
     fetch('https://api.open-meteo.com/v1/forecast?latitude=41.01&longitude=28.97&current_weather=true&hourly=temperature_2m,weathercode&timezone=auto')
         .then(r => r.json())
@@ -739,12 +760,12 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(() => { document.getElementById('weatherInfo').textContent = 'Hava durumu alınamadı'; });
     // Kur bilgisi
-    fetch('https://api.exchangerate.host/latest?base=USD&symbols=TRY,EUR')
+    fetch('https://api.exchangerate.host/latest?base=TRY&symbols=USD,EUR')
         .then(r => r.json())
         .then(data => {
-            const usd = data.rates.TRY.toFixed(2);
-            const eur = (data.rates.TRY / data.rates.EUR).toFixed(2);
-            document.getElementById('currencyInfo').textContent = `Dolar: ${usd} ₺ | Euro: ${eur} ₺`;
+            const usd = (1 / data.rates.USD).toFixed(2);
+            const eur = (1 / data.rates.EUR).toFixed(2);
+            document.getElementById('currencyInfo').textContent = `1 USD = ${usd} ₺ | 1 EUR = ${eur} ₺`;
         })
         .catch(() => { document.getElementById('currencyInfo').textContent = 'Kur alınamadı'; });
     // selectChannel(channels[0]); // İsterseniz ilk kanalı otomatik seçebilirsiniz

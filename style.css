@@ -493,4 +493,20 @@ main {
     .program-list {
         max-height: 150px;
     }
+}
+
+.kapalicarsi-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background: rgba(234, 179, 8, 0.08);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #b7791f;
+}
+
+.kapalicarsi-info i {
+    color: #b7791f;
 } 
