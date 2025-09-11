@@ -1266,15 +1266,8 @@ const programSchedules = {
     ]
 };
 
-// DOM elementleri
-const channelList = document.getElementById('channelList');
-const searchInput = document.getElementById('searchInput');
-const currentChannel = document.getElementById('currentChannel');
-const channelDescription = document.getElementById('channelDescription');
-const fullscreenBtn = document.getElementById('fullscreenBtn');
-const muteBtn = document.getElementById('muteBtn');
-const programList = document.getElementById('programList');
-const programDate = document.getElementById('programDate');
+// DOM elementleri - DOM yüklendikten sonra tanımlanacak
+let searchInput, channelList, currentChannel, channelDescription, fullscreenBtn, muteBtn, programList, programDate;
 let currentChannelId = null;
 let filteredChannels = [...channels];
 
@@ -1510,6 +1503,27 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, programSchedules keys:', Object.keys(programSchedules));
+    
+    // DOM elementlerini tanımla
+    searchInput = document.getElementById('searchInput');
+    channelList = document.getElementById('channelList');
+    currentChannel = document.getElementById('currentChannel');
+    channelDescription = document.getElementById('channelDescription');
+    fullscreenBtn = document.getElementById('fullscreenBtn');
+    muteBtn = document.getElementById('muteBtn');
+    programList = document.getElementById('programList');
+    programDate = document.getElementById('programDate');
+    
+    console.log('DOM elements found:', {
+        searchInput: !!searchInput,
+        channelList: !!channelList,
+        currentChannel: !!currentChannel,
+        channelDescription: !!channelDescription,
+        fullscreenBtn: !!fullscreenBtn,
+        muteBtn: !!muteBtn,
+        programList: !!programList,
+        programDate: !!programDate
+    });
     
     // Logo kontrolü
     const logo = document.querySelector('.app-logo');
