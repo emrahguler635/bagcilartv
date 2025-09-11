@@ -1279,10 +1279,20 @@ function updateProgramDate() {
 
 function createProgramGuide(channelId) {
     console.log('createProgramGuide called with channelId:', channelId);
+    console.log('programList element:', programList);
+    
+    if (!programList) {
+        console.error('programList element not found!');
+        return;
+    }
+    
     programList.innerHTML = '';
     const programs = programSchedules[channelId];
-    console.log('Programs found:', programs);
+    console.log('Programs found for channel', channelId, ':', programs);
+    console.log('Available programSchedules keys:', Object.keys(programSchedules));
+    
     if (!programs) {
+        console.error('No programs found for channel:', channelId);
         programList.innerHTML = '<div style="text-align: center; color: #718096; padding: 20px;">Bu kanal için yayın akışı bulunamadı.</div>';
         return;
     }
