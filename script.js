@@ -1286,34 +1286,52 @@ function createProgramGuide(channelId) {
         return;
     }
     
+    // Önce temizle
     programList.innerHTML = '';
+    
+    // Program verilerini al
     const programs = programSchedules[channelId];
     console.log('Programs found for channel', channelId, ':', programs);
     console.log('Available programSchedules keys:', Object.keys(programSchedules));
     
-    if (!programs) {
+    if (!programs || programs.length === 0) {
         console.error('No programs found for channel:', channelId);
-        programList.innerHTML = '<div style="text-align: center; color: #718096; padding: 20px;">Bu kanal için yayın akışı bulunamadı.</div>';
+        programList.innerHTML = `
+            <div style="text-align: center; color: #718096; padding: 40px 20px;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                <h4 style="margin-bottom: 10px; color: #4a5568;">Yayın Akışı Bulunamadı</h4>
+                <p>Bu kanal için program rehberi<br>şu anda mevcut değil.</p>
+            </div>
+        `;
         return;
     }
+    
+    // Mevcut zamanı hesapla
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes();
     console.log('Current time:', currentTime);
-    programs.forEach(program => {
+    
+    // Program öğelerini oluştur
+    let htmlContent = '';
+    programs.forEach((program, index) => {
         const programTime = program.time.split(':');
         const programMinutes = parseInt(programTime[0]) * 60 + parseInt(programTime[1]);
-        const programItem = document.createElement('div');
-        programItem.className = 'program-item';
         const isCurrent = Math.abs(currentTime - programMinutes) <= 30;
-        if (isCurrent) programItem.classList.add('current');
-        programItem.innerHTML = `
-            <div class="program-time">${program.time}</div>
-            <div class="program-title">${program.title}</div>
-            <div class="program-description">${program.description}</div>
+        
+        htmlContent += `
+            <div class="program-item ${isCurrent ? 'current' : ''}">
+                <div class="program-time">${program.time}</div>
+                <div class="program-title">${program.title}</div>
+                <div class="program-description">${program.description}</div>
+            </div>
         `;
-        programList.appendChild(programItem);
+        console.log('Added program:', program.title, 'at', program.time, 'isCurrent:', isCurrent);
     });
+    
+    // HTML'i ekle
+    programList.innerHTML = htmlContent;
     console.log('Program guide created with', programs.length, 'programs');
+    console.log('programList children count:', programList.children.length);
 }
 
 function createChannelList(channelsToShow = channels) {
@@ -1409,19 +1427,26 @@ function filterChannels(searchTerm) {
     createChannelList(filteredChannels);
 }
 
-searchInput.addEventListener('input', e => filterChannels(e.target.value));
-fullscreenBtn.addEventListener('click', () => {
-    const videoPlayer = document.getElementById('videoPlayer');
-    const youtubeIframe = document.getElementById('youtubeIframe');
-    const webIframe = document.getElementById('webIframe');
-    if (videoPlayer && videoPlayer.src) {
-        if (videoPlayer.requestFullscreen) videoPlayer.requestFullscreen();
-    } else if (youtubeIframe) {
-        if (youtubeIframe.requestFullscreen) youtubeIframe.requestFullscreen();
-    } else if (webIframe) {
-        if (webIframe.requestFullscreen) webIframe.requestFullscreen();
-    }
-});
+// Arama fonksiyonunu DOM yüklendikten sonra bağla
+if (searchInput) {
+    searchInput.addEventListener('input', e => filterChannels(e.target.value));
+}
+
+// Tam ekran butonunu bağla
+if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', () => {
+        const videoPlayer = document.getElementById('videoPlayer');
+        const youtubeIframe = document.getElementById('youtubeIframe');
+        const webIframe = document.getElementById('webIframe');
+        if (videoPlayer && videoPlayer.src) {
+            if (videoPlayer.requestFullscreen) videoPlayer.requestFullscreen();
+        } else if (youtubeIframe) {
+            if (youtubeIframe.requestFullscreen) youtubeIframe.requestFullscreen();
+        } else if (webIframe) {
+            if (webIframe.requestFullscreen) webIframe.requestFullscreen();
+        }
+    });
+}
 
 function updateControlButtons(type, url) {
     if (type === 'youtube') {
@@ -1544,8 +1569,40 @@ document.addEventListener('DOMContentLoaded', () => {
         logo.addEventListener('error', () => console.log('Logo failed to load, using fallback'));
     }
     
-    createChannelList();
-    updateProgramDate();
+    // Yükleme animasyonu göster
+    if (channelList) {
+        channelList.innerHTML = '<div style="text-align: center; padding: 20px; color: #718096;"><i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 10px;"></i><br>Kanallar yükleniyor...</div>';
+        
+        // Kısa bir gecikme ile kanal listesini oluştur
+        setTimeout(() => {
+            createChannelList();
+            console.log('Channel list created with', channels.length, 'channels');
+        }, 500);
+    } else {
+        console.error('channelList element not found!');
+    }
+    
+    // Program tarihini güncelle
+    if (programDate) {
+        updateProgramDate();
+    }
+    
+    // Yayın akışı bölümünü başlat
+    if (programList) {
+        programList.innerHTML = `
+            <div style="text-align: center; color: #718096; padding: 40px 20px;">
+                <i class="fas fa-tv" style="font-size: 48px; margin-bottom: 20px; opacity: 0.5;"></i>
+                <h4 style="margin-bottom: 10px; color: #4a5568;">Yayın Akışı</h4>
+                <p>Sol taraftan bir kanal seçin<br>ve o kanalın program rehberini görün</p>
+            </div>
+        `;
+        
+    }
+    
+    // Arama fonksiyonunu bağla
+    if (searchInput) {
+        searchInput.addEventListener('input', e => filterChannels(e.target.value));
+    }
     // Hava durumu
     fetch('https://api.open-meteo.com/v1/forecast?latitude=41.01&longitude=28.97&current_weather=true&hourly=temperature_2m,weathercode&timezone=auto')
         .then(r => r.json())
