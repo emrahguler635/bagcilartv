@@ -56,16 +56,17 @@ header::before {
 }
 
 .app-logo {
-    height: 80px;
-    width: 80px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    height: 120px;
+    width: 120px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    object-fit: cover;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    object-fit: contain;
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 10px;
 }
 
 .app-logo:hover {
@@ -89,61 +90,20 @@ header::before {
 
 /* Colorful Title Styles */
 .colorful-title {
-    color: transparent;
+    color: #2d3748;
     text-align: center;
     font-size: 2.8rem;
     font-weight: 800;
     margin: 0;
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     letter-spacing: -1px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #96ceb4 75%, #feca57 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     line-height: 1.2;
-    position: relative;
-    animation: colorShift 3s ease-in-out infinite alternate;
 }
 
-.colorful-title::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #96ceb4 75%, #feca57 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: blur(2px);
-    opacity: 0.4;
-    z-index: -1;
-    animation: colorShift 3s ease-in-out infinite alternate;
-}
-
-@keyframes colorShift {
-    0% {
-        background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 25%, #45b7d1 50%, #96ceb4 75%, #feca57 100%);
-    }
-    50% {
-        background: linear-gradient(135deg, #feca57 0%, #ff6b6b 25%, #4ecdc4 50%, #45b7d1 75%, #96ceb4 100%);
-    }
-    100% {
-        background: linear-gradient(135deg, #96ceb4 0%, #feca57 25%, #ff6b6b 50%, #4ecdc4 75%, #45b7d1 100%);
-    }
-}
-
-@keyframes iconPulse {
-    0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.4));
-    }
-    50% {
-        transform: scale(1.1);
-        filter: drop-shadow(0 6px 12px rgba(102, 126, 234, 0.6));
-    }
-}
 
 /* Legacy header h1 styles for compatibility */
 header h1 {
@@ -781,8 +741,8 @@ main {
 /* Responsive Design */
 @media (max-width: 1400px) {
     .app-logo {
-        height: 70px;
-        width: 70px;
+        height: 110px;
+        width: 110px;
     }
     
     .colorful-title {
@@ -800,8 +760,8 @@ main {
 
 @media (max-width: 1100px) {
     .app-logo {
-        height: 60px;
-        width: 60px;
+        height: 100px;
+        width: 100px;
     }
     
     .colorful-title {
@@ -819,8 +779,8 @@ main {
 
 @media (max-width: 768px) {
     .app-logo {
-        height: 50px;
-        width: 50px;
+        height: 90px;
+        width: 90px;
     }
     
     .colorful-title {
