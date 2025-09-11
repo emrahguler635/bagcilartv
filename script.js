@@ -1285,14 +1285,17 @@ function updateProgramDate() {
 }
 
 function createProgramGuide(channelId) {
+    console.log('createProgramGuide called with channelId:', channelId);
     programList.innerHTML = '';
     const programs = programSchedules[channelId];
+    console.log('Programs found:', programs);
     if (!programs) {
         programList.innerHTML = '<div style="text-align: center; color: #718096; padding: 20px;">Bu kanal için yayın akışı bulunamadı.</div>';
         return;
     }
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes();
+    console.log('Current time:', currentTime);
     programs.forEach(program => {
         const programTime = program.time.split(':');
         const programMinutes = parseInt(programTime[0]) * 60 + parseInt(programTime[1]);
@@ -1307,6 +1310,7 @@ function createProgramGuide(channelId) {
         `;
         programList.appendChild(programItem);
     });
+    console.log('Program guide created with', programs.length, 'programs');
 }
 
 function createChannelList(channelsToShow = channels) {
@@ -1328,11 +1332,13 @@ function createChannelList(channelsToShow = channels) {
 }
 
 function selectChannel(channel) {
+    console.log('selectChannel called with:', channel);
     document.querySelectorAll('.channel-item.active').forEach(item => item.classList.remove('active'));
     const selectedItem = document.querySelector(`[data-channel-id="${channel.id}"]`);
     if (selectedItem) selectedItem.classList.add('active');
     currentChannelId = channel.id;
     const videoWrapper = document.getElementById('videoWrapper');
+    console.log('Creating program guide for channel ID:', channel.id);
     createProgramGuide(channel.id);
     let externalBtnHtml = '';
     if (channel.youtubeUrl) {
@@ -1523,6 +1529,7 @@ async function fetchKapalicarsi() {
     }
 }
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, programSchedules keys:', Object.keys(programSchedules));
     createChannelList();
     updateProgramDate();
     fetchKapalicarsi();
