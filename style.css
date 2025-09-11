@@ -44,12 +44,34 @@ header::before {
     border-radius: 20px 20px 0 0;
 }
 
+/* Logo Section */
+.logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.app-logo {
+    height: 60px;
+    width: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.app-logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
 header h1 {
     color: #2d3748;
     text-align: center;
     font-size: 2.2rem;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin: 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     letter-spacing: -0.5px;
 }
@@ -61,17 +83,10 @@ header h1 i {
     filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
 }
 
-.weather-currency {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 15px;
-    flex-wrap: wrap;
-}
-
-.weather-info, .currency-info, .kapalicarsi-info {
+.weather-info {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     padding: 10px 20px;
     background: rgba(102, 126, 234, 0.1);
@@ -82,15 +97,16 @@ header h1 i {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(102, 126, 234, 0.2);
     transition: all 0.3s ease;
+    margin-top: 15px;
 }
 
-.weather-info:hover, .currency-info:hover, .kapalicarsi-info:hover {
+.weather-info:hover {
     background: rgba(102, 126, 234, 0.15);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
 }
 
-.weather-info i, .currency-info i, .kapalicarsi-info i {
+.weather-info i {
     color: #667eea;
     font-size: 16px;
 }
@@ -680,4 +696,52 @@ main {
 
 .program-list::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+    .app-logo {
+        height: 50px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .program-guide {
+        max-height: calc(100vh - 200px);
+    }
+}
+
+@media (max-width: 1100px) {
+    .app-logo {
+        height: 45px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .logo-section {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-logo {
+        height: 40px;
+    }
+    
+    header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .logo-section {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .container {
+        padding: 3px 0 3px 0;
+    }
 } 
