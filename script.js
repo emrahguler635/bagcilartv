@@ -1510,6 +1510,16 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, programSchedules keys:', Object.keys(programSchedules));
+    
+    // Logo kontrolü
+    const logo = document.querySelector('.app-logo');
+    if (logo) {
+        console.log('Logo element found:', logo);
+        console.log('Logo src:', logo.src);
+        logo.addEventListener('load', () => console.log('Logo loaded successfully'));
+        logo.addEventListener('error', () => console.log('Logo failed to load, using fallback'));
+    }
+    
     createChannelList();
     updateProgramDate();
     // Hava durumu

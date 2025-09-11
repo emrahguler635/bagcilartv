@@ -54,11 +54,16 @@ header::before {
 }
 
 .app-logo {
-    height: 60px;
-    width: auto;
-    border-radius: 10px;
+    height: 80px;
+    width: 80px;
+    border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    object-fit: cover;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .app-logo:hover {
@@ -66,6 +71,53 @@ header::before {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Logo yoksa alternatif stil */
+.app-logo:not([src]), .app-logo[src=""] {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    position: relative;
+}
+
+.app-logo:not([src])::after, .app-logo[src=""]::after {
+    content: "TV";
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Modern App Title */
+.app-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.title-main {
+    color: #2d3748;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: -0.8px;
+    background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+}
+
+.title-subtitle {
+    color: #718096;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 2px;
+    opacity: 0.8;
+}
+
+/* Legacy header h1 styles for compatibility */
 header h1 {
     color: #2d3748;
     text-align: center;
@@ -701,7 +753,16 @@ main {
 /* Responsive Design */
 @media (max-width: 1400px) {
     .app-logo {
-        height: 50px;
+        height: 70px;
+        width: 70px;
+    }
+    
+    .title-main {
+        font-size: 2.1rem;
+    }
+    
+    .title-subtitle {
+        font-size: 0.8rem;
     }
     
     header h1 {
@@ -715,7 +776,16 @@ main {
 
 @media (max-width: 1100px) {
     .app-logo {
-        height: 45px;
+        height: 60px;
+        width: 60px;
+    }
+    
+    .title-main {
+        font-size: 1.9rem;
+    }
+    
+    .title-subtitle {
+        font-size: 0.75rem;
     }
     
     header h1 {
@@ -729,7 +799,17 @@ main {
 
 @media (max-width: 768px) {
     .app-logo {
-        height: 40px;
+        height: 50px;
+        width: 50px;
+    }
+    
+    .title-main {
+        font-size: 1.7rem;
+    }
+    
+    .title-subtitle {
+        font-size: 0.7rem;
+        letter-spacing: 1.5px;
     }
     
     header h1 {
@@ -739,6 +819,10 @@ main {
     .logo-section {
         flex-direction: column;
         gap: 8px;
+    }
+    
+    .app-title {
+        align-items: center;
     }
     
     .container {
