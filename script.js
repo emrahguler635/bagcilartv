@@ -631,6 +631,95 @@ const programSchedules = {
         { time: "20:00", title: "Müzik Gecesi", description: "Gece müzik kuşağı" },
         { time: "22:00", title: "Gece Müziği", description: "Gece müzik programı" }
     ],
+    7: [ // TRT Avaz
+        { time: "06:00", title: "TRT Avaz Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Ekonomi Raporu", description: "Ekonomi haberleri" },
+        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
+        { time: "12:00", title: "TRT Avaz Haber", description: "Haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi analizi" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
+    ],
+    8: [ // TRT Kurdî
+        { time: "06:00", title: "TRT Kurdî Sabah", description: "Nûçeyên sibê" },
+        { time: "08:00", title: "Rapora Aborî", description: "Nûçeyên aborî" },
+        { time: "10:00", title: "Nîvro", description: "Nûçeyên nîvro" },
+        { time: "12:00", title: "Nûçeyên TRT Kurdî", description: "Bulletina nûçeyan" },
+        { time: "14:00", title: "Nûçeyên Cîhanê", description: "Nûçeyên navneteweyî" },
+        { time: "16:00", title: "Bulletina Aborî", description: "Analîza aborî" },
+        { time: "18:00", title: "Nûçeyên Êvarê", description: "Bulletina êvarê" },
+        { time: "20:00", title: "Nûçeyên Sereke", description: "Bulletina sereke" },
+        { time: "22:00", title: "Nûçeyên Şevê", description: "Bulletina şevê" }
+    ],
+    9: [ // TRT World
+        { time: "06:00", title: "TRT World Morning", description: "Morning news" },
+        { time: "08:00", title: "Economy Report", description: "Economic analysis" },
+        { time: "10:00", title: "Midday News", description: "Midday news" },
+        { time: "12:00", title: "TRT World News", description: "News bulletin" },
+        { time: "14:00", title: "World News", description: "International news" },
+        { time: "16:00", title: "Economy Bulletin", description: "Economic analysis" },
+        { time: "18:00", title: "Evening News", description: "Evening bulletin" },
+        { time: "20:00", title: "Main News", description: "Main news bulletin" },
+        { time: "22:00", title: "Night News", description: "Night bulletin" }
+    ],
+    10: [ // TRT Arabi
+        { time: "06:00", title: "TRT Arabi Sabah", description: "أخبار الصباح" },
+        { time: "08:00", title: "تقرير الاقتصاد", description: "تحليل اقتصادي" },
+        { time: "10:00", title: "منتصف النهار", description: "أخبار منتصف النهار" },
+        { time: "12:00", title: "أخبار TRT Arabi", description: "نشرة أخبار" },
+        { time: "14:00", title: "أخبار العالم", description: "أخبار دولية" },
+        { time: "16:00", title: "نشرة الاقتصاد", description: "تحليل اقتصادي" },
+        { time: "18:00", title: "أخبار المساء", description: "نشرة مسائية" },
+        { time: "20:00", title: "الأخبار الرئيسية", description: "النشرة الرئيسية" },
+        { time: "22:00", title: "أخبار الليل", description: "نشرة ليلية" }
+    ],
+    11: [ // TRT Türk
+        { time: "06:00", title: "TRT Türk Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Ekonomi Raporu", description: "Ekonomi haberleri" },
+        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
+        { time: "12:00", title: "TRT Türk Haber", description: "Haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi analizi" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
+    ],
+    12: [ // TRT 2
+        { time: "06:00", title: "Kültür Sabah", description: "Sabah kültür programı" },
+        { time: "08:00", title: "Sanat Programı", description: "Sanat ve kültür" },
+        { time: "10:00", title: "Belgesel Kuşağı", description: "Belgesel programları" },
+        { time: "12:00", title: "Kültür Haberleri", description: "Kültür haberleri" },
+        { time: "14:00", title: "Tarih Programı", description: "Tarihi içerikler" },
+        { time: "16:00", title: "Sanat Belgeseli", description: "Sanat belgeselleri" },
+        { time: "18:00", title: "Kültür Akşam", description: "Akşam kültür programı" },
+        { time: "20:00", title: "Ana Kültür", description: "Ana kültür programı" },
+        { time: "22:00", title: "Gece Kültür", description: "Gece kültür programı" }
+    ],
+    13: [ // TRT 3
+        { time: "06:00", title: "Spor Haberleri", description: "Günün spor haberleri" },
+        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
+        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
+        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
+        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
+        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
+        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
+        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
+        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
+    ],
+    14: [ // TRT 4K
+        { time: "06:00", title: "TRT 4K Günaydın", description: "Sabah haberleri ve günlük program" },
+        { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğitici programlar" },
+        { time: "10:00", title: "Gün Ortası Haberleri", description: "Günün önemli gelişmeleri" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Detaylı haber bülteni" },
+        { time: "14:00", title: "Türk Dizisi", description: "Popüler Türk dizisi" },
+        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğlenceli programlar" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Günün sonu haberleri" },
+        { time: "20:00", title: "Ana Haber Bülteni", description: "Günün en önemli haberleri" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" },
+        { time: "23:00", title: "Gece Kuşağı", description: "Gece programları" }
+    ],
     15: [ // ATV
         { time: "06:00", title: "ATV Günaydın", description: "Sabah programı" },
         { time: "08:00", title: "Gün Ortası", description: "Günlük program" },
@@ -1256,16 +1345,14 @@ function selectChannel(channel) {
         updateControlButtons('youtube', channel.youtubeUrl);
         return;
     } else if (channel.webUrl) {
+        // Web kanalları için iframe ile direkt yayın
         videoWrapper.innerHTML = `
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:400px;background:#f7fafc;border-radius:10px;border:2px dashed #cbd5e0;">
-                <i class="fas fa-external-link-alt" style="font-size:48px;color:#667eea;margin-bottom:20px;"></i>
-                <h3 style="color:#4a5568;margin-bottom:10px;">Web Sitesinde İzleyin</h3>
-                <p style="color:#718096;text-align:center;margin-bottom:20px;">Bu kanal web sitesi üzerinden yayın yapmaktadır.<br>İzlemek için aşağıdaki butona tıklayın.</p>
-                <a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#3182ce;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;'>Web'de İzle</a>
-            </div>
+            <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
+            <div id='externalWatchBtn'></div>
         `;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = channel.description;
+        document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
         updateControlButtons('web', channel.webUrl);
         return;
     }
@@ -1342,13 +1429,16 @@ function updateControlButtons(type, url) {
         };
         fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Tam Ekran (YouTube)';
     } else if (type === 'web') {
-        muteBtn.innerHTML = '<i class="fas fa-info-circle"></i> Bilgi';
+        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ses';
         muteBtn.onclick = () => { 
             alert('Bu kanal web sitesi üzerinden yayın yapmaktadır. Ses kontrolü için web sitesini ziyaret edin.'); 
         };
-        fullscreenBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Web\'de Aç';
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Tam Ekran';
         fullscreenBtn.onclick = () => {
-            if (url) window.open(url, '_blank');
+            const webIframe = document.getElementById('webIframe');
+            if (webIframe && webIframe.requestFullscreen) {
+                webIframe.requestFullscreen();
+            }
         };
     } else {
         muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ses';
@@ -1396,6 +1486,8 @@ document.addEventListener('keydown', e => {
                 const newUrl = isMuted ? currentUrl.replace('mute=1', 'mute=0') : currentUrl.replace('mute=0', 'mute=1');
                 youtubeIframe.src = newUrl;
                 muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-up"></i> Ses (YouTube)' : '<i class="fas fa-volume-mute"></i> Ses (YouTube)';
+            } else if (webIframe) {
+                alert('Bu kanal web sitesi üzerinden yayın yapmaktadır. Ses kontrolü için web sitesini ziyaret edin.');
             }
             break;
     }
