@@ -759,6 +759,172 @@ const programSchedules = {
         { time: "18:00", title: "Akşam Müziği", description: "Akşam müzik programı" },
         { time: "20:00", title: "Müzik Gecesi", description: "Gece müzik kuşağı" },
         { time: "22:00", title: "Gece Müziği", description: "Gece müzik programı" }
+    ],
+    // Yeni Eklenen Kanallar için Program Verileri
+    35: [ // Bloomberg HT
+        { time: "06:00", title: "Bloomberg Sabah", description: "Sabah ekonomi haberleri" },
+        { time: "08:00", title: "Piyasa Analizi", description: "Borsa ve finans analizi" },
+        { time: "10:00", title: "Ekonomi Raporu", description: "Günlük ekonomi haberleri" },
+        { time: "12:00", title: "Öğle Bülteni", description: "Öğle ekonomi bülteni" },
+        { time: "14:00", title: "Piyasa Güncellemesi", description: "Borsa güncellemeleri" },
+        { time: "16:00", title: "Finans Analizi", description: "Finansal analiz programı" },
+        { time: "18:00", title: "Akşam Ekonomi", description: "Akşam ekonomi haberleri" },
+        { time: "20:00", title: "Ana Ekonomi", description: "Ana ekonomi bülteni" },
+        { time: "22:00", title: "Gece Ekonomi", description: "Gece ekonomi haberleri" }
+    ],
+    36: [ // 24 TV
+        { time: "06:00", title: "24 TV Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük haberler" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" }
+    ],
+    37: [ // Haber Global
+        { time: "06:00", title: "Haber Global Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük haberler" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" }
+    ],
+    38: [ // beIN Sports 1
+        { time: "06:00", title: "Spor Haberleri", description: "Günün spor haberleri" },
+        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
+        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
+        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
+        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
+        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
+        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
+        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
+        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
+    ],
+    39: [ // beIN Sports 2
+        { time: "06:00", title: "Spor Haberleri", description: "Günün spor haberleri" },
+        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
+        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
+        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
+        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
+        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
+        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
+        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
+        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
+    ],
+    40: [ // S Sport
+        { time: "06:00", title: "S Sport Sabah", description: "Sabah spor haberleri" },
+        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
+        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
+        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
+        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
+        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
+        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
+        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
+        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
+    ],
+    41: [ // Number One TV
+        { time: "06:00", title: "Sabah Müziği", description: "Sabah müzik kuşağı" },
+        { time: "08:00", title: "Pop Müzik", description: "Pop müzik programı" },
+        { time: "10:00", title: "Rock Müzik", description: "Rock müzik kuşağı" },
+        { time: "12:00", title: "Öğle Müziği", description: "Öğle müzik programı" },
+        { time: "14:00", title: "Türkçe Pop", description: "Türkçe pop müzik" },
+        { time: "16:00", title: "Klasik Müzik", description: "Klasik müzik kuşağı" },
+        { time: "18:00", title: "Akşam Müziği", description: "Akşam müzik programı" },
+        { time: "20:00", title: "Müzik Gecesi", description: "Gece müzik kuşağı" },
+        { time: "22:00", title: "Gece Müziği", description: "Gece müzik programı" }
+    ],
+    42: [ // Dream TV
+        { time: "06:00", title: "Sabah Müziği", description: "Sabah müzik kuşağı" },
+        { time: "08:00", title: "Pop Müzik", description: "Pop müzik programı" },
+        { time: "10:00", title: "Rock Müzik", description: "Rock müzik kuşağı" },
+        { time: "12:00", title: "Öğle Müziği", description: "Öğle müzik programı" },
+        { time: "14:00", title: "Türkçe Pop", description: "Türkçe pop müzik" },
+        { time: "16:00", title: "Klasik Müzik", description: "Klasik müzik kuşağı" },
+        { time: "18:00", title: "Akşam Müziği", description: "Akşam müzik programı" },
+        { time: "20:00", title: "Müzik Gecesi", description: "Gece müzik kuşağı" },
+        { time: "22:00", title: "Gece Müziği", description: "Gece müzik programı" }
+    ],
+    43: [ // Slow TV
+        { time: "06:00", title: "Sabah Müziği", description: "Sabah müzik kuşağı" },
+        { time: "08:00", title: "Yavaş Müzik", description: "Rahatlatıcı müzik" },
+        { time: "10:00", title: "Ambient Müzik", description: "Ambient müzik kuşağı" },
+        { time: "12:00", title: "Öğle Müziği", description: "Öğle müzik programı" },
+        { time: "14:00", title: "Klasik Müzik", description: "Klasik müzik" },
+        { time: "16:00", title: "Jazz Müzik", description: "Jazz müzik kuşağı" },
+        { time: "18:00", title: "Akşam Müziği", description: "Akşam müzik programı" },
+        { time: "20:00", title: "Müzik Gecesi", description: "Gece müzik kuşağı" },
+        { time: "22:00", title: "Gece Müziği", description: "Gece müzik programı" }
+    ],
+    44: [ // Diyanet TV
+        { time: "06:00", title: "Sabah Hutbesi", description: "Sabah hutbesi" },
+        { time: "08:00", title: "Kuran Okuma", description: "Kuran-ı Kerim okuma" },
+        { time: "10:00", title: "Dini Sohbet", description: "Dini sohbet programı" },
+        { time: "12:00", title: "Öğle Hutbesi", description: "Öğle hutbesi" },
+        { time: "14:00", title: "Hadis Dersi", description: "Hadis dersi" },
+        { time: "16:00", title: "Tefsir Dersi", description: "Tefsir dersi" },
+        { time: "18:00", title: "Akşam Hutbesi", description: "Akşam hutbesi" },
+        { time: "20:00", title: "Dini Program", description: "Dini program" },
+        { time: "22:00", title: "Gece Hutbesi", description: "Gece hutbesi" }
+    ],
+    45: [ // Kanal 1
+        { time: "06:00", title: "Kanal 1 Sabah", description: "Sabah programı" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük program" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dizi Kuşağı", description: "Popüler diziler" },
+        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuk programları" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Kuşağı", description: "Gece programları" }
+    ],
+    46: [ // Flash TV
+        { time: "06:00", title: "Flash Sabah", description: "Sabah programı" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük program" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dizi Kuşağı", description: "Popüler diziler" },
+        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuk programları" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Kuşağı", description: "Gece programları" }
+    ],
+    47: [ // Beyaz TV
+        { time: "06:00", title: "Beyaz Sabah", description: "Sabah programı" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük program" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dizi Kuşağı", description: "Popüler diziler" },
+        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuk programları" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Kuşağı", description: "Gece programları" }
+    ],
+    48: [ // Cartoon Network
+        { time: "06:00", title: "Sabah Çizgi Film", description: "Sabah çizgi filmleri" },
+        { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuk programları" },
+        { time: "10:00", title: "Çizgi Film Kuşağı", description: "Popüler çizgi filmler" },
+        { time: "12:00", title: "Öğle Çizgi Film", description: "Öğle çizgi film kuşağı" },
+        { time: "14:00", title: "Eğitici İçerik", description: "Eğitici programlar" },
+        { time: "16:00", title: "Akşam Çizgi Film", description: "Akşam çizgi film kuşağı" },
+        { time: "18:00", title: "Çocuk Programı", description: "Çocuk programları" },
+        { time: "20:00", title: "Gece Çizgi Film", description: "Gece çizgi film kuşağı" },
+        { time: "22:00", title: "Gece Programı", description: "Gece programları" }
+    ],
+    49: [ // Disney Channel
+        { time: "06:00", title: "Disney Sabah", description: "Sabah çizgi filmleri" },
+        { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuk programları" },
+        { time: "10:00", title: "Disney Kuşağı", description: "Disney çizgi filmleri" },
+        { time: "12:00", title: "Öğle Çizgi Film", description: "Öğle çizgi film kuşağı" },
+        { time: "14:00", title: "Eğitici İçerik", description: "Eğitici programlar" },
+        { time: "16:00", title: "Akşam Çizgi Film", description: "Akşam çizgi film kuşağı" },
+        { time: "18:00", title: "Çocuk Programı", description: "Çocuk programları" },
+        { time: "20:00", title: "Gece Çizgi Film", description: "Gece çizgi film kuşağı" },
+        { time: "22:00", title: "Gece Programı", description: "Gece programları" }
     ]
 };
 
