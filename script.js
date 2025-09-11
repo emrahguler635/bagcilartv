@@ -925,6 +925,255 @@ const programSchedules = {
         { time: "18:00", title: "Çocuk Programı", description: "Çocuk programları" },
         { time: "20:00", title: "Gece Çizgi Film", description: "Gece çizgi film kuşağı" },
         { time: "22:00", title: "Gece Programı", description: "Gece programları" }
+    ],
+    // Eksik Olan Kanallar için Program Verileri
+    28: [ // Mekke TV
+        { time: "06:00", title: "Sabah Namazı", description: "Kabe'den sabah namazı" },
+        { time: "08:00", title: "Kuran Okuma", description: "Kuran-ı Kerim okuma" },
+        { time: "10:00", title: "Dini Sohbet", description: "Dini sohbet programı" },
+        { time: "12:00", title: "Öğle Namazı", description: "Kabe'den öğle namazı" },
+        { time: "14:00", title: "Hadis Dersi", description: "Hadis dersi" },
+        { time: "16:00", title: "Tefsir Dersi", description: "Tefsir dersi" },
+        { time: "18:00", title: "Akşam Namazı", description: "Kabe'den akşam namazı" },
+        { time: "20:00", title: "Dini Program", description: "Dini program" },
+        { time: "22:00", title: "Gece Namazı", description: "Kabe'den gece namazı" }
+    ],
+    29: [ // Medine TV
+        { time: "06:00", title: "Sabah Namazı", description: "Mescid-i Nebevi'den sabah namazı" },
+        { time: "08:00", title: "Kuran Okuma", description: "Kuran-ı Kerim okuma" },
+        { time: "10:00", title: "Dini Sohbet", description: "Dini sohbet programı" },
+        { time: "12:00", title: "Öğle Namazı", description: "Mescid-i Nebevi'den öğle namazı" },
+        { time: "14:00", title: "Hadis Dersi", description: "Hadis dersi" },
+        { time: "16:00", title: "Tefsir Dersi", description: "Tefsir dersi" },
+        { time: "18:00", title: "Akşam Namazı", description: "Mescid-i Nebevi'den akşam namazı" },
+        { time: "20:00", title: "Dini Program", description: "Dini program" },
+        { time: "22:00", title: "Gece Namazı", description: "Mescid-i Nebevi'den gece namazı" }
+    ],
+    30: [ // Sözcü TV
+        { time: "06:00", title: "Sözcü Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük haberler" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" }
+    ],
+    31: [ // Halk TV
+        { time: "06:00", title: "Halk Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük haberler" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" }
+    ],
+    32: [ // TELE1
+        { time: "06:00", title: "TELE1 Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük haberler" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" }
+    ],
+    33: [ // Ulusal Kanal
+        { time: "06:00", title: "Ulusal Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük haberler" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" }
+    ],
+    34: [ // KRT TV
+        { time: "06:00", title: "KRT Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Gün Ortası", description: "Günlük haberler" },
+        { time: "10:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Öğle haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" }
+    ],
+    // Duplicate kanallar için program verileri
+    50: [ // TRT Haber (Duplicate)
+        { time: "00:00", title: "Haber Bülteni", description: "Güncel haberler" },
+        { time: "02:00", title: "Ekonomi Haberleri", description: "Ekonomi ve finans haberleri" },
+        { time: "04:00", title: "Dünya Haberleri", description: "Uluslararası gelişmeler" },
+        { time: "06:00", title: "Sabah Haberleri", description: "Günün ilk haberleri" },
+        { time: "08:00", title: "Ekonomi Raporu", description: "Detaylı ekonomi analizi" },
+        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
+        { time: "12:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
+        { time: "14:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
+        { time: "16:00", title: "Dünya Raporu", description: "Uluslararası haberler" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Günün özeti" },
+        { time: "20:00", title: "Ana Haber", description: "Günün en önemli haberleri" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
+    ],
+    51: [ // HaberTürk (Duplicate)
+        { time: "06:00", title: "Habertürk Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Ekonomi Raporu", description: "Ekonomi haberleri" },
+        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
+        { time: "12:00", title: "Habertürk Haber", description: "Haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi analizi" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
+    ],
+    52: [ // TRT Spor (Duplicate)
+        { time: "06:00", title: "Spor Haberleri", description: "Günün spor haberleri" },
+        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
+        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
+        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
+        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
+        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
+        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
+        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
+        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
+    ],
+    53: [ // TRT Müzik (Duplicate)
+        { time: "06:00", title: "Sabah Müziği", description: "Sabah müzik kuşağı" },
+        { time: "08:00", title: "Türk Halk Müziği", description: "Halk müziği programı" },
+        { time: "10:00", title: "Klasik Müzik", description: "Klasik müzik kuşağı" },
+        { time: "12:00", title: "Öğle Müziği", description: "Öğle müzik programı" },
+        { time: "14:00", title: "Türk Sanat Müziği", description: "Sanat müziği programı" },
+        { time: "16:00", title: "Pop Müzik", description: "Pop müzik kuşağı" },
+        { time: "18:00", title: "Akşam Müziği", description: "Akşam müzik programı" },
+        { time: "20:00", title: "Müzik Gecesi", description: "Gece müzik kuşağı" },
+        { time: "22:00", title: "Gece Müziği", description: "Gece müzik programı" }
+    ],
+    54: [ // TRT 1 (Duplicate)
+        { time: "06:00", title: "TRT 1 Günaydın", description: "Sabah haberleri ve günlük program" },
+        { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğitici programlar" },
+        { time: "10:00", title: "Gün Ortası Haberleri", description: "Günün önemli gelişmeleri" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Detaylı haber bülteni" },
+        { time: "14:00", title: "Türk Dizisi", description: "Popüler Türk dizisi" },
+        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğlenceli programlar" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Günün sonu haberleri" },
+        { time: "20:00", title: "Ana Haber Bülteni", description: "Günün en önemli haberleri" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" },
+        { time: "23:00", title: "Gece Kuşağı", description: "Gece programları" }
+    ],
+    55: [ // TRT 2 (Duplicate)
+        { time: "06:00", title: "Kültür Sabah", description: "Sabah kültür programı" },
+        { time: "08:00", title: "Sanat Programı", description: "Sanat ve kültür" },
+        { time: "10:00", title: "Belgesel Kuşağı", description: "Belgesel programları" },
+        { time: "12:00", title: "Kültür Haberleri", description: "Kültür haberleri" },
+        { time: "14:00", title: "Tarih Programı", description: "Tarihi içerikler" },
+        { time: "16:00", title: "Sanat Belgeseli", description: "Sanat belgeselleri" },
+        { time: "18:00", title: "Kültür Akşam", description: "Akşam kültür programı" },
+        { time: "20:00", title: "Ana Kültür", description: "Ana kültür programı" },
+        { time: "22:00", title: "Gece Kültür", description: "Gece kültür programı" }
+    ],
+    56: [ // TRT 3 (Duplicate)
+        { time: "06:00", title: "Spor Haberleri", description: "Günün spor haberleri" },
+        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
+        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
+        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
+        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
+        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
+        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
+        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
+        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
+    ],
+    57: [ // TRT 4K (Duplicate)
+        { time: "06:00", title: "TRT 4K Günaydın", description: "Sabah haberleri ve günlük program" },
+        { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğitici programlar" },
+        { time: "10:00", title: "Gün Ortası Haberleri", description: "Günün önemli gelişmeleri" },
+        { time: "12:00", title: "Öğle Haberleri", description: "Detaylı haber bülteni" },
+        { time: "14:00", title: "Türk Dizisi", description: "Popüler Türk dizisi" },
+        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğlenceli programlar" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Günün sonu haberleri" },
+        { time: "20:00", title: "Ana Haber Bülteni", description: "Günün en önemli haberleri" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" },
+        { time: "23:00", title: "Gece Kuşağı", description: "Gece programları" }
+    ],
+    58: [ // TRT World (Duplicate)
+        { time: "06:00", title: "TRT World Morning", description: "Morning news" },
+        { time: "08:00", title: "Economy Report", description: "Economic analysis" },
+        { time: "10:00", title: "Midday News", description: "Midday news" },
+        { time: "12:00", title: "TRT World News", description: "News bulletin" },
+        { time: "14:00", title: "World News", description: "International news" },
+        { time: "16:00", title: "Economy Bulletin", description: "Economic analysis" },
+        { time: "18:00", title: "Evening News", description: "Evening bulletin" },
+        { time: "20:00", title: "Main News", description: "Main news bulletin" },
+        { time: "22:00", title: "Night News", description: "Night bulletin" }
+    ],
+    59: [ // TRT Arabi (Duplicate)
+        { time: "06:00", title: "TRT Arabi Sabah", description: "أخبار الصباح" },
+        { time: "08:00", title: "تقرير الاقتصاد", description: "تحليل اقتصادي" },
+        { time: "10:00", title: "منتصف النهار", description: "أخبار منتصف النهار" },
+        { time: "12:00", title: "أخبار TRT Arabi", description: "نشرة أخبار" },
+        { time: "14:00", title: "أخبار العالم", description: "أخبار دولية" },
+        { time: "16:00", title: "نشرة الاقتصاد", description: "تحليل اقتصادي" },
+        { time: "18:00", title: "أخبار المساء", description: "نشرة مسائية" },
+        { time: "20:00", title: "الأخبار الرئيسية", description: "النشرة الرئيسية" },
+        { time: "22:00", title: "أخبار الليل", description: "نشرة ليلية" }
+    ],
+    60: [ // TRT Türk (Duplicate)
+        { time: "06:00", title: "TRT Türk Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Ekonomi Raporu", description: "Ekonomi haberleri" },
+        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
+        { time: "12:00", title: "TRT Türk Haber", description: "Haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi analizi" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
+    ],
+    61: [ // TRT Avaz (Duplicate)
+        { time: "06:00", title: "TRT Avaz Sabah", description: "Sabah haberleri" },
+        { time: "08:00", title: "Ekonomi Raporu", description: "Ekonomi haberleri" },
+        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
+        { time: "12:00", title: "TRT Avaz Haber", description: "Haber bülteni" },
+        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
+        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi analizi" },
+        { time: "18:00", title: "Akşam Haberleri", description: "Akşam bülteni" },
+        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
+        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
+    ],
+    62: [ // TRT Kurdî (Duplicate)
+        { time: "06:00", title: "TRT Kurdî Sabah", description: "Nûçeyên sibê" },
+        { time: "08:00", title: "Rapora Aborî", description: "Nûçeyên aborî" },
+        { time: "10:00", title: "Nîvro", description: "Nûçeyên nîvro" },
+        { time: "12:00", title: "Nûçeyên TRT Kurdî", description: "Bulletina nûçeyan" },
+        { time: "14:00", title: "Nûçeyên Cîhanê", description: "Nûçeyên navneteweyî" },
+        { time: "16:00", title: "Bulletina Aborî", description: "Analîza aborî" },
+        { time: "18:00", title: "Nûçeyên Êvarê", description: "Bulletina êvarê" },
+        { time: "20:00", title: "Nûçeyên Sereke", description: "Bulletina sereke" },
+        { time: "22:00", title: "Nûçeyên Şevê", description: "Bulletina şevê" }
+    ],
+    63: [ // TRT Çocuk (Duplicate)
+        { time: "06:00", title: "Sabah Çizgi Film", description: "Çocuk çizgi filmleri" },
+        { time: "08:00", title: "Eğitici Program", description: "Eğitici içerikler" },
+        { time: "10:00", title: "Çizgi Film Kuşağı", description: "Popüler çizgi filmler" },
+        { time: "12:00", title: "Öğle Çizgi Film", description: "Öğle çizgi film kuşağı" },
+        { time: "14:00", title: "Eğitici İçerik", description: "Eğitici programlar" },
+        { time: "16:00", title: "Akşam Çizgi Film", description: "Akşam çizgi film kuşağı" },
+        { time: "18:00", title: "Çocuk Programı", description: "Çocuk programları" },
+        { time: "20:00", title: "Gece Çizgi Film", description: "Gece çizgi film kuşağı" },
+        { time: "22:00", title: "Gece Programı", description: "Gece programları" }
+    ],
+    64: [ // TRT Belgesel (Duplicate)
+        { time: "06:00", title: "Doğa Belgeseli", description: "Doğa ve vahşi yaşam" },
+        { time: "08:00", title: "Tarih Belgeseli", description: "Tarihi belgeseller" },
+        { time: "10:00", title: "Bilim Belgeseli", description: "Bilimsel belgeseller" },
+        { time: "12:00", title: "Kültür Belgeseli", description: "Kültür ve sanat" },
+        { time: "14:00", title: "Coğrafya Belgeseli", description: "Coğrafi belgeseller" },
+        { time: "16:00", title: "Teknoloji Belgeseli", description: "Teknoloji belgeselleri" },
+        { time: "18:00", title: "Tarih Belgeseli", description: "Tarihi içerikler" },
+        { time: "20:00", title: "Doğa Belgeseli", description: "Akşam doğa belgeseli" },
+        { time: "22:00", title: "Bilim Belgeseli", description: "Gece bilim belgeseli" }
     ]
 };
 
