@@ -289,6 +289,274 @@ const channels = [
         youtubeUrl: "https://www.youtube.com/watch?v=v5srSbD2WBk",
         logo: "logos/krttv.png",
         description: "KRT TV - Kürtçe haber kanalı"
+    },
+    // Yeni Eklenen Haber Kanalları
+    {
+        id: 35,
+        name: "Bloomberg HT",
+        category: "Haber",
+        streamUrl: "",
+        webUrl: "https://www.bloomberght.com/canli-yayin",
+        logo: "logos/bloomberg.png",
+        description: "Bloomberg HT - Ekonomi ve finans haberleri"
+    },
+    {
+        id: 36,
+        name: "24 TV",
+        category: "Haber",
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=24tv-live",
+        logo: "logos/24tv.png",
+        description: "24 TV - 7/24 haber kanalı"
+    },
+    {
+        id: 37,
+        name: "Haber Global",
+        category: "Haber",
+        streamUrl: "",
+        webUrl: "https://www.haberglobal.com.tr/canli-yayin",
+        logo: "logos/haberglobal.png",
+        description: "Haber Global - Bağımsız haber kanalı"
+    },
+    // Yeni Eklenen Spor Kanalları
+    {
+        id: 38,
+        name: "beIN Sports 1",
+        category: "Spor",
+        streamUrl: "",
+        webUrl: "https://www.beinsports.com/tr/canli-yayin",
+        logo: "logos/beinsports1.png",
+        description: "beIN Sports 1 - Spor yayınları"
+    },
+    {
+        id: 39,
+        name: "beIN Sports 2",
+        category: "Spor",
+        streamUrl: "",
+        webUrl: "https://www.beinsports.com/tr/canli-yayin-2",
+        logo: "logos/beinsports2.png",
+        description: "beIN Sports 2 - Spor yayınları"
+    },
+    {
+        id: 40,
+        name: "S Sport",
+        category: "Spor",
+        streamUrl: "",
+        webUrl: "https://www.ssport.com.tr/canli-yayin",
+        logo: "logos/ssport.png",
+        description: "S Sport - Spor yayınları"
+    },
+    // Yeni Eklenen Müzik Kanalları
+    {
+        id: 41,
+        name: "Number One TV",
+        category: "Müzik",
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=numberone-live",
+        logo: "logos/numberone.png",
+        description: "Number One TV - Pop müzik kanalı"
+    },
+    {
+        id: 42,
+        name: "Dream TV",
+        category: "Müzik",
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=dreamtv-live",
+        logo: "logos/dreamtv.png",
+        description: "Dream TV - Müzik ve eğlence kanalı"
+    },
+    {
+        id: 43,
+        name: "Slow TV",
+        category: "Müzik",
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=slowtv-live",
+        logo: "logos/slowtv.png",
+        description: "Slow TV - Yavaş müzik ve rahatlatıcı içerik"
+    },
+    // Yeni Eklenen Dini Kanallar
+    {
+        id: 44,
+        name: "Diyanet TV",
+        category: "Dini",
+        streamUrl: "",
+        webUrl: "https://www.diyanet.tv/canli-yayin",
+        logo: "logos/diyanet.png",
+        description: "Diyanet TV - Dini içerikler ve hutbeler"
+    },
+    // Yeni Eklenen Ulusal Kanallar
+    {
+        id: 45,
+        name: "Kanal 1",
+        category: "Ulusal",
+        streamUrl: "",
+        webUrl: "https://www.kanal1.com.tr/canli-yayin",
+        logo: "logos/kanal1.png",
+        description: "Kanal 1 - Ulusal yayın kanalı"
+    },
+    {
+        id: 46,
+        name: "Flash TV",
+        category: "Ulusal",
+        streamUrl: "",
+        webUrl: "https://www.flashtv.com.tr/canli-yayin",
+        logo: "logos/flashtv.png",
+        description: "Flash TV - Ulusal yayın kanalı"
+    },
+    {
+        id: 47,
+        name: "Beyaz TV",
+        category: "Ulusal",
+        streamUrl: "",
+        webUrl: "https://www.beyaztv.com.tr/canli-yayin",
+        logo: "logos/beyaztv.png",
+        description: "Beyaz TV - Ulusal yayın kanalı"
+    },
+    // Yeni Eklenen Çocuk Kanalları
+    {
+        id: 48,
+        name: "Cartoon Network",
+        category: "Çocuk",
+        streamUrl: "",
+        webUrl: "https://www.cartoonnetwork.com.tr/canli-yayin",
+        logo: "logos/cartoonnetwork.png",
+        description: "Cartoon Network - Çizgi film kanalı"
+    },
+    {
+        id: 49,
+        name: "Disney Channel",
+        category: "Çocuk",
+        streamUrl: "",
+        webUrl: "https://www.disneychannel.com.tr/canli-yayin",
+        logo: "logos/disney.png",
+        description: "Disney Channel - Çocuk eğlence kanalı"
+    },
+    // Ek Haber Kanalları
+    {
+        id: 50,
+        name: "TRT Haber",
+        category: "Haber",
+        streamUrl: "https://tv-trthaber.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trthaber.png",
+        description: "TRT Haber - Resmi haber kanalı"
+    },
+    {
+        id: 51,
+        name: "HaberTürk",
+        category: "Haber",
+        streamUrl: "",
+        webUrl: "https://www.haberturk.com/canliyayin",
+        logo: "logos/haberturk.png",
+        description: "HaberTürk - Bağımsız haber kanalı"
+    },
+    // Ek Spor Kanalları
+    {
+        id: 52,
+        name: "TRT Spor",
+        category: "Spor",
+        streamUrl: "https://tv-trtspor1.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtspor.png",
+        description: "TRT Spor - Resmi spor kanalı"
+    },
+    // Ek Müzik Kanalları
+    {
+        id: 53,
+        name: "TRT Müzik",
+        category: "Müzik",
+        streamUrl: "https://tv-trtmuzik.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtmuzik.png",
+        description: "TRT Müzik - Türk müziği kanalı"
+    },
+    // Ek Ulusal Kanallar
+    {
+        id: 54,
+        name: "TRT 1",
+        category: "Ulusal",
+        streamUrl: "https://tv-trt1.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trt1.png",
+        description: "TRT 1 - Ana ulusal kanal"
+    },
+    {
+        id: 55,
+        name: "TRT 2",
+        category: "Kültür",
+        streamUrl: "https://tv-trt2.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trt2.png",
+        description: "TRT 2 - Kültür-sanat kanalı"
+    },
+    {
+        id: 56,
+        name: "TRT 3",
+        category: "Spor",
+        streamUrl: "https://tv-trt3.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trt3.png",
+        description: "TRT 3 - Spor ve gençlik kanalı"
+    },
+    {
+        id: 57,
+        name: "TRT 4K",
+        category: "Ulusal",
+        streamUrl: "https://tv-trt4k.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trt4k.png",
+        description: "TRT 4K - Ultra HD yayın kanalı"
+    },
+    // Uluslararası Kanallar
+    {
+        id: 58,
+        name: "TRT World",
+        category: "Uluslararası",
+        streamUrl: "https://tv-trtworld.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtworld.png",
+        description: "TRT World - İngilizce haber kanalı"
+    },
+    {
+        id: 59,
+        name: "TRT Arabi",
+        category: "Uluslararası",
+        streamUrl: "https://tv-trtarabi.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtarabi.png",
+        description: "TRT Arabi - Arapça haber kanalı"
+    },
+    {
+        id: 60,
+        name: "TRT Türk",
+        category: "Uluslararası",
+        streamUrl: "https://tv-trtturk.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtturk.png",
+        description: "TRT Türk - Uluslararası Türkçe kanal"
+    },
+    {
+        id: 61,
+        name: "TRT Avaz",
+        category: "Uluslararası",
+        streamUrl: "https://tv-trtavaz.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtavas.png",
+        description: "TRT Avaz - Uluslararası Türkçe kanal"
+    },
+    {
+        id: 62,
+        name: "TRT Kurdî",
+        category: "Yerel",
+        streamUrl: "https://tv-trtkurdi.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtkurdi.png",
+        description: "TRT Kurdî - Kürtçe yayın kanalı"
+    },
+    // Özel Kategoriler
+    {
+        id: 63,
+        name: "TRT Çocuk",
+        category: "Çocuk",
+        streamUrl: "https://tv-trtcocuk.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtcocuk.png",
+        description: "TRT Çocuk - Çocuk kanalı"
+    },
+    {
+        id: 64,
+        name: "TRT Belgesel",
+        category: "Belgesel",
+        streamUrl: "https://tv-trtbelgesel.medya.trt.com.tr/master.m3u8",
+        logo: "logos/trtbelgesel.png",
+        description: "TRT Belgesel - Belgesel kanalı"
     }
 ];
 
