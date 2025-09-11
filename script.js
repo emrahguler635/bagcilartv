@@ -305,7 +305,7 @@ const channels = [
         name: "24 TV",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=24tv-live",
+        youtubeUrl: "https://www.youtube.com/watch?v=nmY9i63t6qo",
         logo: "logos/24tv.png",
         description: "24 TV - 7/24 haber kanalı"
     },
@@ -352,7 +352,7 @@ const channels = [
         name: "Number One TV",
         category: "Müzik",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=numberone-live",
+        youtubeUrl: "https://www.youtube.com/watch?v=A49bKX8gb-8",
         logo: "logos/numberone.png",
         description: "Number One TV - Pop müzik kanalı"
     },
@@ -361,7 +361,7 @@ const channels = [
         name: "Dream TV",
         category: "Müzik",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=dreamtv-live",
+        youtubeUrl: "https://www.youtube.com/watch?v=nmY9i63t6qo",
         logo: "logos/dreamtv.png",
         description: "Dream TV - Müzik ve eğlence kanalı"
     },
@@ -370,7 +370,7 @@ const channels = [
         name: "Slow TV",
         category: "Müzik",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=slowtv-live",
+        youtubeUrl: "https://www.youtube.com/watch?v=2Gub8-cSH9c",
         logo: "logos/slowtv.png",
         description: "Slow TV - Yavaş müzik ve rahatlatıcı içerik"
     },
@@ -832,7 +832,8 @@ function selectChannel(channel) {
     createProgramGuide(channel.id);
     let externalBtnHtml = '';
     if (channel.youtubeUrl) {
-        videoWrapper.innerHTML = `<iframe id="youtubeIframe" width="100%" height="400" src="https://www.youtube.com/embed/${channel.youtubeUrl.split('v=')[1]}?autoplay=1&mute=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>\n<div id='externalWatchBtn'></div>`;
+        const videoId = channel.youtubeUrl.split('v=')[1];
+        videoWrapper.innerHTML = `<iframe id="youtubeIframe" width="100%" height="400" src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&playsinline=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>\n<div id='externalWatchBtn'></div>`;
         externalBtnHtml = `<a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>YouTube'da İzle</a>`;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = channel.description;
@@ -840,11 +841,16 @@ function selectChannel(channel) {
         updateControlButtons('youtube', channel.youtubeUrl);
         return;
     } else if (channel.webUrl) {
-        videoWrapper.innerHTML = `<iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>\n<div id='externalWatchBtn'></div>`;
-        externalBtnHtml = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#3182ce;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web'de İzle</a>`;
+        videoWrapper.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:400px;background:#f7fafc;border-radius:10px;border:2px dashed #cbd5e0;">
+                <i class="fas fa-external-link-alt" style="font-size:48px;color:#667eea;margin-bottom:20px;"></i>
+                <h3 style="color:#4a5568;margin-bottom:10px;">Web Sitesinde İzleyin</h3>
+                <p style="color:#718096;text-align:center;margin-bottom:20px;">Bu kanal web sitesi üzerinden yayın yapmaktadır.<br>İzlemek için aşağıdaki butona tıklayın.</p>
+                <a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#3182ce;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;'>Web'de İzle</a>
+            </div>
+        `;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = channel.description;
-        document.getElementById('externalWatchBtn').innerHTML = externalBtnHtml;
         updateControlButtons('web', channel.webUrl);
         return;
     }
@@ -906,7 +912,7 @@ fullscreenBtn.addEventListener('click', () => {
     }
 });
 
-function updateControlButtons(type) {
+function updateControlButtons(type, url) {
     if (type === 'youtube') {
         muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i> Ses (YouTube)';
         muteBtn.onclick = () => {
@@ -919,9 +925,16 @@ function updateControlButtons(type) {
                 muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-up"></i> Ses (YouTube)' : '<i class="fas fa-volume-mute"></i> Ses (YouTube)';
             }
         };
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Tam Ekran (YouTube)';
     } else if (type === 'web') {
-        muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ses (Web)';
-        muteBtn.onclick = () => { alert('Web kanalları için ses kontrolü web sitesi üzerinden yapılmalıdır.'); };
+        muteBtn.innerHTML = '<i class="fas fa-info-circle"></i> Bilgi';
+        muteBtn.onclick = () => { 
+            alert('Bu kanal web sitesi üzerinden yayın yapmaktadır. Ses kontrolü için web sitesini ziyaret edin.'); 
+        };
+        fullscreenBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Web\'de Aç';
+        fullscreenBtn.onclick = () => {
+            if (url) window.open(url, '_blank');
+        };
     } else {
         muteBtn.innerHTML = '<i class="fas fa-volume-up"></i> Ses';
         muteBtn.onclick = () => {
@@ -936,6 +949,7 @@ function updateControlButtons(type) {
                 }
             }
         };
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Tam Ekran';
     }
 }
 
