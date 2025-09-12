@@ -232,7 +232,7 @@ const channels = [
         name: "Mekke TV",
         category: "Dini",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=2Gub8-cSH9c",
+        youtubeUrl: "https://www.youtube.com/watch?v=7-Qf3g-0xEI",
         logo: "logos/mekke.png",
         description: "Mekke TV - Kabe'den canlı yayın. YouTube üzerinden izleyebilirsiniz."
     },
@@ -241,7 +241,7 @@ const channels = [
         name: "Medine TV",
         category: "Dini",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=-jWCvRuC254",
+        youtubeUrl: "https://www.youtube.com/watch?v=F-QZqbWGuKs",
         logo: "logos/medine.png",
         description: "Medine TV - Mescid-i Nebevi'den canlı yayın. YouTube üzerinden izleyebilirsiniz."
     },
@@ -286,7 +286,7 @@ const channels = [
         name: "KRT TV",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=v5srSbD2WBk",
+        youtubeUrl: "https://www.youtube.com/watch?v=_PbNN7UfWww",
         logo: "logos/krttv.png",
         description: "KRT TV - Kürtçe haber kanalı"
     },
@@ -386,15 +386,6 @@ const channels = [
     },
     // Yeni Eklenen Ulusal Kanallar
     {
-        id: 45,
-        name: "Kanal 1",
-        category: "Ulusal",
-        streamUrl: "",
-        webUrl: "https://www.kanal1.com.tr/canli-yayin",
-        logo: "logos/kanal1.png",
-        description: "Kanal 1 - Ulusal yayın kanalı"
-    },
-    {
         id: 46,
         name: "Flash TV",
         category: "Ulusal",
@@ -418,7 +409,7 @@ const channels = [
         name: "Cartoon Network",
         category: "Çocuk",
         streamUrl: "",
-        webUrl: "https://www.cartoonnetwork.com.tr/canli-yayin",
+        youtubeUrl: "https://www.youtube.com/watch?v=5Whk9MVTpI4",
         logo: "logos/cartoonnetwork.png",
         description: "Cartoon Network - Çizgi film kanalı"
     },
@@ -427,7 +418,7 @@ const channels = [
         name: "Disney Channel",
         category: "Çocuk",
         streamUrl: "",
-        webUrl: "https://www.disneychannel.com.tr/canli-yayin",
+        youtubeUrl: "https://www.youtube.com/watch?v=5Whk9MVTpI4",
         logo: "logos/disney.png",
         description: "Disney Channel - Çocuk eğlence kanalı"
     },
