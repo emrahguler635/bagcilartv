@@ -6,7 +6,7 @@ const channels = [
         category: "Haber",
         streamUrl: "",
         youtubeUrl: "https://www.youtube.com/watch?v=uEN2bWFtpjU",
-        logo: "logos/ahaber.png",
+        logo: "logos/bagcilartv-logo.png",
         description: "Sumud Filosu canlı yayını - Gazze'ye insani yardım filosu"
     },
     {
@@ -15,7 +15,7 @@ const channels = [
         category: "Haber",
         streamUrl: "",
         webUrl: "https://www.ecirkapisi.org.tr/kuresel-sumud-filosu-canli",
-        logo: "logos/ahaber.png",
+        logo: "logos/bagcilartv-logo.png",
         description: "Sumud Filosu canlı takip - Ecir Kapısı Derneği"
     },
     {
