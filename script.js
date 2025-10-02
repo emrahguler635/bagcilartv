@@ -1,6 +1,24 @@
 // TV Kanalları verisi
 const channels = [
     {
+        id: 0,
+        name: "Sumud Filosu TV",
+        category: "Haber",
+        streamUrl: "",
+        youtubeUrl: "https://www.youtube.com/watch?v=uEN2bWFtpjU",
+        logo: "logos/ahaber.png",
+        description: "Sumud Filosu canlı yayını - Gazze'ye insani yardım filosu"
+    },
+    {
+        id: 0.5,
+        name: "Canlı Takip",
+        category: "Haber",
+        streamUrl: "",
+        webUrl: "https://www.ecirkapisi.org.tr/kuresel-sumud-filosu-canli",
+        logo: "logos/ahaber.png",
+        description: "Sumud Filosu canlı takip - Ecir Kapısı Derneği"
+    },
+    {
         id: 1,
         name: "TRT 1",
         category: "Ulusal",
@@ -553,6 +571,20 @@ const channels = [
 
 // Yayın Akışı Verileri (Demo veriler)
 const programSchedules = {
+    0: [ // Sumud Filosu TV
+        { time: "00:00", title: "Sumud Filosu Canlı Yayın", description: "Gazze'ye insani yardım filosu canlı takibi" },
+        { time: "06:00", title: "Sabah Güncellemesi", description: "Filonun gece durumu ve sabah raporu" },
+        { time: "12:00", title: "Öğle Güncellemesi", description: "Filonun gün ortası durumu" },
+        { time: "18:00", title: "Akşam Güncellemesi", description: "Filonun gün sonu durumu" },
+        { time: "24:00", title: "Gece Takibi", description: "7/24 sürekli takip" }
+    ],
+    0.5: [ // Canlı Takip
+        { time: "00:00", title: "Canlı Takip Sistemi", description: "Ecir Kapısı Derneği canlı takip" },
+        { time: "06:00", title: "Güncelleme", description: "Filo durumu güncellemesi" },
+        { time: "12:00", title: "Güncelleme", description: "Filo durumu güncellemesi" },
+        { time: "18:00", title: "Güncelleme", description: "Filo durumu güncellemesi" },
+        { time: "24:00", title: "Sürekli Takip", description: "7/24 canlı takip sistemi" }
+    ],
     1: [ // TRT 1
         { time: "06:00", title: "TRT 1 Günaydın", description: "Sabah haberleri ve günlük program" },
         { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğitici programlar" },
