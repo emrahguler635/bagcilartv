@@ -5,7 +5,7 @@ const channels = [
         name: "Sumud Filosu TV",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=uEN2bWFtpjU",
+        youtubeUrl: "https://www.youtube.com/watch?v=oqFZ4Jey0j0",
         logo: "logos/bagcilartv-logo.png",
         description: "Sumud Filosu canlı yayını - Gazze'ye insani yardım filosu"
     },
