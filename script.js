@@ -1257,8 +1257,28 @@ const programSchedules = {
     ]
 };
 
+// Anadolu Ajansı RSS Feed URL'i
+const AA_RSS_URL = 'https://www.aa.com.tr/tr/rss/default?cat=gundem';
+
+// Fallback haberler (internet bağlantısı yoksa)
+const fallbackNews = [
+    "Türkiye ekonomisinde yeni gelişmeler yaşanıyor",
+    "İstanbul'da ulaşım sorunlarına çözüm aranıyor", 
+    "Teknoloji sektöründe büyük yatırım hamlesi",
+    "Eğitim sisteminde yenilikler devam ediyor",
+    "Sağlık alanında önemli buluşlar yapıldı",
+    "Çevre koruma projeleri hız kazandı",
+    "Spor dünyasında transfer haberleri",
+    "Kültür ve sanat etkinlikleri artıyor",
+    "Tarım sektöründe verimlilik artışı",
+    "Turizm sektöründe yeni destinasyonlar"
+];
+
+// Haber verilerini saklamak için global değişken
+let currentNewsData = [...fallbackNews];
+
 // DOM elementleri - DOM yüklendikten sonra tanımlanacak
-let searchInput, channelList, currentChannel, channelDescription, fullscreenBtn, muteBtn, programList, programDate;
+let searchInput, channelList, currentChannel, channelDescription, fullscreenBtn, muteBtn, programList, programDate, newsScroll;
 let currentChannelId = null;
 let filteredChannels = [...channels];
 
@@ -1266,6 +1286,87 @@ function updateProgramDate() {
     const now = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     programDate.textContent = now.toLocaleDateString('tr-TR', options);
+}
+
+// RSS feed'ini çek ve parse et
+async function fetchNewsFromAA() {
+    try {
+        // CORS proxy kullanarak RSS feed'ini çek
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(AA_RSS_URL)}`;
+        
+        const response = await fetch(proxyUrl);
+        const data = await response.json();
+        
+        if (data.contents) {
+            // XML'i parse et
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
+            
+            // RSS item'larını al
+            const items = xmlDoc.querySelectorAll('item');
+            const newsItems = [];
+            
+            items.forEach((item, index) => {
+                if (index < 10) { // İlk 10 haberi al
+                    const title = item.querySelector('title')?.textContent || '';
+                    const description = item.querySelector('description')?.textContent || '';
+                    
+                    if (title) {
+                        // HTML tag'lerini temizle ve kısalt
+                        const cleanTitle = title.replace(/<[^>]*>/g, '').trim();
+                        const shortTitle = cleanTitle.length > 80 ? cleanTitle.substring(0, 80) + '...' : cleanTitle;
+                        newsItems.push(shortTitle);
+                    }
+                }
+            });
+            
+            if (newsItems.length > 0) {
+                currentNewsData = newsItems;
+                console.log('AA haberleri başarıyla yüklendi:', newsItems.length, 'haber');
+                return true;
+            }
+        }
+    } catch (error) {
+        console.error('AA haberleri yüklenirken hata:', error);
+    }
+    
+    // Hata durumunda fallback haberleri kullan
+    currentNewsData = [...fallbackNews];
+    return false;
+}
+
+function createNewsTicker() {
+    if (!newsScroll) {
+        console.error('newsScroll element not found!');
+        return;
+    }
+    
+    // Haberleri karıştır
+    const shuffledNews = [...currentNewsData].sort(() => Math.random() - 0.5);
+    
+    // Haber öğelerini oluştur
+    let htmlContent = '';
+    shuffledNews.forEach((news, index) => {
+        htmlContent += `<span class="news-item">${news}</span>`;
+    });
+    
+    // HTML'i ekle
+    newsScroll.innerHTML = htmlContent;
+    
+    console.log('News ticker created with', shuffledNews.length, 'news items');
+}
+
+async function updateNewsTicker() {
+    // İlk yüklemede haberleri çek
+    await fetchNewsFromAA();
+    createNewsTicker();
+    
+    // Her 10 dakikada bir haberleri güncelle
+    setInterval(async () => {
+        console.log('Haberler güncelleniyor...');
+        await fetchNewsFromAA();
+        createNewsTicker();
+    }, 600000); // 10 dakika = 600000 ms
 }
 
 function createProgramGuide(channelId) {
@@ -1539,6 +1640,7 @@ document.addEventListener('DOMContentLoaded', () => {
     muteBtn = document.getElementById('muteBtn');
     programList = document.getElementById('programList');
     programDate = document.getElementById('programDate');
+    newsScroll = document.getElementById('newsScroll');
     
     console.log('DOM elements found:', {
         searchInput: !!searchInput,
@@ -1548,7 +1650,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fullscreenBtn: !!fullscreenBtn,
         muteBtn: !!muteBtn,
         programList: !!programList,
-        programDate: !!programDate
+        programDate: !!programDate,
+        newsScroll: !!newsScroll
     });
     
     // Logo kontrolü
@@ -1576,6 +1679,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Program tarihini güncelle
     if (programDate) {
         updateProgramDate();
+    }
+    
+    // Haber bandını başlat
+    if (newsScroll) {
+        updateNewsTicker();
+        console.log('News ticker initialized with AA integration');
+    } else {
+        console.error('newsScroll element not found!');
     }
     
     // Yayın akışı bölümünü başlat

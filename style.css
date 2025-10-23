@@ -1090,4 +1090,111 @@ main {
         font-size: 10px;
         padding: 6px 8px;
     }
+}
+
+/* Son Dakika Haberleri Alt Yazı Bandı */
+.news-ticker {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #e53e3e 0%, #c53030 50%, #e53e3e 100%);
+    color: white;
+    padding: 12px 0;
+    z-index: 1000;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    border-top: 2px solid #fff;
+    overflow: hidden;
+}
+
+.news-ticker-content {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    animation: scroll-news 60s linear infinite;
+}
+
+.news-label {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-right: 20px;
+    flex-shrink: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.news-scroll {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.news-item {
+    margin-right: 40px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 3px solid #fff;
+    flex-shrink: 0;
+}
+
+.news-item:last-child {
+    margin-right: 0;
+}
+
+@keyframes scroll-news {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Haber bandı için responsive tasarım */
+@media (max-width: 768px) {
+    .news-ticker {
+        padding: 10px 0;
+    }
+    
+    .news-label {
+        font-size: 12px;
+        padding: 4px 8px;
+        margin-right: 15px;
+    }
+    
+    .news-scroll {
+        font-size: 13px;
+    }
+    
+    .news-item {
+        margin-right: 30px;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .news-ticker {
+        padding: 8px 0;
+    }
+    
+    .news-label {
+        font-size: 11px;
+        padding: 3px 6px;
+        margin-right: 10px;
+    }
+    
+    .news-scroll {
+        font-size: 12px;
+    }
+    
+    .news-item {
+        margin-right: 20px;
+        padding: 2px 4px;
+    }
 } 
