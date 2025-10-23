@@ -1257,21 +1257,27 @@ const programSchedules = {
     ]
 };
 
-// Anadolu Ajansı RSS Feed URL'i
+// RSS Feed URL'leri
 const AA_RSS_URL = 'https://www.aa.com.tr/tr/rss/default?cat=gundem';
+const CNN_RSS_URL = 'https://www.cnnturk.com/feed/rss/all/news';
 
-// Fallback haberler (internet bağlantısı yoksa)
+// Fallback haberler (internet bağlantısı yoksa) - Daha detaylı ve açıklayıcı
 const fallbackNews = [
-    "Türkiye ekonomisinde yeni gelişmeler yaşanıyor",
-    "İstanbul'da ulaşım sorunlarına çözüm aranıyor", 
-    "Teknoloji sektöründe büyük yatırım hamlesi",
-    "Eğitim sisteminde yenilikler devam ediyor",
-    "Sağlık alanında önemli buluşlar yapıldı",
-    "Çevre koruma projeleri hız kazandı",
-    "Spor dünyasında transfer haberleri",
-    "Kültür ve sanat etkinlikleri artıyor",
-    "Tarım sektöründe verimlilik artışı",
-    "Turizm sektöründe yeni destinasyonlar"
+    "İstanbul'da metro hatları genişletiliyor: 3 yeni istasyon hizmete açıldı",
+    "Türkiye'nin ilk yerli elektrikli otomobil fabrikası kuruldu", 
+    "Eğitimde dijital dönüşüm: 1 milyon öğrenciye tablet dağıtıldı",
+    "Sağlık Bakanlığı: Yeni kanser tedavi merkezi açıldı",
+    "Çevre ve Şehircilik Bakanlığı: Plastik poşet kullanımı %80 azaldı",
+    "Galatasaray yeni transferini açıkladı: 15 milyon euro'luk anlaşma",
+    "İstanbul Film Festivali başladı: 50 ülkeden filmler yarışıyor",
+    "Tarımda teknoloji devrimi: Drone ile gübreleme sistemi",
+    "Antalya turizmde rekor: 1 milyon turist ağırlandı",
+    "Türkiye'nin uzay programı: İlk yerli uydu fırlatıldı",
+    "İstanbul Boğazı'nda yeni köprü projesi onaylandı",
+    "Teknoloji sektöründe istihdam artışı: 10 bin yeni iş imkanı",
+    "Kültür ve Turizm Bakanlığı: Müzeler ücretsiz oldu",
+    "Spor Toto Süper Lig'de şampiyonluk yarışı kızıştı",
+    "Türkiye'nin ilk hibrit enerji santrali devreye alındı"
 ];
 
 // Haber verilerini saklamak için global değişken
@@ -1307,15 +1313,34 @@ async function fetchNewsFromAA() {
             const newsItems = [];
             
             items.forEach((item, index) => {
-                if (index < 10) { // İlk 10 haberi al
+                if (index < 12) { // İlk 12 haberi al
                     const title = item.querySelector('title')?.textContent || '';
                     const description = item.querySelector('description')?.textContent || '';
                     
                     if (title) {
-                        // HTML tag'lerini temizle ve kısalt
-                        const cleanTitle = title.replace(/<[^>]*>/g, '').trim();
-                        const shortTitle = cleanTitle.length > 80 ? cleanTitle.substring(0, 80) + '...' : cleanTitle;
-                        newsItems.push(shortTitle);
+                        // HTML tag'lerini temizle
+                        let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
+                        
+                        // Gereksiz kelimeleri temizle
+                        cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -)/i, '').trim();
+                        cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem)/i, '').trim();
+                        
+                        // Çok kısa haberleri atla
+                        if (cleanTitle.length < 20) return;
+                        
+                        // Uzun haberleri akıllıca kısalt
+                        let finalTitle = cleanTitle;
+                        if (cleanTitle.length > 100) {
+                            // Cümle sonlarında kır
+                            const sentences = cleanTitle.split(/[.!?]/);
+                            if (sentences.length > 1 && sentences[0].length > 30) {
+                                finalTitle = sentences[0] + '.';
+                            } else {
+                                finalTitle = cleanTitle.substring(0, 97) + '...';
+                            }
+                        }
+                        
+                        newsItems.push(finalTitle);
                     }
                 }
             });
@@ -1344,29 +1369,127 @@ function createNewsTicker() {
     // Haberleri karıştır
     const shuffledNews = [...currentNewsData].sort(() => Math.random() - 0.5);
     
-    // Haber öğelerini oluştur
+    // Her haberi tek tek göster - aralarında büyük boşluklar
     let htmlContent = '';
     shuffledNews.forEach((news, index) => {
         htmlContent += `<span class="news-item">${news}</span>`;
+        // Her haber arasında büyük boşluk ekle (ekran genişliği kadar)
+        if (index < shuffledNews.length - 1) {
+            htmlContent += `<span class="news-spacer"></span>`;
+        }
     });
     
     // HTML'i ekle
     newsScroll.innerHTML = htmlContent;
     
-    console.log('News ticker created with', shuffledNews.length, 'news items');
+    // Animasyonu zorla başlat
+    setTimeout(() => {
+        const tickerContent = document.querySelector('.news-ticker-content');
+        if (tickerContent) {
+            tickerContent.style.animation = 'none';
+            tickerContent.offsetHeight; // Reflow trigger
+            tickerContent.style.animation = 'scroll-news-single 200s linear infinite';
+            console.log('Animation restarted');
+        }
+    }, 100);
+    
+    console.log('News ticker created with', shuffledNews.length, 'news items (single scroll mode)');
 }
 
 async function updateNewsTicker() {
     // İlk yüklemede haberleri çek
-    await fetchNewsFromAA();
+    console.log('Haberler yükleniyor...');
+    await fetchNewsFromMultipleSources();
     createNewsTicker();
     
     // Her 10 dakikada bir haberleri güncelle
     setInterval(async () => {
         console.log('Haberler güncelleniyor...');
-        await fetchNewsFromAA();
+        await fetchNewsFromMultipleSources();
         createNewsTicker();
     }, 600000); // 10 dakika = 600000 ms
+}
+
+// Çoklu kaynak haber çekme fonksiyonu
+async function fetchNewsFromMultipleSources() {
+    const allNews = [];
+    
+    try {
+        // Anadolu Ajansı haberlerini çek
+        const aaNews = await fetchNewsFromSingleSource(AA_RSS_URL, 'AA');
+        if (aaNews.length > 0) {
+            allNews.push(...aaNews);
+        }
+        
+        // CNN Türk haberlerini çek
+        const cnnNews = await fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN');
+        if (cnnNews.length > 0) {
+            allNews.push(...cnnNews);
+        }
+        
+        if (allNews.length > 0) {
+            currentNewsData = allNews;
+            console.log('Tüm haberler başarıyla yüklendi:', allNews.length, 'haber');
+            return true;
+        }
+    } catch (error) {
+        console.error('Haberler yüklenirken hata:', error);
+    }
+    
+    // Hata durumunda fallback haberleri kullan
+    currentNewsData = [...fallbackNews];
+    return false;
+}
+
+// Tek kaynaktan haber çekme fonksiyonu
+async function fetchNewsFromSingleSource(url, source) {
+    try {
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+        const response = await fetch(proxyUrl);
+        const data = await response.json();
+        
+        if (data.contents) {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
+            const items = xmlDoc.querySelectorAll('item');
+            const newsItems = [];
+            
+            items.forEach((item, index) => {
+                if (index < 8) { // Her kaynaktan 8 haber
+                    const title = item.querySelector('title')?.textContent || '';
+                    
+                    if (title) {
+                        let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
+                        
+                        // Kaynak etiketlerini temizle
+                        cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -|CNN|CNN Türk|CNN\/|CNN -)/i, '').trim();
+                        cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem)/i, '').trim();
+                        
+                        if (cleanTitle.length < 20) return;
+                        
+                        // Uzun haberleri akıllıca kısalt
+                        let finalTitle = cleanTitle;
+                        if (cleanTitle.length > 120) {
+                            const sentences = cleanTitle.split(/[.!?]/);
+                            if (sentences.length > 1 && sentences[0].length > 40) {
+                                finalTitle = sentences[0] + '.';
+                            } else {
+                                finalTitle = cleanTitle.substring(0, 117) + '...';
+                            }
+                        }
+                        
+                        newsItems.push(finalTitle);
+                    }
+                }
+            });
+            
+            return newsItems;
+        }
+    } catch (error) {
+        console.error(`${source} haberleri yüklenirken hata:`, error);
+    }
+    
+    return [];
 }
 
 function createProgramGuide(channelId) {
@@ -1683,7 +1806,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Haber bandını başlat
     if (newsScroll) {
-        updateNewsTicker();
+        console.log('newsScroll element found, starting news ticker...');
+        // Önce fallback haberlerle başlat
+        createNewsTicker();
+        // Sonra AA haberlerini yükle
+        setTimeout(() => {
+            updateNewsTicker();
+        }, 1000);
         console.log('News ticker initialized with AA integration');
     } else {
         console.error('newsScroll element not found!');
