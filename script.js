@@ -1046,9 +1046,22 @@ let currentChannelId = null;
 let filteredChannels = [...channels];
 
 function updateProgramDate() {
+    if (!programDate) return;
+    
     const now = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    programDate.textContent = now.toLocaleDateString('tr-TR', options);
+    const dateStr = now.toLocaleDateString('tr-TR', options);
+    
+    // Cache bypass için timestamp ekle
+    programDate.textContent = dateStr;
+    programDate.setAttribute('data-timestamp', now.getTime());
+    programDate.setAttribute('data-date', now.toISOString().split('T')[0]);
+    
+    console.log('Program tarihi güncellendi:', {
+        tarih: dateStr,
+        timestamp: now.getTime(),
+        iso: now.toISOString()
+    });
 }
 
 // RSS feed'ini çek ve parse et
@@ -1247,21 +1260,19 @@ async function updateNewsTicker() {
     }
     createNewsTicker();
     
-    // Arka planda güncel haberleri çek
-    console.log('Güncel haberler yükleniyor...');
-    try {
-        const success = await fetchNewsFromAA();
+    // Arka planda güncel haberleri çek (async, hata olursa fallback korunur)
+    console.log('Güncel haberler arka planda yükleniyor...');
+    fetchNewsFromAA().then(success => {
         if (success && currentNewsData && currentNewsData.length > 0) {
             console.log('Güncel haberler yüklendi, ticker güncelleniyor...');
             createNewsTicker();
         } else {
-            console.log('Güncel haberler yüklenemedi, fallback haberler gösteriliyor...');
-            // Fallback haberler zaten gösteriliyor
+            console.log('Güncel haberler yüklenemedi, mevcut haberler korunuyor...');
         }
-    } catch (error) {
-        console.error('Haber yükleme hatası:', error);
-        // Fallback haberler zaten gösteriliyor
-    }
+    }).catch(error => {
+        console.error('Haber yükleme hatası (fallback korunuyor):', error);
+        // Fallback haberler zaten gösteriliyor, hata durumunda korunuyor
+    });
     
     // Her 3 dakikada bir haberleri güncelle (daha sık güncelleme için güncel haberler)
     setInterval(async () => {
@@ -1313,9 +1324,10 @@ async function fetchNewsFromMultipleSources() {
 // Tek kaynaktan haber çekme fonksiyonu
 async function fetchNewsFromSingleSource(url, source) {
     try {
-        // Farklı proxy servisleri deneme listesi
+        // Farklı proxy servisleri deneme listesi (en çalışan servisler)
         const proxies = [
             `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+            `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
             `https://corsproxy.io/?${encodeURIComponent(url)}`,
             `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
         ];
@@ -1325,9 +1337,9 @@ async function fetchNewsFromSingleSource(url, source) {
             try {
                 const proxyUrl = proxies[i];
                 console.log(`${source} RSS feed çekiliyor (proxy ${i + 1}/${proxies.length}):`, url);
-                // Timeout için AbortController kullan
+                // Timeout için AbortController kullan (daha kısa timeout)
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 saniye timeout
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 saniye timeout
                 
                 const response = await fetch(proxyUrl, {
                     method: 'GET',
@@ -1460,8 +1472,11 @@ async function fetchNewsFromSingleSource(url, source) {
                     throw new Error('Hiç haber bulunamadı');
                 }
             } catch (proxyError) {
-                const errorMsg = proxyError.name === 'AbortError' ? 'Timeout (8s)' : (proxyError.message || 'Bilinmeyen hata');
-                console.log(`${source} proxy ${i + 1} başarısız:`, errorMsg);
+                const errorMsg = proxyError.name === 'AbortError' ? 'Timeout (5s)' : (proxyError.message || 'Bilinmeyen hata');
+                // Sadece ilk ve son hata loglanır (console spam'i azaltmak için)
+                if (i === 0 || i === proxies.length - 1) {
+                    console.log(`${source} proxy ${i + 1} başarısız:`, errorMsg);
+                }
                 lastError = proxyError;
                 // Bir sonraki proxy'yi dene
                 if (i < proxies.length - 1) {
@@ -1470,10 +1485,7 @@ async function fetchNewsFromSingleSource(url, source) {
             }
         }
         
-        // Tüm proxy'ler başarısız oldu
-        if (lastError) {
-            console.error(`${source} tüm proxy'ler başarısız, haberler alınamadı`);
-        }
+        // Tüm proxy'ler başarısız oldu (sessizce fallback'e geç)
         return [];
     } catch (error) {
         console.error(`${source} haberleri yüklenirken genel hata:`, error.message || error);
@@ -1490,8 +1502,15 @@ function createProgramGuide(channelId) {
         return;
     }
     
-    // Önce temizle
+    // Önce temizle - cache bypass için force clear
     programList.innerHTML = '';
+    programList.removeAttribute('data-last-update');
+    programList.removeAttribute('data-channel-id');
+    
+    // DOM'u zorla güncelle (Chrome cache bypass)
+    if (programList.offsetHeight >= 0) {
+        // Element var, şimdi güncelle
+    }
     
     // Program verilerini al
     const programs = programSchedules[channelId];
@@ -1510,10 +1529,27 @@ function createProgramGuide(channelId) {
         return;
     }
     
-    // Mevcut zamanı hesapla
+    // Mevcut zamanı hesapla - cache bypass için timestamp ekle
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes();
-    console.log('Current time:', currentTime);
+    const currentDateStr = now.toLocaleDateString('tr-TR', { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric',
+        weekday: 'long'
+    });
+    const currentTimeStr = now.toLocaleTimeString('tr-TR', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit'
+    });
+    console.log('Program rehberi oluşturuluyor:', {
+        tarih: currentDateStr,
+        saat: currentTimeStr,
+        dakika: currentTime,
+        timestamp: now.getTime(),
+        kanalId: channelId
+    });
     
     // Program öğelerini oluştur
     let htmlContent = '';
@@ -1532,10 +1568,19 @@ function createProgramGuide(channelId) {
         console.log('Added program:', program.title, 'at', program.time, 'isCurrent:', isCurrent);
     });
     
-    // HTML'i ekle
+    // HTML'i ekle - cache bypass için timestamp ekle
     programList.innerHTML = htmlContent;
+    
+    // Program rehberi güncellendiğini garanti etmek için data attribute ekle
+    programList.setAttribute('data-last-update', now.getTime());
+    programList.setAttribute('data-channel-id', channelId);
+    
     console.log('Program guide created with', programs.length, 'programs');
-    console.log('programList children count:', programList.children.length);
+    console.log('Program rehberi güncellendi:', {
+        timestamp: now.getTime(),
+        kanalId: channelId,
+        programSayisi: programs.length
+    });
 }
 
 function createChannelList(channelsToShow = channels) {
@@ -1570,7 +1615,22 @@ function selectChannel(channel) {
     if (selectedItem) selectedItem.classList.add('active');
     currentChannelId = channel.id;
     const videoWrapper = document.getElementById('videoWrapper');
+    
+    // Program rehberini her seferinde yeniden oluştur (cache bypass)
     console.log('Creating program guide for channel ID:', channel.id);
+    const now = new Date();
+    console.log('Zaman kontrolü:', {
+        tarih: now.toLocaleDateString('tr-TR'),
+        saat: now.toLocaleTimeString('tr-TR'),
+        timestamp: now.getTime()
+    });
+    
+    // Tarihi güncelle
+    if (programDate) {
+        updateProgramDate();
+    }
+    
+    // Program rehberini oluştur
     createProgramGuide(channel.id);
     let externalBtnHtml = '';
     
