@@ -1766,16 +1766,9 @@ function createChannelsGrid(channelsToShow = channels) {
             <div class="channel-card-category">${channel.category}</div>
         `;
         channelCard.addEventListener('click', () => {
-            // YouTube veya Web URL varsa direkt aç, yoksa izleme sayfasına geç
-            if (channel.youtubeUrl) {
-                window.open(channel.youtubeUrl, '_blank');
-            } else if (channel.webUrl) {
-                window.open(channel.webUrl, '_blank');
-            } else {
-                // Stream URL varsa izleme sayfasına geç
-                showWatchPage();
-                selectChannel(channel);
-            }
+            // İzleme sayfasına geç ve kanalı seç (iframe içinde gösterilecek)
+            showWatchPage();
+            selectChannel(channel);
         });
         channelsGrid.appendChild(channelCard);
     });
