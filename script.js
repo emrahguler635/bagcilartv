@@ -1701,14 +1701,21 @@ function selectChannel(channel) {
             nativeHLS: hasNativeHLS,
             hlsJSLoaded: hasHlsJS,
             hlsSupported: hlsSupported,
-            streamUrl: channel.streamUrl
+            streamUrl: channel.streamUrl,
+            userAgent: navigator.userAgent
         });
+        
+        // Chrome'da HLS.js varsa desteklenmese bile dene
+        const shouldTryHLS = hasNativeHLS || (hasHlsJS && (hlsSupported || isChrome));
         
         if (hasNativeHLS) {
             console.log('Native HLS desteği kullanılıyor');
             videoPlayer.src = channel.streamUrl;
-        } else if (hasHlsJS && hlsSupported) {
-            console.log('HLS.js desteği kullanılıyor - Stream URL deneniyor');
+        } else if (hasHlsJS && shouldTryHLS) {
+            console.log('HLS.js ile Stream URL deneniyor', {
+                hlsSupported: hlsSupported,
+                chromeFallback: isChrome && !hlsSupported
+            });
             // HLS.js için optimize edilmiş ayarlar
             window.hls = new Hls({
                 enableWorker: true,
