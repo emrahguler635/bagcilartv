@@ -4,8 +4,8 @@ const channels = [
         id: 1,
         name: "TRT 1",
         category: "Ulusal",
-        streamUrl: "",
-        webUrl: "https://www.trt1.com.tr/Canli-izle",
+        streamUrl: "https://tv-trt1.medya.trt.com.tr/master.m3u8",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-1",
         logo: "logos/trt1.png",
         description: "Türkiye'nin ilk ulusal televizyon kanalı"
     },
@@ -13,8 +13,8 @@ const channels = [
         id: 2,
         name: "TRT Haber",
         category: "Haber",
-        streamUrl: "",
-        webUrl: "https://www.trthaber.com/canli-yayin.html",
+        streamUrl: "https://tv-trthaber.medya.trt.com.tr/master.m3u8",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-haber",
         logo: "logos/trthaber.png",
         description: "7/24 haber kanalı"
     },
@@ -22,8 +22,8 @@ const channels = [
         id: 3,
         name: "TRT Spor",
         category: "Spor",
-        streamUrl: "",
-        webUrl: "https://www.trtspor.com.tr/canli-yayin-izle.html",
+        streamUrl: "https://tv-trtspor1.medya.trt.com.tr/master.m3u8",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-spor",
         logo: "logos/trtspor.png",
         description: "Spor haberleri ve canlı maç yayınları"
     },
@@ -31,8 +31,8 @@ const channels = [
         id: 4,
         name: "TRT Çocuk",
         category: "Çocuk",
-        streamUrl: "",
-        webUrl: "https://www.trtcocuk.net.tr/canli-izle",
+        streamUrl: "https://tv-trtcocuk.medya.trt.com.tr/master.m3u8",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-cocuk",
         logo: "logos/trtcocuk.png",
         description: "Çocuklar için eğitici ve eğlenceli içerik"
     },
@@ -40,8 +40,8 @@ const channels = [
         id: 5,
         name: "TRT Belgesel",
         category: "Belgesel",
-        streamUrl: "",
-        webUrl: "https://www.trtbelgesel.com.tr/canli-izle",
+        streamUrl: "https://tv-trtbelgesel.medya.trt.com.tr/master.m3u8",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-belgesel",
         logo: "logos/trtbelgesel.png",
         description: "Belgesel ve kültür programları"
     },
@@ -49,8 +49,8 @@ const channels = [
         id: 6,
         name: "TRT Müzik",
         category: "Müzik",
-        streamUrl: "",
-        webUrl: "https://www.trtmuzik.net.tr/canli-yayin",
+        streamUrl: "https://tv-trtmuzik.medya.trt.com.tr/master.m3u8",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-muzik",
         logo: "logos/trtmuzik.png",
         description: "Türk müziği ve kültür programları"
     },
@@ -58,7 +58,7 @@ const channels = [
         id: 7,
         name: "TRT Avaz",
         category: "Uluslararası",
-        streamUrl: "",
+        streamUrl: "https://tv-trtavaz.medya.trt.com.tr/master.m3u8",
         webUrl: "https://www.trtizle.com/canli-yayin/trt-avaz",
         logo: "logos/trtavas.png",
         description: "Uluslararası Türkçe yayın kanalı"
@@ -67,7 +67,7 @@ const channels = [
         id: 8,
         name: "TRT Kurdî",
         category: "Yerel",
-        streamUrl: "",
+        streamUrl: "https://tv-trtkurdi.medya.trt.com.tr/master.m3u8",
         webUrl: "https://www.trtizle.com/canli-yayin/trt-kurdi",
         logo: "logos/trtkurdi.png",
         description: "Kürtçe yayın yapan kanal"
@@ -76,7 +76,7 @@ const channels = [
         id: 9,
         name: "TRT World",
         category: "Uluslararası",
-        streamUrl: "",
+        streamUrl: "https://tv-trtworld.medya.trt.com.tr/master.m3u8",
         webUrl: "https://www.trtizle.com/canli-yayin/trt-world",
         logo: "logos/trtworld.png",
         description: "İngilizce uluslararası haber kanalı"
@@ -85,7 +85,7 @@ const channels = [
         id: 10,
         name: "TRT Arabi",
         category: "Uluslararası",
-        streamUrl: "",
+        streamUrl: "https://tv-trtarabi.medya.trt.com.tr/master.m3u8",
         webUrl: "https://www.trtizle.com/canli-yayin/trt-arabi",
         logo: "logos/trtarabi.png",
         description: "Arapça uluslararası haber kanalı"
@@ -94,7 +94,7 @@ const channels = [
         id: 11,
         name: "TRT Türk",
         category: "Uluslararası",
-        streamUrl: "",
+        streamUrl: "https://tv-trtturk.medya.trt.com.tr/master.m3u8",
         webUrl: "https://www.trtizle.com/canli-yayin/trt-turk",
         logo: "logos/trtturk.png",
         description: "Türkçe uluslararası haber kanalı"
@@ -103,8 +103,8 @@ const channels = [
         id: 12,
         name: "TRT 2",
         category: "Kültür",
-        streamUrl: "",
-        webUrl: "https://www.trt2.com.tr/canli-izle",
+        streamUrl: "https://tv-trt2.medya.trt.com.tr/master.m3u8",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-2",
         logo: "logos/trt2.png",
         description: "Kültür-sanat ve belgesel kanalı"
     },
@@ -112,7 +112,7 @@ const channels = [
         id: 13,
         name: "TRT 3",
         category: "Spor",
-        streamUrl: "",
+        streamUrl: "https://tv-trt3.medya.trt.com.tr/master.m3u8",
         webUrl: "https://www.trtizle.com/canli-yayin/trt-3",
         logo: "logos/trt3.png",
         description: "Spor ve gençlik kanalı"
@@ -121,7 +121,7 @@ const channels = [
         id: 14,
         name: "TRT 4K",
         category: "Ulusal",
-        streamUrl: "",
+        streamUrl: "https://tv-trt4k.medya.trt.com.tr/master.m3u8",
         webUrl: "https://www.trtizle.com/canli-yayin/trt-4k",
         logo: "logos/trt4k.png",
         description: "4K Ultra HD yayın kanalı"
@@ -1102,7 +1102,7 @@ async function fetchNewsFromAA() {
                 const key = news.substring(0, 50).toLowerCase();
                 if (seen.has(key)) return false;
                 seen.add(key);
-                return true;
+        return true;
             });
             
             if (uniqueNews.length > 0) {
@@ -1205,15 +1205,15 @@ function createNewsTicker() {
     // Her haberi tek tek göster - aralarında büyük boşluklar
     let htmlContent = '';
     if (shuffledNews.length > 0) {
-        shuffledNews.forEach((news, index) => {
+    shuffledNews.forEach((news, index) => {
             if (news && news.trim().length > 0) {
-                htmlContent += `<span class="news-item">${news}</span>`;
-                // Her haber arasında büyük boşluk ekle (ekran genişliği kadar)
-                if (index < shuffledNews.length - 1) {
-                    htmlContent += `<span class="news-spacer"></span>`;
+        htmlContent += `<span class="news-item">${news}</span>`;
+        // Her haber arasında büyük boşluk ekle (ekran genişliği kadar)
+        if (index < shuffledNews.length - 1) {
+            htmlContent += `<span class="news-spacer"></span>`;
                 }
-            }
-        });
+        }
+    });
     } else {
         // Eğer hala haber yoksa, en azından bir mesaj göster
         htmlContent = `<span class="news-item">Haberler yükleniyor, lütfen bekleyin...</span>`;
@@ -1267,12 +1267,12 @@ async function updateNewsTicker() {
     setInterval(async () => {
         console.log('Haberler güncelleniyor...');
         try {
-            await fetchNewsFromAA();
+        await fetchNewsFromAA();
             if (!currentNewsData || currentNewsData.length === 0) {
                 console.log('Güncelleme başarısız, mevcut haberler korunuyor...');
                 return;
             }
-            createNewsTicker();
+        createNewsTicker();
         } catch (error) {
             console.error('Haber güncelleme hatası:', error);
         }
@@ -1325,32 +1325,74 @@ async function fetchNewsFromSingleSource(url, source) {
             try {
                 const proxyUrl = proxies[i];
                 console.log(`${source} RSS feed çekiliyor (proxy ${i + 1}/${proxies.length}):`, url);
+                // Timeout için AbortController kullan
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 saniye timeout
+                
                 const response = await fetch(proxyUrl, {
                     method: 'GET',
                     headers: {
-                        'Accept': 'application/json',
+                        'Accept': 'application/json, text/xml, application/xml, */*',
                     },
-                    timeout: 10000
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
                 
-                const data = await response.json();
+                let data;
                 let xmlContent = '';
                 
-                // Proxy response format kontrolü
-                if (data.contents) {
-                    xmlContent = data.contents;
-                } else if (typeof data === 'string') {
-                    xmlContent = data;
-                } else {
-                    throw new Error('Beklenmeyen response formatı');
+                // Response format kontrolü - JSON veya XML olabilir
+                try {
+                    const contentType = response.headers.get('content-type') || '';
+                    if (contentType.includes('application/json')) {
+                        data = await response.json();
+                        // Proxy response format kontrolü
+                        if (data.contents) {
+                            xmlContent = data.contents;
+                        } else if (data.content) {
+                            xmlContent = data.content;
+                        } else if (typeof data === 'string') {
+                            xmlContent = data;
+                        } else {
+                            throw new Error('Beklenmeyen JSON formatı');
+                        }
+                    } else if (contentType.includes('text/xml') || contentType.includes('application/xml')) {
+                        // Direkt XML response
+                        xmlContent = await response.text();
+                    } else {
+                        // Content-type yoksa, önce text olarak dene
+                        const textResponse = await response.text();
+                        try {
+                            // JSON olabilir mi kontrol et
+                            data = JSON.parse(textResponse);
+                            if (data.contents) {
+                                xmlContent = data.contents;
+                            } else if (data.content) {
+                                xmlContent = data.content;
+                            } else {
+                                xmlContent = textResponse; // Direkt XML olabilir
+                            }
+                        } catch (e) {
+                            // JSON değilse direkt XML olarak kullan
+                            xmlContent = textResponse;
+                        }
+                    }
+                } catch (parseError) {
+                    console.error(`${source} response parse hatası:`, parseError);
+                    throw new Error('Response parse edilemedi');
+                }
+                
+                if (!xmlContent || xmlContent.trim().length === 0) {
+                    throw new Error('Boş XML içeriği');
                 }
                 
                 // XML içeriğini parse et
-                const parser = new DOMParser();
+            const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlContent, 'text/xml');
                 
                 // Parse hatası kontrolü
@@ -1359,20 +1401,20 @@ async function fetchNewsFromSingleSource(url, source) {
                     throw new Error('XML parse hatası');
                 }
                 
-                const items = xmlDoc.querySelectorAll('item');
+            const items = xmlDoc.querySelectorAll('item');
                 if (items.length === 0) {
                     throw new Error('RSS feed\'de item bulunamadı');
                 }
                 
-                const newsItems = [];
+            const newsItems = [];
                 
                 // Son 48 saat içindeki haberleri filtrele (daha geniş zaman aralığı)
                 const now = new Date();
                 const twoDaysAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000);
-                
-                items.forEach((item, index) => {
+            
+            items.forEach((item, index) => {
                     if (index < 30) { // Her kaynaktan 30 haber al
-                        const title = item.querySelector('title')?.textContent || '';
+                    const title = item.querySelector('title')?.textContent || '';
                         const pubDate = item.querySelector('pubDate')?.textContent || '';
                         
                         // Tarih kontrolü - son 48 saat içindeki haberleri al
@@ -1388,50 +1430,55 @@ async function fetchNewsFromSingleSource(url, source) {
                         }
                         
                         if (title && title.trim().length > 0) {
-                            const description = item.querySelector('description')?.textContent || '';
-                            
-                            let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
-                            let cleanDescription = description.replace(/<[^>]*>/g, '').trim();
-                            
-                            // Kaynak etiketlerini temizle
+                        const description = item.querySelector('description')?.textContent || '';
+                        
+                        let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
+                        let cleanDescription = description.replace(/<[^>]*>/g, '').trim();
+                        
+                        // Kaynak etiketlerini temizle
                             cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -|CNN|CNN Türk|CNN\/|CNN -|NTV|Habertürk)/i, '').trim();
                             cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem|Son Dakika)/i, '').trim();
-                            
+                        
                             // Çok kısa veya çok uzun haberleri filtrele
                             if (cleanTitle.length < 15 || cleanTitle.length > 200) return;
-                            
+                        
                             // Başlık ve açıklamayı birleştir (daha kısa açıklamalar için)
-                            let finalNews = cleanTitle;
+                        let finalNews = cleanTitle;
                             if (cleanDescription && cleanDescription.length > 15 && cleanDescription.length < 150) {
                                 finalNews = cleanTitle + ' - ' + cleanDescription.substring(0, 100);
-                            }
-                            
-                            newsItems.push(finalNews);
                         }
+                        
+                        newsItems.push(finalNews);
                     }
-                });
-                
+                }
+            });
+            
                 if (newsItems.length > 0) {
                     console.log(`${source} başarıyla yüklendi: ${newsItems.length} haber (proxy ${i + 1})`);
-                    return newsItems;
+            return newsItems;
                 } else {
                     throw new Error('Hiç haber bulunamadı');
                 }
             } catch (proxyError) {
-                console.log(`${source} proxy ${i + 1} başarısız:`, proxyError.message);
+                const errorMsg = proxyError.name === 'AbortError' ? 'Timeout (8s)' : (proxyError.message || 'Bilinmeyen hata');
+                console.log(`${source} proxy ${i + 1} başarısız:`, errorMsg);
                 lastError = proxyError;
                 // Bir sonraki proxy'yi dene
-                continue;
+                if (i < proxies.length - 1) {
+                    continue;
+                }
             }
         }
         
         // Tüm proxy'ler başarısız oldu
-        throw lastError || new Error('Tüm proxy\'ler başarısız');
+        if (lastError) {
+            console.error(`${source} tüm proxy'ler başarısız, haberler alınamadı`);
+        }
+        return [];
     } catch (error) {
-        console.error(`${source} haberleri yüklenirken hata:`, error.message || error);
+        console.error(`${source} haberleri yüklenirken genel hata:`, error.message || error);
+        return [];
     }
-    
-    return [];
 }
 
 function createProgramGuide(channelId) {
@@ -1546,12 +1593,12 @@ function selectChannel(channel) {
                     console.log('YouTube iframe loaded, autoplay should work (muted for autoplay policy)');
                 });
             }
-            externalBtnHtml = `<a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>YouTube'da İzle</a>`;
-            currentChannel.textContent = channel.name;
-            channelDescription.innerHTML = channel.description;
-            document.getElementById('externalWatchBtn').innerHTML = externalBtnHtml;
-            updateControlButtons('youtube', channel.youtubeUrl);
-            return;
+        externalBtnHtml = `<a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>YouTube'da İzle</a>`;
+        currentChannel.textContent = channel.name;
+        channelDescription.innerHTML = channel.description;
+        document.getElementById('externalWatchBtn').innerHTML = externalBtnHtml;
+        updateControlButtons('youtube', channel.youtubeUrl);
+        return;
         }
     }
     
@@ -1659,16 +1706,16 @@ function selectChannel(channel) {
         } else {
             // HLS desteklenmiyorsa web URL'e geç
             if (channel.webUrl) {
-                videoWrapper.innerHTML = `
-                    <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
-                    <div id='externalWatchBtn'></div>
-                `;
-                currentChannel.textContent = channel.name;
-                channelDescription.innerHTML = channel.description;
-                document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
-                updateControlButtons('web', channel.webUrl);
-                return;
-            }
+        videoWrapper.innerHTML = `
+            <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
+            <div id='externalWatchBtn'></div>
+        `;
+        currentChannel.textContent = channel.name;
+        channelDescription.innerHTML = channel.description;
+        document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
+        updateControlButtons('web', channel.webUrl);
+        return;
+    }
             videoPlayer.src = '';
             currentChannel.textContent = `${channel.name} - Yayın Hatası`;
             channelDescription.textContent = 'Tarayıcınız bu yayını desteklemiyor. Lütfen farklı bir tarayıcı veya cihaz deneyin.';
@@ -1855,10 +1902,10 @@ function selectChannel(channel) {
     }
     
     // Hiçbir kaynak yoksa
-    videoWrapper.innerHTML = '';
-    currentChannel.textContent = channel.name + ' - Yayın Hatası';
-    channelDescription.textContent = 'Bu kanal şu anda yayında değil.';
-    return;
+        videoWrapper.innerHTML = '';
+        currentChannel.textContent = channel.name + ' - Yayın Hatası';
+        channelDescription.textContent = 'Bu kanal şu anda yayında değil.';
+        return;
     videoWrapper.innerHTML = `<video id="videoPlayer" controls style="width:100%;height:400px;border-radius:10px;background:#000;"></video>\n<div id='externalWatchBtn'></div>`;
     currentChannel.textContent = `${channel.name} - Yükleniyor...`;
     channelDescription.textContent = channel.description;
