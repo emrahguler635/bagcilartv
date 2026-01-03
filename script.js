@@ -135,6 +135,7 @@ const channels = [
         name: "Star TV",
         category: "Ulusal",
         streamUrl: "https://dogus-live.daioncdn.net/startv/startv.m3u8",
+        webUrl: "https://www.star.com.tr/canli-yayin",
         logo: "logos/startv.png",
         description: "Star TV - Ulusal yayın kanalı"
     },
@@ -179,7 +180,7 @@ const channels = [
         name: "CNN Türk",
         category: "Haber",
         streamUrl: "",
-        webUrl: "https://www.cnnturk.com/canli-yayin",
+        webUrl: "https://www.cnnturk.com/video/turkiye/cnn-turk-canli-yayin-izle",
         logo: "logos/cnnturk.png",
         description: "CNN Türk - Haber kanalı"
     },
@@ -287,7 +288,7 @@ const channels = [
         name: "KRT TV",
         category: "Haber",
         streamUrl: "",
-        webUrl: "https://www.krttv.com.tr/",
+        webUrl: "https://www.krttv.com.tr/canli-yayin",
         logo: "logos/krttv.png",
         description: "KRT TV - Kürtçe haber kanalı"
     },
@@ -390,9 +391,9 @@ const channels = [
         name: "Kanal 1",
         category: "Ulusal",
         streamUrl: "",
-        webUrl: "https://www.kanal1.com.tr/canli-yayin",
+        webUrl: "https://www.kanal1.com.tr/",
         logo: "logos/kanal1.png",
-        description: "Kanal 1 - Ulusal yayın kanalı"
+        description: "Kanal 1 - Ulusal yayın kanalı (Canlı yayın şu anda mevcut değil)"
     },
     // Yeni Eklenen Ulusal Kanallar
     {
@@ -1031,36 +1032,36 @@ function updateProgramDate() {
 async function fetchNewsFromAA() {
     try {
         console.log('RSS feed çekiliyor...');
+        const allNews = [];
         
-        // Önce AA RSS'ini dene
-        try {
-            const aaNews = await fetchNewsFromSingleSource(AA_RSS_URL, 'AA');
-            if (aaNews.length > 0) {
-                currentNewsData = aaNews;
-                console.log('AA haberleri başarıyla yüklendi:', aaNews.length, 'haber');
-                return true;
-            }
-        } catch (error) {
-            console.error('AA RSS hatası:', error);
-        }
+        // Çoklu kaynak - paralel olarak tüm kaynaklardan haber çek
+        const promises = [
+            fetchNewsFromSingleSource(AA_RSS_URL, 'AA'),
+            fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN')
+        ];
         
-        // AA başarısız olursa CNN Türk'ü dene
-        try {
-            const cnnNews = await fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN');
-            if (cnnNews.length > 0) {
-                currentNewsData = cnnNews;
-                console.log('CNN Türk haberleri başarıyla yüklendi:', cnnNews.length, 'haber');
-                return true;
+        const results = await Promise.allSettled(promises);
+        
+        results.forEach((result, index) => {
+            if (result.status === 'fulfilled' && result.value && result.value.length > 0) {
+                allNews.push(...result.value);
+                console.log(`${index === 0 ? 'AA' : 'CNN Türk'} haberleri yüklendi:`, result.value.length, 'haber');
             }
-        } catch (error) {
-            console.error('CNN Türk RSS hatası:', error);
+        });
+        
+        // Duplicate haberleri kaldır ve karıştır
+        if (allNews.length > 0) {
+            const uniqueNews = [...new Set(allNews)];
+            currentNewsData = uniqueNews.sort(() => Math.random() - 0.5);
+            console.log('Toplam güncel haber sayısı:', currentNewsData.length);
+            return true;
         }
         
     } catch (error) {
         console.error('Haber yükleme hatası:', error);
     }
     
-    // Her iki kaynak da başarısız olursa fallback haberleri kullan
+    // Kaynaklar başarısız olursa fallback haberleri kullan
     console.log('Fallback haberleri kullanılıyor...');
     currentNewsData = [...fallbackNews];
     return false;
@@ -1171,12 +1172,12 @@ async function updateNewsTicker() {
     await fetchNewsFromAA();
     createNewsTicker();
     
-    // Her 5 dakikada bir haberleri güncelle (daha sık güncelleme için)
+    // Her 3 dakikada bir haberleri güncelle (daha sık güncelleme için güncel haberler)
     setInterval(async () => {
         console.log('Haberler güncelleniyor...');
         await fetchNewsFromAA();
         createNewsTicker();
-    }, 300000); // 5 dakika = 300000 ms
+    }, 180000); // 3 dakika = 180000 ms
 }
 
 // Çoklu kaynak haber çekme fonksiyonu
@@ -1223,9 +1224,26 @@ async function fetchNewsFromSingleSource(url, source) {
             const items = xmlDoc.querySelectorAll('item');
             const newsItems = [];
             
+            // Son 24 saat içindeki haberleri filtrele
+            const now = new Date();
+            const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+            
             items.forEach((item, index) => {
-                if (index < 15) { // Her kaynaktan 15 haber (daha fazla güncel haber için)
+                if (index < 20) { // Her kaynaktan 20 haber (daha fazla güncel haber için)
                     const title = item.querySelector('title')?.textContent || '';
+                    const pubDate = item.querySelector('pubDate')?.textContent || '';
+                    
+                    // Tarih kontrolü - sadece son 24 saat içindeki haberleri al
+                    if (pubDate) {
+                        try {
+                            const newsDate = new Date(pubDate);
+                            if (newsDate < twentyFourHoursAgo) {
+                                return; // Eski haber, atla
+                            }
+                        } catch (e) {
+                            // Tarih parse edilemezse devam et (eski haberleri de göster)
+                        }
+                    }
                     
                     if (title) {
                         const description = item.querySelector('description')?.textContent || '';
