@@ -187,8 +187,8 @@ const channels = [
         id: 23,
         name: "NTV",
         category: "Haber",
-        streamUrl: "https://dogus-live.daioncdn.net/ntv/ntv.m3u8",
-        webUrl: "https://www.ntv.com.tr/canli-yayin",
+        streamUrl: "",
+        webUrl: "https://www.ntv.com.tr/canli-yayin/ntv",
         logo: "logos/ntv.png",
         description: "NTV - Haber kanalı"
     },
