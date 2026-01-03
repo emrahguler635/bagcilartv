@@ -1348,16 +1348,8 @@ function createChannelList(channelsToShow = channels) {
             </div>
         `;
         channelItem.addEventListener('click', () => {
-            // YouTube veya Web URL varsa direkt yeni sekmede aç
-            if (channel.youtubeUrl) {
-                window.open(channel.youtubeUrl, '_blank');
-            } else if (channel.webUrl && !channel.streamUrl) {
-                // Sadece web URL varsa (stream URL yoksa) direkt aç
-                window.open(channel.webUrl, '_blank');
-            } else {
-                // Stream URL varsa veya hiçbir URL yoksa normal akış
-                selectChannel(channel);
-            }
+            // Tüm kanallar için selectChannel çağır (iframe içinde gösterilecek)
+            selectChannel(channel);
         });
         channelList.appendChild(channelItem);
     });
@@ -1378,28 +1370,24 @@ function selectChannel(channel) {
     createProgramGuide(channel.id);
     let externalBtnHtml = '';
     
-    // YouTube URL varsa otomatik olarak yeni sekmede aç
+    // YouTube URL varsa iframe içinde göster
     if (channel.youtubeUrl) {
-        console.log('Opening YouTube URL in new tab:', channel.youtubeUrl);
-        window.open(channel.youtubeUrl, '_blank');
-        
-        // Bilgi mesajı göster
-        videoWrapper.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 10px; padding: 40px;">
-                <i class="fab fa-youtube" style="font-size: 64px; color: #e53e3e; margin-bottom: 20px;"></i>
-                <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 24px;">YouTube'da Açılıyor...</h3>
-                <p style="color: #718096; margin-bottom: 25px; text-align: center; max-width: 400px;">
-                    ${channel.name} kanalı yeni bir sekmede açılıyor. Eğer otomatik olarak açılmadıysa, aşağıdaki butona tıklayın.
-                </p>
-                <a href="${channel.youtubeUrl}" target="_blank" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #e53e3e, #c53030); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3); transition: transform 0.3s ease;">
-                    <i class="fab fa-youtube"></i> YouTube'da İzle
-                </a>
-            </div>
-        `;
-        currentChannel.textContent = channel.name;
-        channelDescription.innerHTML = channel.description;
-        updateControlButtons('youtube', channel.youtubeUrl);
-        return;
+        let videoId = channel.youtubeUrl.split('v=')[1];
+        if (videoId) {
+            // URL parametrelerini temizle (örn: &t=...)
+            videoId = videoId.split('&')[0];
+            videoId = videoId.split('#')[0];
+            
+            // YouTube embed URL oluştur
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}`;
+            videoWrapper.innerHTML = `<iframe id="youtubeIframe" width="100%" height="400" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:10px;"></iframe>\n<div id='externalWatchBtn'></div>`;
+            externalBtnHtml = `<a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>YouTube'da İzle</a>`;
+            currentChannel.textContent = channel.name;
+            channelDescription.innerHTML = channel.description;
+            document.getElementById('externalWatchBtn').innerHTML = externalBtnHtml;
+            updateControlButtons('youtube', channel.youtubeUrl);
+            return;
+        }
     }
     
     // Stream URL varsa önce onu dene
@@ -1535,9 +1523,9 @@ function selectChannel(channel) {
         // Video yüklendiğinde loading indicator'ı kaldır
         const hideLoading = () => {
             const loadingDiv = videoWrapper.querySelector('div[style*="position: relative"]');
-            if (loadingDiv) {
+            if (loadingDiv && videoPlayer) {
                 loadingDiv.style.display = 'none';
-                if (videoPlayer) videoPlayer.style.display = 'block';
+                videoPlayer.style.display = 'block';
             }
         };
         
@@ -1548,13 +1536,13 @@ function selectChannel(channel) {
         });
         
         videoPlayer.addEventListener('playing', () => {
-            clearTimeout(loadingTimeout);
+            if (loadingTimeout) clearTimeout(loadingTimeout);
             hideLoading();
             currentChannel.textContent = channel.name;
         });
         
         videoPlayer.addEventListener('error', () => {
-            clearTimeout(loadingTimeout);
+            if (loadingTimeout) clearTimeout(loadingTimeout);
             console.log('Video player error, trying web URL fallback');
             fallbackToWeb();
         });
@@ -1597,26 +1585,15 @@ function selectChannel(channel) {
         return;
     }
     
-    // Sadece Web URL varsa otomatik olarak yeni sekmede aç
+    // Sadece Web URL varsa iframe içinde göster
     if (channel.webUrl) {
-        console.log('Opening web URL in new tab:', channel.webUrl);
-        window.open(channel.webUrl, '_blank');
-        
-        // Bilgi mesajı göster
         videoWrapper.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 10px; padding: 40px;">
-                <i class="fas fa-external-link-alt" style="font-size: 64px; color: #667eea; margin-bottom: 20px;"></i>
-                <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 24px;">Web Sitesinde Açılıyor...</h3>
-                <p style="color: #718096; margin-bottom: 25px; text-align: center; max-width: 400px;">
-                    ${channel.name} kanalı yeni bir sekmede açılıyor. Eğer otomatik olarak açılmadıysa, aşağıdaki butona tıklayın.
-                </p>
-                <a href="${channel.webUrl}" target="_blank" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: transform 0.3s ease;">
-                    <i class="fas fa-external-link-alt"></i> Web Sitesinde Aç
-                </a>
-            </div>
+            <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
+            <div id='externalWatchBtn'></div>
         `;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = channel.description;
+        document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
         updateControlButtons('web', channel.webUrl);
         return;
     }
