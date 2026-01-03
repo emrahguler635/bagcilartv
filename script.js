@@ -134,7 +134,7 @@ const channels = [
         id: 17,
         name: "Star TV",
         category: "Ulusal",
-        streamUrl: "https://dogus-live.daioncdn.net/startv/startv.m3u8",
+        streamUrl: "",
         webUrl: "https://www.star.com.tr/canli-yayin",
         logo: "logos/startv.png",
         description: "Star TV - Ulusal yayın kanalı"
@@ -180,7 +180,7 @@ const channels = [
         name: "CNN Türk",
         category: "Haber",
         streamUrl: "",
-        webUrl: "https://www.cnnturk.com/video/turkiye/cnn-turk-canli-yayin-izle",
+        webUrl: "https://www.cnnturk.com/canli-yayin",
         logo: "logos/cnnturk.png",
         description: "CNN Türk - Haber kanalı"
     },
@@ -970,13 +970,17 @@ const programSchedules = {
     ]
 };
 
-// RSS Feed URL'leri
+// RSS Feed URL'leri - Güncel ve çalışan feed'ler
 const AA_RSS_URL = 'https://www.aa.com.tr/tr/rss/default?cat=gundem';
 const CNN_RSS_URL = 'https://www.cnnturk.com/feed/rss/all/news';
 
 // Alternatif RSS Feed URL'leri (fallback)
 const AA_RSS_URL_ALT = 'https://www.aa.com.tr/tr/rss/default?cat=ekonomi';
 const CNN_RSS_URL_ALT = 'https://www.cnnturk.com/feed/rss/turkiye/news';
+
+// Ek alternatif RSS feed'ler
+const NTV_RSS_URL = 'https://www.ntv.com.tr/son-dakika.rss';
+const HABERTURK_RSS_URL = 'https://www.haberturk.com/rss/kategori/gundem.xml';
 
 // Fallback haberler (internet bağlantısı yoksa) - Daha detaylı ve açıklayıcı
 const fallbackNews = [
@@ -1038,10 +1042,12 @@ async function fetchNewsFromAA() {
         console.log('RSS feed çekiliyor...');
         const allNews = [];
         
-        // Çoklu kaynak - paralel olarak tüm kaynaklardan haber çek
+        // Çoklu kaynak - paralel olarak tüm kaynaklardan haber çek (daha fazla kaynak)
         const promises = [
             fetchNewsFromSingleSource(AA_RSS_URL, 'AA'),
-            fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN')
+            fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN'),
+            fetchNewsFromSingleSource(NTV_RSS_URL, 'NTV'),
+            fetchNewsFromSingleSource(HABERTURK_RSS_URL, 'Habertürk')
         ];
         
         const results = await Promise.allSettled(promises);
@@ -1268,76 +1274,122 @@ async function fetchNewsFromMultipleSources() {
 // Tek kaynaktan haber çekme fonksiyonu
 async function fetchNewsFromSingleSource(url, source) {
     try {
-        // CORS proxy kullanarak RSS feed'ini çek
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
-        console.log(`${source} RSS feed çekiliyor:`, url);
-        const response = await fetch(proxyUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-            }
-        });
+        // Farklı proxy servisleri deneme listesi
+        const proxies = [
+            `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+            `https://corsproxy.io/?${encodeURIComponent(url)}`,
+            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+        ];
         
-        if (!response.ok) {
-            throw new Error(`${source} RSS feed yüklenemedi: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.contents) {
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
-            const items = xmlDoc.querySelectorAll('item');
-            const newsItems = [];
-            
-            // Son 24 saat içindeki haberleri filtrele
-            const now = new Date();
-            const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-            
-            items.forEach((item, index) => {
-                if (index < 20) { // Her kaynaktan 20 haber (daha fazla güncel haber için)
-                    const title = item.querySelector('title')?.textContent || '';
-                    const pubDate = item.querySelector('pubDate')?.textContent || '';
-                    
-                    // Tarih kontrolü - sadece son 24 saat içindeki haberleri al
-                    if (pubDate) {
-                        try {
-                            const newsDate = new Date(pubDate);
-                            if (newsDate < twentyFourHoursAgo) {
-                                return; // Eski haber, atla
-                            }
-                        } catch (e) {
-                            // Tarih parse edilemezse devam et (eski haberleri de göster)
-                        }
-                    }
-                    
-                    if (title) {
-                        const description = item.querySelector('description')?.textContent || '';
-                        
-                        let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
-                        let cleanDescription = description.replace(/<[^>]*>/g, '').trim();
-                        
-                        // Kaynak etiketlerini temizle
-                        cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -|CNN|CNN Türk|CNN\/|CNN -)/i, '').trim();
-                        cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem)/i, '').trim();
-                        
-                        if (cleanTitle.length < 20) return;
-                        
-                        // Başlık ve açıklamayı birleştir
-                        let finalNews = cleanTitle;
-                        if (cleanDescription && cleanDescription.length > 20) {
-                            finalNews = cleanTitle + ' - ' + cleanDescription;
-                        }
-                        
-                        newsItems.push(finalNews);
-                    }
+        let lastError = null;
+        for (let i = 0; i < proxies.length; i++) {
+            try {
+                const proxyUrl = proxies[i];
+                console.log(`${source} RSS feed çekiliyor (proxy ${i + 1}/${proxies.length}):`, url);
+                const response = await fetch(proxyUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                    timeout: 10000
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
-            });
-            
-            return newsItems;
+                
+                const data = await response.json();
+                let xmlContent = '';
+                
+                // Proxy response format kontrolü
+                if (data.contents) {
+                    xmlContent = data.contents;
+                } else if (typeof data === 'string') {
+                    xmlContent = data;
+                } else {
+                    throw new Error('Beklenmeyen response formatı');
+                }
+                
+                // XML içeriğini parse et
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlContent, 'text/xml');
+                
+                // Parse hatası kontrolü
+                const parserError = xmlDoc.querySelector('parsererror');
+                if (parserError) {
+                    throw new Error('XML parse hatası');
+                }
+                
+                const items = xmlDoc.querySelectorAll('item');
+                if (items.length === 0) {
+                    throw new Error('RSS feed\'de item bulunamadı');
+                }
+                
+                const newsItems = [];
+                
+                // Son 48 saat içindeki haberleri filtrele (daha geniş zaman aralığı)
+                const now = new Date();
+                const twoDaysAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000);
+                
+                items.forEach((item, index) => {
+                    if (index < 30) { // Her kaynaktan 30 haber al
+                        const title = item.querySelector('title')?.textContent || '';
+                        const pubDate = item.querySelector('pubDate')?.textContent || '';
+                        
+                        // Tarih kontrolü - son 48 saat içindeki haberleri al
+                        if (pubDate) {
+                            try {
+                                const newsDate = new Date(pubDate);
+                                if (newsDate < twoDaysAgo) {
+                                    return; // Çok eski haber, atla
+                                }
+                            } catch (e) {
+                                // Tarih parse edilemezse devam et (haberleri göster)
+                            }
+                        }
+                        
+                        if (title && title.trim().length > 0) {
+                            const description = item.querySelector('description')?.textContent || '';
+                            
+                            let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
+                            let cleanDescription = description.replace(/<[^>]*>/g, '').trim();
+                            
+                            // Kaynak etiketlerini temizle
+                            cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -|CNN|CNN Türk|CNN\/|CNN -|NTV|Habertürk)/i, '').trim();
+                            cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem|Son Dakika)/i, '').trim();
+                            
+                            // Çok kısa veya çok uzun haberleri filtrele
+                            if (cleanTitle.length < 15 || cleanTitle.length > 200) return;
+                            
+                            // Başlık ve açıklamayı birleştir (daha kısa açıklamalar için)
+                            let finalNews = cleanTitle;
+                            if (cleanDescription && cleanDescription.length > 15 && cleanDescription.length < 150) {
+                                finalNews = cleanTitle + ' - ' + cleanDescription.substring(0, 100);
+                            }
+                            
+                            newsItems.push(finalNews);
+                        }
+                    }
+                });
+                
+                if (newsItems.length > 0) {
+                    console.log(`${source} başarıyla yüklendi: ${newsItems.length} haber (proxy ${i + 1})`);
+                    return newsItems;
+                } else {
+                    throw new Error('Hiç haber bulunamadı');
+                }
+            } catch (proxyError) {
+                console.log(`${source} proxy ${i + 1} başarısız:`, proxyError.message);
+                lastError = proxyError;
+                // Bir sonraki proxy'yi dene
+                continue;
+            }
         }
+        
+        // Tüm proxy'ler başarısız oldu
+        throw lastError || new Error('Tüm proxy\'ler başarısız');
     } catch (error) {
-        console.error(`${source} haberleri yüklenirken hata:`, error);
+        console.error(`${source} haberleri yüklenirken hata:`, error.message || error);
     }
     
     return [];
