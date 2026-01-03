@@ -1607,6 +1607,10 @@ function createChannelList(channelsToShow = channels) {
 function selectChannel(channel) {
     console.log('selectChannel called with:', channel);
     
+    // Tarayıcı kontrolü
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    const isFirefox = /Firefox/.test(navigator.userAgent);
+    
     // İzleme sayfasına geç
     showWatchPage();
     
@@ -1687,9 +1691,24 @@ function selectChannel(channel) {
         videoPlayer.playsInline = true;
         videoPlayer.preload = 'auto';
         
-        if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+        // Tarayıcı bilgisi ve HLS desteği logla
+        const hasNativeHLS = videoPlayer.canPlayType('application/vnd.apple.mpegurl');
+        const hasHlsJS = window.Hls && typeof window.Hls.isSupported === 'function';
+        const hlsSupported = hasHlsJS && Hls.isSupported();
+        
+        console.log('HLS Desteği Kontrolü:', {
+            tarayici: isChrome ? 'Chrome' : (isFirefox ? 'Firefox' : 'Diğer'),
+            nativeHLS: hasNativeHLS,
+            hlsJSLoaded: hasHlsJS,
+            hlsSupported: hlsSupported,
+            streamUrl: channel.streamUrl
+        });
+        
+        if (hasNativeHLS) {
+            console.log('Native HLS desteği kullanılıyor');
             videoPlayer.src = channel.streamUrl;
-        } else if (window.Hls && Hls.isSupported()) {
+        } else if (hasHlsJS && hlsSupported) {
+            console.log('HLS.js desteği kullanılıyor');
             // HLS.js için optimize edilmiş ayarlar
             window.hls = new Hls({
                 enableWorker: true,
@@ -1773,22 +1792,46 @@ function selectChannel(channel) {
             window.hls.loadSource(channel.streamUrl);
             window.hls.attachMedia(videoPlayer);
         } else {
+            // Web URL fallback fonksiyonu
+            const fallbackToWebIfAvailable = () => {
+                if (channel.webUrl) {
+                    console.log('HLS desteklenmediği için web URL\'e geçiliyor');
+                    videoWrapper.innerHTML = `
+                        <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
+                        <div id='externalWatchBtn'></div>
+                    `;
+                    currentChannel.textContent = channel.name;
+                    channelDescription.innerHTML = channel.description;
+                    document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
+                    updateControlButtons('web', channel.webUrl);
+                }
+            };
+            
+            // HLS desteklenmiyor - HLS.js yüklenmemiş olabilir, biraz bekle ve tekrar dene
+            console.warn('HLS desteği bulunamadı:', {
+                hlsJSLoaded: !!window.Hls,
+                hlsSupported: window.Hls ? Hls.isSupported() : false,
+                nativeHLS: hasNativeHLS
+            });
+            
+            // HLS.js yükleniyorsa biraz bekle
+            if (!window.Hls && document.querySelector('script[src*="hls.js"]')) {
+                console.log('HLS.js yükleniyor, 2 saniye bekleniyor...');
+                setTimeout(() => {
+                    if (window.Hls && Hls.isSupported()) {
+                        console.log('HLS.js yüklendi, tekrar deneniyor...');
+                        selectChannel(channel);
+                        return;
+                    } else {
+                        console.log('HLS.js hala yüklenmedi, web URL\'e geçiliyor');
+                        fallbackToWebIfAvailable();
+                    }
+                }, 2000);
+                return;
+            }
+            
             // HLS desteklenmiyorsa web URL'e geç
-            if (channel.webUrl) {
-        videoWrapper.innerHTML = `
-            <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
-            <div id='externalWatchBtn'></div>
-        `;
-        currentChannel.textContent = channel.name;
-        channelDescription.innerHTML = channel.description;
-        document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
-        updateControlButtons('web', channel.webUrl);
-        return;
-    }
-            videoPlayer.src = '';
-            currentChannel.textContent = `${channel.name} - Yayın Hatası`;
-            channelDescription.textContent = 'Tarayıcınız bu yayını desteklemiyor. Lütfen farklı bir tarayıcı veya cihaz deneyin.';
-            return;
+            fallbackToWebIfAvailable();
         }
         
         // Stream URL hatası durumunda web URL'e geç
@@ -1819,13 +1862,14 @@ function selectChannel(channel) {
             }
         };
         
-        // Loading timeout - 6 saniye içinde yüklenmezse web URL'e geç (daha hızlı)
+        // Loading timeout - Chrome için daha uzun süre bekle (10 saniye)
+        const timeoutDuration = isChrome ? 10000 : 6000;
         const loadingTimeout = setTimeout(() => {
             if (videoPlayer && (videoPlayer.readyState < 3 || videoPlayer.networkState === 2)) {
-                console.log('Loading timeout (6s), trying web URL fallback');
+                console.log(`Loading timeout (${timeoutDuration}ms), trying web URL fallback`);
                 fallbackToWeb();
             }
-        }, 6000);
+        }, timeoutDuration);
         
         // Video yüklendiğinde loading indicator'ı kaldır
         const hideLoading = () => {
@@ -1931,7 +1975,9 @@ function selectChannel(channel) {
                 }
             });
         }
-        updateControlButtons('video');
+        
+        // Buraya kadar stream URL ile ilgili işlemler yapıldı
+        // Stream URL başarılı olursa return edilmeli
         return;
     }
     
@@ -1986,41 +2032,10 @@ function selectChannel(channel) {
     }
     
     // Hiçbir kaynak yoksa
-        videoWrapper.innerHTML = '';
-        currentChannel.textContent = channel.name + ' - Yayın Hatası';
-        channelDescription.textContent = 'Bu kanal şu anda yayında değil.';
-        return;
-    videoWrapper.innerHTML = `<video id="videoPlayer" controls style="width:100%;height:400px;border-radius:10px;background:#000;"></video>\n<div id='externalWatchBtn'></div>`;
-    currentChannel.textContent = `${channel.name} - Yükleniyor...`;
-    channelDescription.textContent = channel.description;
-    document.getElementById('externalWatchBtn').innerHTML = '';
-    const videoPlayer = document.getElementById('videoPlayer');
-    if (window.hls) { window.hls.destroy(); window.hls = null; }
-    if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
-        videoPlayer.src = channel.streamUrl;
-    } else if (window.Hls && Hls.isSupported()) {
-        window.hls = new Hls();
-        window.hls.loadSource(channel.streamUrl);
-        window.hls.attachMedia(videoPlayer);
-    } else {
-        videoPlayer.src = '';
-        currentChannel.textContent = `${channel.name} - Yayın Hatası`;
-        channelDescription.textContent = 'Tarayıcınız bu yayını desteklemiyor. Lütfen farklı bir tarayıcı veya cihaz deneyin.';
-        return;
-    }
-    videoPlayer.addEventListener('canplay', () => { currentChannel.textContent = channel.name; });
-    videoPlayer.addEventListener('error', () => { currentChannel.textContent = `${channel.name} - Yayın Hatası`; channelDescription.textContent = 'Bu kanal şu anda yayında değil veya erişim sağlanamıyor.'; });
-    videoPlayer.addEventListener('stalled', () => { currentChannel.textContent = `${channel.name} - Bağlantı Sorunu`; channelDescription.textContent = 'Video yükleme durdu. Lütfen internet bağlantınızı kontrol edin.'; });
-    videoPlayer.addEventListener('contextmenu', e => e.preventDefault());
-    const playPromise = videoPlayer.play();
-    if (playPromise !== undefined) {
-        playPromise.then(() => { currentChannel.textContent = channel.name; }).catch(() => {
-            currentChannel.textContent = `${channel.name} - Yayın bulunamadı`;
-            channelDescription.textContent = 'Bu kanal şu anda yayında değil veya erişim sağlanamıyor.';
-            videoPlayer.src = '';
-        });
-    }
-    updateControlButtons('video');
+    videoWrapper.innerHTML = '';
+    currentChannel.textContent = channel.name + ' - Yayın Hatası';
+    channelDescription.textContent = 'Bu kanal şu anda yayında değil.';
+    return;
 }
 
 function filterChannels(searchTerm) {
