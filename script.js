@@ -188,6 +188,7 @@ const channels = [
         name: "NTV",
         category: "Haber",
         streamUrl: "https://dogus-live.daioncdn.net/ntv/ntv.m3u8",
+        webUrl: "https://www.ntv.com.tr/canli-yayin",
         logo: "logos/ntv.png",
         description: "NTV - Haber kanalı"
     },
@@ -1343,6 +1344,8 @@ function selectChannel(channel) {
     console.log('Creating program guide for channel ID:', channel.id);
     createProgramGuide(channel.id);
     let externalBtnHtml = '';
+    
+    // Öncelik sırası: YouTube > Stream URL > Web URL
     if (channel.youtubeUrl) {
         const videoId = channel.youtubeUrl.split('v=')[1];
         videoWrapper.innerHTML = `<iframe id="youtubeIframe" width="100%" height="400" src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&playsinline=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>\n<div id='externalWatchBtn'></div>`;
@@ -1352,7 +1355,83 @@ function selectChannel(channel) {
         document.getElementById('externalWatchBtn').innerHTML = externalBtnHtml;
         updateControlButtons('youtube', channel.youtubeUrl);
         return;
-    } else if (channel.webUrl) {
+    }
+    
+    // Stream URL varsa önce onu dene
+    if (channel.streamUrl) {
+        videoWrapper.innerHTML = `<video id="videoPlayer" controls style="width:100%;height:400px;border-radius:10px;background:#000;"></video>\n<div id='externalWatchBtn'></div>`;
+        currentChannel.textContent = `${channel.name} - Yükleniyor...`;
+        channelDescription.textContent = channel.description;
+        document.getElementById('externalWatchBtn').innerHTML = channel.webUrl ? `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Alternatif: Web Sitesinde Aç</a>` : '';
+        const videoPlayer = document.getElementById('videoPlayer');
+        if (window.hls) { window.hls.destroy(); window.hls = null; }
+        if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+            videoPlayer.src = channel.streamUrl;
+        } else if (window.Hls && Hls.isSupported()) {
+            window.hls = new Hls();
+            window.hls.loadSource(channel.streamUrl);
+            window.hls.attachMedia(videoPlayer);
+        } else {
+            // HLS desteklenmiyorsa web URL'e geç
+            if (channel.webUrl) {
+                videoWrapper.innerHTML = `
+                    <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
+                    <div id='externalWatchBtn'></div>
+                `;
+                currentChannel.textContent = channel.name;
+                channelDescription.innerHTML = channel.description;
+                document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
+                updateControlButtons('web', channel.webUrl);
+                return;
+            }
+            videoPlayer.src = '';
+            currentChannel.textContent = `${channel.name} - Yayın Hatası`;
+            channelDescription.textContent = 'Tarayıcınız bu yayını desteklemiyor. Lütfen farklı bir tarayıcı veya cihaz deneyin.';
+            return;
+        }
+        
+        // Stream URL hatası durumunda web URL'e geç
+        const fallbackToWeb = () => {
+            if (channel.webUrl) {
+                console.log('Stream URL failed, falling back to web URL');
+                videoWrapper.innerHTML = `
+                    <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
+                    <div id='externalWatchBtn'></div>
+                `;
+                currentChannel.textContent = channel.name;
+                channelDescription.innerHTML = channel.description;
+                document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
+                updateControlButtons('web', channel.webUrl);
+            }
+        };
+        
+        videoPlayer.addEventListener('canplay', () => { currentChannel.textContent = channel.name; });
+        videoPlayer.addEventListener('error', () => {
+            console.log('Video player error, trying web URL fallback');
+            fallbackToWeb();
+        });
+        videoPlayer.addEventListener('stalled', () => {
+            console.log('Video player stalled, trying web URL fallback');
+            setTimeout(() => {
+                if (videoPlayer.readyState < 3) {
+                    fallbackToWeb();
+                }
+            }, 3000);
+        });
+        videoPlayer.addEventListener('contextmenu', e => e.preventDefault());
+        const playPromise = videoPlayer.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => { currentChannel.textContent = channel.name; }).catch(() => {
+                console.log('Play promise rejected, trying web URL fallback');
+                fallbackToWeb();
+            });
+        }
+        updateControlButtons('video');
+        return;
+    }
+    
+    // Sadece Web URL varsa
+    if (channel.webUrl) {
         // Web kanalları için iframe ile direkt yayın
         videoWrapper.innerHTML = `
             <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
@@ -1364,12 +1443,12 @@ function selectChannel(channel) {
         updateControlButtons('web', channel.webUrl);
         return;
     }
-    if (!channel.streamUrl) {
-        videoWrapper.innerHTML = '';
-        currentChannel.textContent = channel.name + ' - Yayın Hatası';
-        channelDescription.textContent = 'Bu kanal şu anda yayında değil.';
-        return;
-    }
+    
+    // Hiçbir kaynak yoksa
+    videoWrapper.innerHTML = '';
+    currentChannel.textContent = channel.name + ' - Yayın Hatası';
+    channelDescription.textContent = 'Bu kanal şu anda yayında değil.';
+    return;
     videoWrapper.innerHTML = `<video id="videoPlayer" controls style="width:100%;height:400px;border-radius:10px;background:#000;"></video>\n<div id='externalWatchBtn'></div>`;
     currentChannel.textContent = `${channel.name} - Yükleniyor...`;
     channelDescription.textContent = channel.description;
