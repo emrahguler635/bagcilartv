@@ -260,7 +260,7 @@ const channels = [
         name: "Halk TV",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=ZSWPj9szKb8",
+        webUrl: "https://halktv.com.tr/canli-yayin",
         logo: "logos/halktv.png",
         description: "Halk TV - Bağımsız haber kanalı"
     },
@@ -269,7 +269,7 @@ const channels = [
         name: "TELE1",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=fNqmmqNNGp8",
+        webUrl: "https://www.tele1.com.tr/canli-yayin",
         logo: "logos/tele1.png",
         description: "TELE1 - Bağımsız haber kanalı"
     },
@@ -287,7 +287,7 @@ const channels = [
         name: "KRT TV",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=_PbNN7UfWww",
+        webUrl: "https://www.krttv.com.tr/",
         logo: "logos/krttv.png",
         description: "KRT TV - Kürtçe haber kanalı"
     },
@@ -306,7 +306,7 @@ const channels = [
         name: "24 TV",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=nmY9i63t6qo",
+        webUrl: "https://www.yirmidort.tv/canli-yayin",
         logo: "logos/24tv.png",
         description: "24 TV - 7/24 haber kanalı"
     },
