@@ -1444,9 +1444,17 @@ function selectChannel(channel) {
             videoId = videoId.split('&')[0];
             videoId = videoId.split('#')[0];
             
-            // YouTube embed URL oluştur
+            // YouTube embed URL oluştur - autoplay (muted başlangıç, kullanıcı unmute edebilir)
             const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}`;
             videoWrapper.innerHTML = `<iframe id="youtubeIframe" width="100%" height="400" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:10px;"></iframe>\n<div id='externalWatchBtn'></div>`;
+            
+            // YouTube iframe yüklendiğinde otomatik oynatma kontrolü
+            const youtubeIframe = document.getElementById('youtubeIframe');
+            if (youtubeIframe) {
+                youtubeIframe.addEventListener('load', () => {
+                    console.log('YouTube iframe loaded, autoplay should work (muted for autoplay policy)');
+                });
+            }
             externalBtnHtml = `<a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>YouTube'da İzle</a>`;
             currentChannel.textContent = channel.name;
             channelDescription.innerHTML = channel.description;
@@ -1465,7 +1473,7 @@ function selectChannel(channel) {
                     <div style="font-size: 16px; font-weight: 600;">Yükleniyor...</div>
                     <div style="font-size: 12px; margin-top: 5px; opacity: 0.7;">Lütfen bekleyin</div>
                 </div>
-                <video id="videoPlayer" controls style="width:100%;height:100%;border-radius:10px;background:#000;display:none;"></video>
+                <video id="videoPlayer" controls autoplay playsinline preload="auto" style="width:100%;height:100%;border-radius:10px;background:#000;display:none;"></video>
             </div>
             <div id='externalWatchBtn'></div>
         `;
@@ -1474,9 +1482,15 @@ function selectChannel(channel) {
         document.getElementById('externalWatchBtn').innerHTML = channel.webUrl ? `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Alternatif: Web Sitesinde Aç</a>` : '';
         const videoPlayer = document.getElementById('videoPlayer');
         if (window.hls) { window.hls.destroy(); window.hls = null; }
+        
+        // Autoplay özelliklerini ayarla
+        videoPlayer.autoplay = true;
+        videoPlayer.muted = false; // Sesli başlat
+        videoPlayer.playsInline = true;
+        videoPlayer.preload = 'auto';
+        
         if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
             videoPlayer.src = channel.streamUrl;
-            videoPlayer.preload = 'auto';
         } else if (window.Hls && Hls.isSupported()) {
             // HLS.js için optimize edilmiş ayarlar
             window.hls = new Hls({
@@ -1506,13 +1520,25 @@ function selectChannel(channel) {
             // HLS event listeners - daha hızlı yükleme için
             window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
                 console.log('HLS manifest parsed, starting playback');
+                // Otomatik oynatmayı dene
+                videoPlayer.autoplay = true;
+                videoPlayer.muted = false;
                 const playPromise = videoPlayer.play();
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
                         currentChannel.textContent = channel.name;
+                        console.log('Video autoplay started successfully');
                     }).catch(err => {
-                        console.error('Play error:', err);
-                        fallbackToWeb();
+                        console.error('Autoplay prevented, trying muted:', err);
+                        // Autoplay engellenirse muted ile dene
+                        videoPlayer.muted = true;
+                        videoPlayer.play().then(() => {
+                            currentChannel.textContent = channel.name;
+                            console.log('Video started with muted autoplay');
+                        }).catch(err2 => {
+                            console.error('Muted autoplay also failed:', err2);
+                            fallbackToWeb();
+                        });
                     });
                 }
             });
@@ -1575,6 +1601,14 @@ function selectChannel(channel) {
                 channelDescription.innerHTML = channel.description;
                 document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
                 updateControlButtons('web', channel.webUrl);
+                
+                // Fallback web iframe için de autoplay kontrolü
+                const fallbackWebIframe = document.getElementById('webIframe');
+                if (fallbackWebIframe) {
+                    fallbackWebIframe.addEventListener('load', () => {
+                        console.log('Fallback web iframe loaded');
+                    });
+                }
             }
         };
         
@@ -1599,6 +1633,21 @@ function selectChannel(channel) {
             clearTimeout(loadingTimeout);
             hideLoading();
             currentChannel.textContent = channel.name;
+            
+            // Otomatik oynatmayı başlat
+            if (videoPlayer.paused) {
+                const playPromise = videoPlayer.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(err => {
+                        console.log('canplay autoplay prevented:', err);
+                        // Muted ile tekrar dene
+                        videoPlayer.muted = true;
+                        videoPlayer.play().catch(err2 => {
+                            console.log('Muted autoplay also prevented:', err2);
+                        });
+                    });
+                }
+            }
         });
         
         videoPlayer.addEventListener('playing', () => {
@@ -1632,20 +1681,33 @@ function selectChannel(channel) {
         // Preload ve autoplay ayarları
         videoPlayer.preload = 'auto';
         videoPlayer.playsInline = true;
+        videoPlayer.autoplay = true;
         
-        // Native HLS için play promise
+        // Native HLS için otomatik oynatma
         if (!window.hls) {
-            const playPromise = videoPlayer.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    clearTimeout(loadingTimeout);
-                    currentChannel.textContent = channel.name;
-                }).catch(() => {
-                    console.log('Play promise rejected, trying web URL fallback');
-                    clearTimeout(loadingTimeout);
-                    fallbackToWeb();
-                });
-            }
+            // canplay event'inde otomatik oynatılacak, burada sadece ayarları yap
+            videoPlayer.addEventListener('loadeddata', () => {
+                const playPromise = videoPlayer.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        clearTimeout(loadingTimeout);
+                        currentChannel.textContent = channel.name;
+                        console.log('Native HLS autoplay started');
+                    }).catch(err => {
+                        console.log('Native HLS autoplay prevented, trying muted:', err);
+                        videoPlayer.muted = true;
+                        videoPlayer.play().then(() => {
+                            clearTimeout(loadingTimeout);
+                            currentChannel.textContent = channel.name;
+                            console.log('Native HLS started with muted autoplay');
+                        }).catch(err2 => {
+                            console.log('Native HLS muted autoplay also failed:', err2);
+                            clearTimeout(loadingTimeout);
+                            fallbackToWeb();
+                        });
+                    });
+                }
+            });
         }
         updateControlButtons('video');
         return;
@@ -1661,6 +1723,26 @@ function selectChannel(channel) {
         channelDescription.innerHTML = channel.description;
         document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
         updateControlButtons('web', channel.webUrl);
+        
+        // Web iframe için otomatik oynatma kontrolü
+        const webIframe = document.getElementById('webIframe');
+        if (webIframe) {
+            webIframe.addEventListener('load', () => {
+                console.log('Web iframe loaded');
+                // İframe içindeki video elementlerine otomatik oynatma eklemeyi dene
+                try {
+                    const iframeDoc = webIframe.contentDocument || webIframe.contentWindow.document;
+                    const videos = iframeDoc.querySelectorAll('video');
+                    videos.forEach(video => {
+                        video.autoplay = true;
+                        video.play().catch(e => console.log('Web iframe autoplay prevented:', e));
+                    });
+                } catch (e) {
+                    // Cross-origin hatası normal, iframe'in kendi içinde autoplay çalışır
+                    console.log('Cross-origin iframe, autoplay handled by iframe content');
+                }
+            });
+        }
         return;
     }
     
