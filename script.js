@@ -384,6 +384,15 @@ const channels = [
         logo: "logos/diyanet.png",
         description: "Diyanet TV - Dini içerikler ve hutbeler"
     },
+    {
+        id: 45,
+        name: "Kanal 1",
+        category: "Ulusal",
+        streamUrl: "",
+        webUrl: "https://www.kanal1.com.tr/canli-yayin",
+        logo: "logos/kanal1.png",
+        description: "Kanal 1 - Ulusal yayın kanalı"
+    },
     // Yeni Eklenen Ulusal Kanallar
     {
         id: 46,
@@ -421,133 +430,6 @@ const channels = [
         youtubeUrl: "https://www.youtube.com/watch?v=5Whk9MVTpI4",
         logo: "logos/disney.png",
         description: "Disney Channel - Çocuk eğlence kanalı"
-    },
-    // Ek Haber Kanalları
-    {
-        id: 50,
-        name: "TRT Haber",
-        category: "Haber",
-        streamUrl: "https://tv-trthaber.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trthaber.png",
-        description: "TRT Haber - Resmi haber kanalı"
-    },
-    {
-        id: 51,
-        name: "HaberTürk",
-        category: "Haber",
-        streamUrl: "",
-        webUrl: "https://www.haberturk.com/canliyayin",
-        logo: "logos/haberturk.png",
-        description: "HaberTürk - Bağımsız haber kanalı"
-    },
-    // Ek Spor Kanalları
-    {
-        id: 52,
-        name: "TRT Spor",
-        category: "Spor",
-        streamUrl: "https://tv-trtspor1.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtspor.png",
-        description: "TRT Spor - Resmi spor kanalı"
-    },
-    // Ek Müzik Kanalları
-    {
-        id: 53,
-        name: "TRT Müzik",
-        category: "Müzik",
-        streamUrl: "https://tv-trtmuzik.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtmuzik.png",
-        description: "TRT Müzik - Türk müziği kanalı"
-    },
-    // Ek Ulusal Kanallar
-    {
-        id: 54,
-        name: "TRT 1",
-        category: "Ulusal",
-        streamUrl: "https://tv-trt1.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trt1.png",
-        description: "TRT 1 - Ana ulusal kanal"
-    },
-    {
-        id: 55,
-        name: "TRT 2",
-        category: "Kültür",
-        streamUrl: "https://tv-trt2.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trt2.png",
-        description: "TRT 2 - Kültür-sanat kanalı"
-    },
-    {
-        id: 56,
-        name: "TRT 3",
-        category: "Spor",
-        streamUrl: "https://tv-trt3.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trt3.png",
-        description: "TRT 3 - Spor ve gençlik kanalı"
-    },
-    {
-        id: 57,
-        name: "TRT 4K",
-        category: "Ulusal",
-        streamUrl: "https://tv-trt4k.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trt4k.png",
-        description: "TRT 4K - Ultra HD yayın kanalı"
-    },
-    // Uluslararası Kanallar
-    {
-        id: 58,
-        name: "TRT World",
-        category: "Uluslararası",
-        streamUrl: "https://tv-trtworld.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtworld.png",
-        description: "TRT World - İngilizce haber kanalı"
-    },
-    {
-        id: 59,
-        name: "TRT Arabi",
-        category: "Uluslararası",
-        streamUrl: "https://tv-trtarabi.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtarabi.png",
-        description: "TRT Arabi - Arapça haber kanalı"
-    },
-    {
-        id: 60,
-        name: "TRT Türk",
-        category: "Uluslararası",
-        streamUrl: "https://tv-trtturk.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtturk.png",
-        description: "TRT Türk - Uluslararası Türkçe kanal"
-    },
-    {
-        id: 61,
-        name: "TRT Avaz",
-        category: "Uluslararası",
-        streamUrl: "https://tv-trtavaz.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtavas.png",
-        description: "TRT Avaz - Uluslararası Türkçe kanal"
-    },
-    {
-        id: 62,
-        name: "TRT Kurdî",
-        category: "Yerel",
-        streamUrl: "https://tv-trtkurdi.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtkurdi.png",
-        description: "TRT Kurdî - Kürtçe yayın kanalı"
-    },
-    // Özel Kategoriler
-    {
-        id: 63,
-        name: "TRT Çocuk",
-        category: "Çocuk",
-        streamUrl: "https://tv-trtcocuk.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtcocuk.png",
-        description: "TRT Çocuk - Çocuk kanalı"
-    },
-    {
-        id: 64,
-        name: "TRT Belgesel",
-        category: "Belgesel",
-        streamUrl: "https://tv-trtbelgesel.medya.trt.com.tr/master.m3u8",
-        logo: "logos/trtbelgesel.png",
-        description: "TRT Belgesel - Belgesel kanalı"
     }
 ];
 
@@ -1083,177 +965,6 @@ const programSchedules = {
         { time: "18:00", title: "Akşam Haberleri", description: "Akşam haber bülteni" },
         { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
         { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" }
-    ],
-    // Duplicate kanallar için program verileri
-    50: [ // TRT Haber (Duplicate)
-        { time: "00:00", title: "Haber Bülteni", description: "Güncel haberler" },
-        { time: "02:00", title: "Ekonomi Haberleri", description: "Ekonomi ve finans haberleri" },
-        { time: "04:00", title: "Dünya Haberleri", description: "Uluslararası gelişmeler" },
-        { time: "06:00", title: "Sabah Haberleri", description: "Günün ilk haberleri" },
-        { time: "08:00", title: "Ekonomi Raporu", description: "Detaylı ekonomi analizi" },
-        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
-        { time: "12:00", title: "Haber Merkezi", description: "Canlı haber yayını" },
-        { time: "14:00", title: "Ekonomi Bülteni", description: "Ekonomi haberleri" },
-        { time: "16:00", title: "Dünya Raporu", description: "Uluslararası haberler" },
-        { time: "18:00", title: "Akşam Haberleri", description: "Günün özeti" },
-        { time: "20:00", title: "Ana Haber", description: "Günün en önemli haberleri" },
-        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
-    ],
-    51: [ // HaberTürk (Duplicate)
-        { time: "06:00", title: "Habertürk Sabah", description: "Sabah haberleri" },
-        { time: "08:00", title: "Ekonomi Raporu", description: "Ekonomi haberleri" },
-        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
-        { time: "12:00", title: "Habertürk Haber", description: "Haber bülteni" },
-        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
-        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi analizi" },
-        { time: "18:00", title: "Akşam Haberleri", description: "Akşam bülteni" },
-        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
-        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
-    ],
-    52: [ // TRT Spor (Duplicate)
-        { time: "06:00", title: "Spor Haberleri", description: "Günün spor haberleri" },
-        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
-        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
-        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
-        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
-        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
-        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
-        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
-        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
-    ],
-    53: [ // TRT Müzik (Duplicate)
-        { time: "06:00", title: "Sabah Müziği", description: "Sabah müzik kuşağı" },
-        { time: "08:00", title: "Türk Halk Müziği", description: "Halk müziği programı" },
-        { time: "10:00", title: "Klasik Müzik", description: "Klasik müzik kuşağı" },
-        { time: "12:00", title: "Öğle Müziği", description: "Öğle müzik programı" },
-        { time: "14:00", title: "Türk Sanat Müziği", description: "Sanat müziği programı" },
-        { time: "16:00", title: "Pop Müzik", description: "Pop müzik kuşağı" },
-        { time: "18:00", title: "Akşam Müziği", description: "Akşam müzik programı" },
-        { time: "20:00", title: "Müzik Gecesi", description: "Gece müzik kuşağı" },
-        { time: "22:00", title: "Gece Müziği", description: "Gece müzik programı" }
-    ],
-    54: [ // TRT 1 (Duplicate)
-        { time: "06:00", title: "TRT 1 Günaydın", description: "Sabah haberleri ve günlük program" },
-        { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğitici programlar" },
-        { time: "10:00", title: "Gün Ortası Haberleri", description: "Günün önemli gelişmeleri" },
-        { time: "12:00", title: "Öğle Haberleri", description: "Detaylı haber bülteni" },
-        { time: "14:00", title: "Türk Dizisi", description: "Popüler Türk dizisi" },
-        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğlenceli programlar" },
-        { time: "18:00", title: "Akşam Haberleri", description: "Günün sonu haberleri" },
-        { time: "20:00", title: "Ana Haber Bülteni", description: "Günün en önemli haberleri" },
-        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" },
-        { time: "23:00", title: "Gece Kuşağı", description: "Gece programları" }
-    ],
-    55: [ // TRT 2 (Duplicate)
-        { time: "06:00", title: "Kültür Sabah", description: "Sabah kültür programı" },
-        { time: "08:00", title: "Sanat Programı", description: "Sanat ve kültür" },
-        { time: "10:00", title: "Belgesel Kuşağı", description: "Belgesel programları" },
-        { time: "12:00", title: "Kültür Haberleri", description: "Kültür haberleri" },
-        { time: "14:00", title: "Tarih Programı", description: "Tarihi içerikler" },
-        { time: "16:00", title: "Sanat Belgeseli", description: "Sanat belgeselleri" },
-        { time: "18:00", title: "Kültür Akşam", description: "Akşam kültür programı" },
-        { time: "20:00", title: "Ana Kültür", description: "Ana kültür programı" },
-        { time: "22:00", title: "Gece Kültür", description: "Gece kültür programı" }
-    ],
-    56: [ // TRT 3 (Duplicate)
-        { time: "06:00", title: "Spor Haberleri", description: "Günün spor haberleri" },
-        { time: "08:00", title: "Spor Merkezi", description: "Spor programı" },
-        { time: "10:00", title: "Futbol Analiz", description: "Futbol değerlendirmeleri" },
-        { time: "12:00", title: "Spor Bülteni", description: "Öğle spor haberleri" },
-        { time: "14:00", title: "Canlı Maç", description: "Süper Lig maçı" },
-        { time: "16:00", title: "Maç Sonrası", description: "Maç değerlendirmesi" },
-        { time: "18:00", title: "Spor Haberleri", description: "Akşam spor bülteni" },
-        { time: "20:00", title: "Spor Merkezi", description: "Akşam spor programı" },
-        { time: "22:00", title: "Gece Spor", description: "Gece spor haberleri" }
-    ],
-    57: [ // TRT 4K (Duplicate)
-        { time: "06:00", title: "TRT 4K Günaydın", description: "Sabah haberleri ve günlük program" },
-        { time: "08:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğitici programlar" },
-        { time: "10:00", title: "Gün Ortası Haberleri", description: "Günün önemli gelişmeleri" },
-        { time: "12:00", title: "Öğle Haberleri", description: "Detaylı haber bülteni" },
-        { time: "14:00", title: "Türk Dizisi", description: "Popüler Türk dizisi" },
-        { time: "16:00", title: "Çocuk Kuşağı", description: "Çocuklar için eğlenceli programlar" },
-        { time: "18:00", title: "Akşam Haberleri", description: "Günün sonu haberleri" },
-        { time: "20:00", title: "Ana Haber Bülteni", description: "Günün en önemli haberleri" },
-        { time: "22:00", title: "Gece Haberleri", description: "Gece haber bülteni" },
-        { time: "23:00", title: "Gece Kuşağı", description: "Gece programları" }
-    ],
-    58: [ // TRT World (Duplicate)
-        { time: "06:00", title: "TRT World Morning", description: "Morning news" },
-        { time: "08:00", title: "Economy Report", description: "Economic analysis" },
-        { time: "10:00", title: "Midday News", description: "Midday news" },
-        { time: "12:00", title: "TRT World News", description: "News bulletin" },
-        { time: "14:00", title: "World News", description: "International news" },
-        { time: "16:00", title: "Economy Bulletin", description: "Economic analysis" },
-        { time: "18:00", title: "Evening News", description: "Evening bulletin" },
-        { time: "20:00", title: "Main News", description: "Main news bulletin" },
-        { time: "22:00", title: "Night News", description: "Night bulletin" }
-    ],
-    59: [ // TRT Arabi (Duplicate)
-        { time: "06:00", title: "TRT Arabi Sabah", description: "أخبار الصباح" },
-        { time: "08:00", title: "تقرير الاقتصاد", description: "تحليل اقتصادي" },
-        { time: "10:00", title: "منتصف النهار", description: "أخبار منتصف النهار" },
-        { time: "12:00", title: "أخبار TRT Arabi", description: "نشرة أخبار" },
-        { time: "14:00", title: "أخبار العالم", description: "أخبار دولية" },
-        { time: "16:00", title: "نشرة الاقتصاد", description: "تحليل اقتصادي" },
-        { time: "18:00", title: "أخبار المساء", description: "نشرة مسائية" },
-        { time: "20:00", title: "الأخبار الرئيسية", description: "النشرة الرئيسية" },
-        { time: "22:00", title: "أخبار الليل", description: "نشرة ليلية" }
-    ],
-    60: [ // TRT Türk (Duplicate)
-        { time: "06:00", title: "TRT Türk Sabah", description: "Sabah haberleri" },
-        { time: "08:00", title: "Ekonomi Raporu", description: "Ekonomi haberleri" },
-        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
-        { time: "12:00", title: "TRT Türk Haber", description: "Haber bülteni" },
-        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
-        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi analizi" },
-        { time: "18:00", title: "Akşam Haberleri", description: "Akşam bülteni" },
-        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
-        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
-    ],
-    61: [ // TRT Avaz (Duplicate)
-        { time: "06:00", title: "TRT Avaz Sabah", description: "Sabah haberleri" },
-        { time: "08:00", title: "Ekonomi Raporu", description: "Ekonomi haberleri" },
-        { time: "10:00", title: "Gün Ortası", description: "Öğle haberleri" },
-        { time: "12:00", title: "TRT Avaz Haber", description: "Haber bülteni" },
-        { time: "14:00", title: "Dünya Haberleri", description: "Uluslararası haberler" },
-        { time: "16:00", title: "Ekonomi Bülteni", description: "Ekonomi analizi" },
-        { time: "18:00", title: "Akşam Haberleri", description: "Akşam bülteni" },
-        { time: "20:00", title: "Ana Haber", description: "Ana haber bülteni" },
-        { time: "22:00", title: "Gece Haberleri", description: "Gece bülteni" }
-    ],
-    62: [ // TRT Kurdî (Duplicate)
-        { time: "06:00", title: "TRT Kurdî Sabah", description: "Nûçeyên sibê" },
-        { time: "08:00", title: "Rapora Aborî", description: "Nûçeyên aborî" },
-        { time: "10:00", title: "Nîvro", description: "Nûçeyên nîvro" },
-        { time: "12:00", title: "Nûçeyên TRT Kurdî", description: "Bulletina nûçeyan" },
-        { time: "14:00", title: "Nûçeyên Cîhanê", description: "Nûçeyên navneteweyî" },
-        { time: "16:00", title: "Bulletina Aborî", description: "Analîza aborî" },
-        { time: "18:00", title: "Nûçeyên Êvarê", description: "Bulletina êvarê" },
-        { time: "20:00", title: "Nûçeyên Sereke", description: "Bulletina sereke" },
-        { time: "22:00", title: "Nûçeyên Şevê", description: "Bulletina şevê" }
-    ],
-    63: [ // TRT Çocuk (Duplicate)
-        { time: "06:00", title: "Sabah Çizgi Film", description: "Çocuk çizgi filmleri" },
-        { time: "08:00", title: "Eğitici Program", description: "Eğitici içerikler" },
-        { time: "10:00", title: "Çizgi Film Kuşağı", description: "Popüler çizgi filmler" },
-        { time: "12:00", title: "Öğle Çizgi Film", description: "Öğle çizgi film kuşağı" },
-        { time: "14:00", title: "Eğitici İçerik", description: "Eğitici programlar" },
-        { time: "16:00", title: "Akşam Çizgi Film", description: "Akşam çizgi film kuşağı" },
-        { time: "18:00", title: "Çocuk Programı", description: "Çocuk programları" },
-        { time: "20:00", title: "Gece Çizgi Film", description: "Gece çizgi film kuşağı" },
-        { time: "22:00", title: "Gece Programı", description: "Gece programları" }
-    ],
-    64: [ // TRT Belgesel (Duplicate)
-        { time: "06:00", title: "Doğa Belgeseli", description: "Doğa ve vahşi yaşam" },
-        { time: "08:00", title: "Tarih Belgeseli", description: "Tarihi belgeseller" },
-        { time: "10:00", title: "Bilim Belgeseli", description: "Bilimsel belgeseller" },
-        { time: "12:00", title: "Kültür Belgeseli", description: "Kültür ve sanat" },
-        { time: "14:00", title: "Coğrafya Belgeseli", description: "Coğrafi belgeseller" },
-        { time: "16:00", title: "Teknoloji Belgeseli", description: "Teknoloji belgeselleri" },
-        { time: "18:00", title: "Tarih Belgeseli", description: "Tarihi içerikler" },
-        { time: "20:00", title: "Doğa Belgeseli", description: "Akşam doğa belgeseli" },
-        { time: "22:00", title: "Bilim Belgeseli", description: "Gece bilim belgeseli" }
     ]
 };
 
@@ -1281,7 +992,28 @@ const fallbackNews = [
 ];
 
 // Haber verilerini saklamak için global değişken
-let currentNewsData = [...fallbackNews];
+let currentNewsData = [
+    "Atama kararları Resmi Gazete'de - Bazı kurum ile kuruluşlara ilişkin atama kararları, Resmi Gazete'nin bugünkü sayısında yayımlandı.",
+    "Aydın'da sağanak nedeniyle trafikte aksama yaşandı - Aydın'da sağanağın etkisiyle Aydın-Denizli kara yoluna kadar gelen çamur nedeniyle trafikte aksama yaşandı.",
+    "Kahramanmaraş'ta 4 büyüklüğünde deprem - Kahramanmaraş'ın Türkoğlu ilçesinde, saat 22.08'de 4 büyüklüğünde deprem meydana geldi.",
+    "Gazze Mahkemesinde İsrail'in Gazze'de işlediği soykırımın ve ihlallerin tanıkları dinlendi - Gazze Mahkemesinin İstanbul'da düzenlenen nihai oturumu kapsamında, İsrail'in Gazze'de işlediği soykırıma, ağır insan hakları ve uluslararası hukuk ihlallerine ilişkin tanık ifadeleri dinlendi.",
+    "İletişim Başkanı Duran'dan Cumhurbaşkanı Erdoğan'ın Körfez turuna ilişkin açıklama - İletişim Başkanı Duran, 'Bu ziyaretler, Sayın Cumhurbaşkanımızın vizyoner liderliğinde Türkiye'nin dostluk köprülerini güçlendiren, barış ve işbirliği eksenli dış politikasının bir kez daha somut bir yansıması olmuştur.' açıklamasında bulundu.",
+    "Cumhurbaşkanı Erdoğan yurda döndü - Cumhurbaşkanı Recep Tayyip Erdoğan, Kuveyt, Katar ve Umman'ı kapsayan Körfez turundaki resmi temaslarını tamamlamasının ardından Türkiye'ye döndü.",
+    "İstanbul'da beklenen gök gürültülü sağanak için sarı kodlu uyarı yapıldı - İstanbul Valiliği, Meteoroloji Genel Müdürlüğü verilerine göre bugün kent genelinde beklenen gök gürültülü sağanak için sarı kodlu meteorolojik uyarı yapıldığını bildirdi.",
+    "HSK üyeliği için adaylar belli oldu - TBMM Anayasa ve Adalet komisyonları üyelerinden kurulu Karma Komisyon, Genel Kurulca Hakimler ve Savcılar Kuruluna seçilecek 1 üyenin üç katı adayı belirledi.",
+    "Antalya'da sağanak hayatı olumsuz etkiledi - Antalya'nın Aksu ve Serik ilçelerinde sağanak sonrası yollar göle döndü, bazı araçlar yolda mahsur kaldı, seralarda maddi hasar oluştu.",
+    "İstanbul'da trafik yoğunluğu yüzde 87'ye çıktı - Trafik yoğunluğu, Avrupa Yakası'nda yüzde 89'a, Anadolu Yakası'nda ise yüzde 85'e kadar yükseldi.",
+    "İçişleri Bakanlığından 8 il için sarı kodlu sağanak uyarısı - İçişleri Bakanlığı, Manisa, Aydın, Edirne, Kırklareli, Tekirdağ, Balıkesir, İzmir ve Çanakkale için sarı kodlu sağanak uyarısı verildiğini duyurdu.",
+    "Bakan Kurum: Yarın, Sayın Cumhurbaşkanımız yeni 500 bin sosyal konut projemizi milletimizle paylaşacaklar - Çevre, Şehircilik ve İklim Değişikliği Bakanı Murat Kurum, 'Yarın, Sayın Cumhurbaşkanımız yeni 500 bin sosyal konut projemizi milletimizle paylaşacaklar.' dedi.",
+    "Cumhurbaşkanlığı Hukuk Politikaları Kurulu Başkanvekili Uçum, basın mensuplarıyla bir araya geldi - Cumhurbaşkanlığı Hukuk Politikaları Kurulu Başkanvekili Uçum, Türkiye Basın Federasyonu'nda, 'Anadolu Sohbetleri' kapsamında, Türkiye Basın Federasyonu Genel Başkanı Burhan ve basın mensuplarıyla bir araya geldi, gündeme ilişkin soruları yanıtladı.",
+    "Gökçeada'da kuvvetli sağanak nedeniyle denizin rengi değişti - Çanakkale'nin Gökçeada ilçesinde gece yarısı başlayan kuvvetli sağanak nedeniyle oluşan yağmur suları ve çamur, denizin rengini değiştirdi.",
+    "Can Holding'e yönelik operasyonda hakimliğinin tutuklama kararına ilişkin yazısına ulaşıldı - Can Holding'e yönelik soruşturmada İstanbul merkezli 4 ilde düzenlenen ikinci dalga operasyonda tutuklanan şüphelilere ilişkin sulh ceza hakimliğinin karar yazısında, suçlamalara ilişkin tespit ve değerlendirmelere yer verildi.",
+    "Türkiye ve Yunanistan arasındaki Güven Artırıcı Önlemler Toplantısı'nın yeni turu İzmir'de yapıldı - Milli Savunma Bakanlığı (MSB), Türkiye ve Yunanistan arasındaki Güven Artırıcı Önlemler Toplantısı'nın yeni turunun İzmir'de yapıldığını, toplantının olumlu bir havada gerçekleştiğini bildirdi.",
+    "Karadeniz'de balık stoklarının araştırılmasına yönelik çalışmalar devam ediyor - Su Ürünleri Merkez Araştırma Enstitüsü (SUMAE) ekipleri, Karadeniz'deki balık stoklarının araştırılmasına yönelik çalışmalarını Hopa ile İğneada arasındaki kıyı bölümünde bu yıl da sürdürecek.",
+    "TUSAŞ şehitleri birinci yıl dönümünde anılıyor - Türk Havacılık ve Uzay Sanayii (TUSAŞ) Kahramankazan tesislerine yönelik terör saldırısı şehitleri, birinci yıl dönümünde anılıyor.",
+    "Muğla'da 484 otel ve tesis denetlendi, eksiklikleri bulunan 5'i kapatıldı - Muğla'da güvenli ve sürdürülebilir turizm için yapılan çalışmalar kapsamında eylülde 484 otel ve tesisin denetimi yapıldı, bunlardan 5'i eksiklikleri tamamlanıncaya kadar kapatıldı.",
+    "İzmir'in Foça ilçesinde sağanak hayatı olumsuz etkiledi - İzmir'in Foça ilçesinde etkili olan sağanak nedeniyle dere taştı, bazı ev ve iş yerlerini su bastı. Aracıyla sele kapılan 1 kişiyi arama çalışmaları ise sürüyor."
+];
 
 // DOM elementleri - DOM yüklendikten sonra tanımlanacak
 let searchInput, channelList, currentChannel, channelDescription, fullscreenBtn, muteBtn, programList, programDate, newsScroll;
@@ -1297,67 +1029,97 @@ function updateProgramDate() {
 // RSS feed'ini çek ve parse et
 async function fetchNewsFromAA() {
     try {
-        // CORS proxy kullanarak RSS feed'ini çek
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(AA_RSS_URL)}`;
+        console.log('RSS feed çekiliyor...');
         
-        const response = await fetch(proxyUrl);
-        const data = await response.json();
-        
-        if (data.contents) {
-            // XML'i parse et
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
-            
-            // RSS item'larını al
-            const items = xmlDoc.querySelectorAll('item');
-            const newsItems = [];
-            
-            items.forEach((item, index) => {
-                if (index < 12) { // İlk 12 haberi al
-                    const title = item.querySelector('title')?.textContent || '';
-                    const description = item.querySelector('description')?.textContent || '';
-                    
-                    if (title) {
-                        // HTML tag'lerini temizle
-                        let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
-                        
-                        // Gereksiz kelimeleri temizle
-                        cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -)/i, '').trim();
-                        cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem)/i, '').trim();
-                        
-                        // Çok kısa haberleri atla
-                        if (cleanTitle.length < 20) return;
-                        
-                        // Uzun haberleri akıllıca kısalt
-                        let finalTitle = cleanTitle;
-                        if (cleanTitle.length > 100) {
-                            // Cümle sonlarında kır
-                            const sentences = cleanTitle.split(/[.!?]/);
-                            if (sentences.length > 1 && sentences[0].length > 30) {
-                                finalTitle = sentences[0] + '.';
-                            } else {
-                                finalTitle = cleanTitle.substring(0, 97) + '...';
-                            }
-                        }
-                        
-                        newsItems.push(finalTitle);
-                    }
-                }
-            });
-            
-            if (newsItems.length > 0) {
-                currentNewsData = newsItems;
-                console.log('AA haberleri başarıyla yüklendi:', newsItems.length, 'haber');
+        // Önce AA RSS'ini dene
+        try {
+            const aaNews = await fetchNewsFromSingleSource(AA_RSS_URL, 'AA');
+            if (aaNews.length > 0) {
+                currentNewsData = aaNews;
+                console.log('AA haberleri başarıyla yüklendi:', aaNews.length, 'haber');
                 return true;
             }
+        } catch (error) {
+            console.error('AA RSS hatası:', error);
         }
+        
+        // AA başarısız olursa CNN Türk'ü dene
+        try {
+            const cnnNews = await fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN');
+            if (cnnNews.length > 0) {
+                currentNewsData = cnnNews;
+                console.log('CNN Türk haberleri başarıyla yüklendi:', cnnNews.length, 'haber');
+                return true;
+            }
+        } catch (error) {
+            console.error('CNN Türk RSS hatası:', error);
+        }
+        
     } catch (error) {
-        console.error('AA haberleri yüklenirken hata:', error);
+        console.error('Haber yükleme hatası:', error);
     }
     
-    // Hata durumunda fallback haberleri kullan
+    // Her iki kaynak da başarısız olursa fallback haberleri kullan
+    console.log('Fallback haberleri kullanılıyor...');
     currentNewsData = [...fallbackNews];
     return false;
+}
+
+// RSS içeriğini parse etme fonksiyonu
+function parseRSSContent(xmlContent) {
+    try {
+        // XML'i parse et
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlContent, 'text/xml');
+        
+        // RSS item'larını al
+        const items = xmlDoc.querySelectorAll('item');
+        console.log('Bulunan item sayısı:', items.length);
+        const newsItems = [];
+        
+        items.forEach((item, index) => {
+            if (index < 30) { // İlk 30 haberi al (daha fazla güncel haber için)
+                const title = item.querySelector('title')?.textContent || '';
+                const description = item.querySelector('description')?.textContent || '';
+                
+                console.log(`Haber ${index + 1}:`, title);
+                
+                if (title) {
+                    // HTML tag'lerini temizle
+                    let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
+                    let cleanDescription = description.replace(/<[^>]*>/g, '').trim();
+                    
+                    // Gereksiz kelimeleri temizle
+                    cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -)/i, '').trim();
+                    cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem)/i, '').trim();
+                    
+                    // Çok kısa haberleri atla
+                    if (cleanTitle.length < 20) return;
+                    
+                    // Başlık ve açıklamayı birleştir
+                    let finalNews = cleanTitle;
+                    if (cleanDescription && cleanDescription.length > 20) {
+                        finalNews = cleanTitle + ' - ' + cleanDescription;
+                    }
+                    
+                    newsItems.push(finalNews);
+                    console.log('Eklenen haber:', finalNews.substring(0, 100) + '...');
+                }
+            }
+        });
+        
+        if (newsItems.length > 0) {
+            currentNewsData = newsItems;
+            console.log('AA haberleri başarıyla yüklendi:', newsItems.length, 'haber');
+            return true;
+        } else {
+            console.log('Hiç haber bulunamadı!');
+            return false;
+        }
+    } catch (error) {
+        console.error('RSS parse hatası:', error);
+        return false;
+    }
 }
 
 function createNewsTicker() {
@@ -1366,8 +1128,12 @@ function createNewsTicker() {
         return;
     }
     
+    console.log('createNewsTicker called, currentNewsData length:', currentNewsData.length);
+    console.log('currentNewsData:', currentNewsData);
+    
     // Haberleri karıştır
     const shuffledNews = [...currentNewsData].sort(() => Math.random() - 0.5);
+    console.log('shuffledNews length:', shuffledNews.length);
     
     // Her haberi tek tek göster - aralarında büyük boşluklar
     let htmlContent = '';
@@ -1379,6 +1145,8 @@ function createNewsTicker() {
         }
     });
     
+    console.log('HTML content length:', htmlContent.length);
+    
     // HTML'i ekle
     newsScroll.innerHTML = htmlContent;
     
@@ -1388,7 +1156,7 @@ function createNewsTicker() {
         if (tickerContent) {
             tickerContent.style.animation = 'none';
             tickerContent.offsetHeight; // Reflow trigger
-            tickerContent.style.animation = 'scroll-news-single 200s linear infinite';
+            tickerContent.style.animation = 'scroll-news-single 450s linear infinite';
             console.log('Animation restarted');
         }
     }, 100);
@@ -1399,15 +1167,15 @@ function createNewsTicker() {
 async function updateNewsTicker() {
     // İlk yüklemede haberleri çek
     console.log('Haberler yükleniyor...');
-    await fetchNewsFromMultipleSources();
+    await fetchNewsFromAA();
     createNewsTicker();
     
-    // Her 10 dakikada bir haberleri güncelle
+    // Her 5 dakikada bir haberleri güncelle (daha sık güncelleme için)
     setInterval(async () => {
         console.log('Haberler güncelleniyor...');
-        await fetchNewsFromMultipleSources();
+        await fetchNewsFromAA();
         createNewsTicker();
-    }, 600000); // 10 dakika = 600000 ms
+    }, 300000); // 5 dakika = 300000 ms
 }
 
 // Çoklu kaynak haber çekme fonksiyonu
@@ -1455,11 +1223,14 @@ async function fetchNewsFromSingleSource(url, source) {
             const newsItems = [];
             
             items.forEach((item, index) => {
-                if (index < 8) { // Her kaynaktan 8 haber
+                if (index < 15) { // Her kaynaktan 15 haber (daha fazla güncel haber için)
                     const title = item.querySelector('title')?.textContent || '';
                     
                     if (title) {
+                        const description = item.querySelector('description')?.textContent || '';
+                        
                         let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
+                        let cleanDescription = description.replace(/<[^>]*>/g, '').trim();
                         
                         // Kaynak etiketlerini temizle
                         cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -|CNN|CNN Türk|CNN\/|CNN -)/i, '').trim();
@@ -1467,18 +1238,13 @@ async function fetchNewsFromSingleSource(url, source) {
                         
                         if (cleanTitle.length < 20) return;
                         
-                        // Uzun haberleri akıllıca kısalt
-                        let finalTitle = cleanTitle;
-                        if (cleanTitle.length > 120) {
-                            const sentences = cleanTitle.split(/[.!?]/);
-                            if (sentences.length > 1 && sentences[0].length > 40) {
-                                finalTitle = sentences[0] + '.';
-                            } else {
-                                finalTitle = cleanTitle.substring(0, 117) + '...';
-                            }
+                        // Başlık ve açıklamayı birleştir
+                        let finalNews = cleanTitle;
+                        if (cleanDescription && cleanDescription.length > 20) {
+                            finalNews = cleanTitle + ' - ' + cleanDescription;
                         }
                         
-                        newsItems.push(finalTitle);
+                        newsItems.push(finalNews);
                     }
                 }
             });
@@ -1807,13 +1573,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Haber bandını başlat
     if (newsScroll) {
         console.log('newsScroll element found, starting news ticker...');
-        // Önce fallback haberlerle başlat
+        // Manuel haberlerle başlat
         createNewsTicker();
-        // Sonra AA haberlerini yükle
-        setTimeout(() => {
-            updateNewsTicker();
-        }, 1000);
-        console.log('News ticker initialized with AA integration');
+        console.log('News ticker initialized with manual news');
     } else {
         console.error('newsScroll element not found!');
     }
