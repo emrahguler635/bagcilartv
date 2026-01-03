@@ -4,7 +4,8 @@ const channels = [
         id: 1,
         name: "TRT 1",
         category: "Ulusal",
-        streamUrl: "https://tv-trt1.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trt1.com.tr/Canli-izle",
         logo: "logos/trt1.png",
         description: "Türkiye'nin ilk ulusal televizyon kanalı"
     },
@@ -12,7 +13,8 @@ const channels = [
         id: 2,
         name: "TRT Haber",
         category: "Haber",
-        streamUrl: "https://tv-trthaber.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trthaber.com/canli-yayin.html",
         logo: "logos/trthaber.png",
         description: "7/24 haber kanalı"
     },
@@ -20,7 +22,8 @@ const channels = [
         id: 3,
         name: "TRT Spor",
         category: "Spor",
-        streamUrl: "https://tv-trtspor1.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtspor.com.tr/canli-yayin-izle.html",
         logo: "logos/trtspor.png",
         description: "Spor haberleri ve canlı maç yayınları"
     },
@@ -28,7 +31,8 @@ const channels = [
         id: 4,
         name: "TRT Çocuk",
         category: "Çocuk",
-        streamUrl: "https://tv-trtcocuk.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtcocuk.net.tr/canli-izle",
         logo: "logos/trtcocuk.png",
         description: "Çocuklar için eğitici ve eğlenceli içerik"
     },
@@ -36,7 +40,8 @@ const channels = [
         id: 5,
         name: "TRT Belgesel",
         category: "Belgesel",
-        streamUrl: "https://tv-trtbelgesel.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtbelgesel.com.tr/canli-izle",
         logo: "logos/trtbelgesel.png",
         description: "Belgesel ve kültür programları"
     },
@@ -44,7 +49,8 @@ const channels = [
         id: 6,
         name: "TRT Müzik",
         category: "Müzik",
-        streamUrl: "https://tv-trtmuzik.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtmuzik.net.tr/canli-yayin",
         logo: "logos/trtmuzik.png",
         description: "Türk müziği ve kültür programları"
     },
@@ -52,7 +58,8 @@ const channels = [
         id: 7,
         name: "TRT Avaz",
         category: "Uluslararası",
-        streamUrl: "https://tv-trtavaz.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-avaz",
         logo: "logos/trtavas.png",
         description: "Uluslararası Türkçe yayın kanalı"
     },
@@ -60,7 +67,8 @@ const channels = [
         id: 8,
         name: "TRT Kurdî",
         category: "Yerel",
-        streamUrl: "https://tv-trtkurdi.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-kurdi",
         logo: "logos/trtkurdi.png",
         description: "Kürtçe yayın yapan kanal"
     },
@@ -68,7 +76,8 @@ const channels = [
         id: 9,
         name: "TRT World",
         category: "Uluslararası",
-        streamUrl: "https://tv-trtworld.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-world",
         logo: "logos/trtworld.png",
         description: "İngilizce uluslararası haber kanalı"
     },
@@ -76,7 +85,8 @@ const channels = [
         id: 10,
         name: "TRT Arabi",
         category: "Uluslararası",
-        streamUrl: "https://tv-trtarabi.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-arabi",
         logo: "logos/trtarabi.png",
         description: "Arapça uluslararası haber kanalı"
     },
@@ -84,7 +94,8 @@ const channels = [
         id: 11,
         name: "TRT Türk",
         category: "Uluslararası",
-        streamUrl: "https://tv-trtturk.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-turk",
         logo: "logos/trtturk.png",
         description: "Türkçe uluslararası haber kanalı"
     },
@@ -92,7 +103,8 @@ const channels = [
         id: 12,
         name: "TRT 2",
         category: "Kültür",
-        streamUrl: "https://tv-trt2.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trt2.com.tr/canli-izle",
         logo: "logos/trt2.png",
         description: "Kültür-sanat ve belgesel kanalı"
     },
@@ -100,7 +112,8 @@ const channels = [
         id: 13,
         name: "TRT 3",
         category: "Spor",
-        streamUrl: "https://tv-trt3.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-3",
         logo: "logos/trt3.png",
         description: "Spor ve gençlik kanalı"
     },
@@ -108,7 +121,8 @@ const channels = [
         id: 14,
         name: "TRT 4K",
         category: "Ulusal",
-        streamUrl: "https://tv-trt4k.medya.trt.com.tr/master.m3u8",
+        streamUrl: "",
+        webUrl: "https://www.trtizle.com/canli-yayin/trt-4k",
         logo: "logos/trt4k.png",
         description: "4K Ultra HD yayın kanalı"
     },
