@@ -1708,7 +1708,7 @@ function selectChannel(channel) {
             console.log('Native HLS desteği kullanılıyor');
             videoPlayer.src = channel.streamUrl;
         } else if (hasHlsJS && hlsSupported) {
-            console.log('HLS.js desteği kullanılıyor');
+            console.log('HLS.js desteği kullanılıyor - Stream URL deneniyor');
             // HLS.js için optimize edilmiş ayarlar
             window.hls = new Hls({
                 enableWorker: true,
@@ -1811,22 +1811,43 @@ function selectChannel(channel) {
             console.warn('HLS desteği bulunamadı:', {
                 hlsJSLoaded: !!window.Hls,
                 hlsSupported: window.Hls ? Hls.isSupported() : false,
-                nativeHLS: hasNativeHLS
+                nativeHLS: hasNativeHLS,
+                tarayici: isChrome ? 'Chrome' : (isFirefox ? 'Firefox' : 'Diğer')
             });
             
-            // HLS.js yükleniyorsa biraz bekle
+            // Chrome'da HLS.js yüklenmesi için daha uzun bekle
+            const waitTime = isChrome ? 3000 : 2000;
+            
+            // HLS.js yükleniyorsa bekle
             if (!window.Hls && document.querySelector('script[src*="hls.js"]')) {
-                console.log('HLS.js yükleniyor, 2 saniye bekleniyor...');
+                console.log(`HLS.js yükleniyor, ${waitTime}ms bekleniyor...`);
                 setTimeout(() => {
                     if (window.Hls && Hls.isSupported()) {
-                        console.log('HLS.js yüklendi, tekrar deneniyor...');
+                        console.log('HLS.js yüklendi, stream URL tekrar deneniyor...');
+                        // Stream URL'yi tekrar dene
                         selectChannel(channel);
                         return;
                     } else {
                         console.log('HLS.js hala yüklenmedi, web URL\'e geçiliyor');
                         fallbackToWebIfAvailable();
                     }
-                }, 2000);
+                }, waitTime);
+                return;
+            }
+            
+            // Chrome'da HLS.js yüklenmemişse, biraz daha bekle
+            if (isChrome && !window.Hls) {
+                console.log('Chrome: HLS.js yüklenmemiş, 3 saniye daha bekleniyor...');
+                setTimeout(() => {
+                    if (window.Hls && Hls.isSupported()) {
+                        console.log('Chrome: HLS.js yüklendi, stream URL tekrar deneniyor...');
+                        selectChannel(channel);
+                        return;
+                    } else {
+                        console.log('Chrome: HLS.js yüklenemedi, web URL\'e geçiliyor');
+                        fallbackToWebIfAvailable();
+                    }
+                }, 3000);
                 return;
             }
             
@@ -1862,12 +1883,28 @@ function selectChannel(channel) {
             }
         };
         
-        // Loading timeout - Chrome için daha uzun süre bekle (10 saniye)
-        const timeoutDuration = isChrome ? 10000 : 6000;
+        // Loading timeout - Chrome için çok daha uzun süre bekle (15 saniye)
+        // Chrome'da stream URL'nin yüklenmesi daha uzun sürebilir
+        const timeoutDuration = isChrome ? 15000 : 6000;
         const loadingTimeout = setTimeout(() => {
-            if (videoPlayer && (videoPlayer.readyState < 3 || videoPlayer.networkState === 2)) {
-                console.log(`Loading timeout (${timeoutDuration}ms), trying web URL fallback`);
-                fallbackToWeb();
+            if (videoPlayer) {
+                const readyState = videoPlayer.readyState;
+                const networkState = videoPlayer.networkState;
+                console.log(`Loading timeout (${timeoutDuration}ms)`, {
+                    readyState: readyState,
+                    networkState: networkState,
+                    paused: videoPlayer.paused,
+                    tarayici: isChrome ? 'Chrome' : (isFirefox ? 'Firefox' : 'Diğer')
+                });
+                
+                // Sadece gerçekten yüklenemiyorsa fallback'e geç
+                if (readyState < 3 || networkState === 2) {
+                    console.log('Stream URL başarısız, web URL\'e geçiliyor');
+                    fallbackToWeb();
+                } else {
+                    console.log('Stream URL yükleniyor, timeout iptal ediliyor');
+                    clearTimeout(loadingTimeout);
+                }
             }
         }, timeoutDuration);
         
@@ -1889,15 +1926,31 @@ function selectChannel(channel) {
         };
         
         videoPlayer.addEventListener('canplay', () => {
-            clearTimeout(loadingTimeout);
+            if (loadingTimeout) {
+                clearTimeout(loadingTimeout);
+                console.log('canplay event: Stream URL başarıyla yüklendi, timeout iptal edildi', {
+                    tarayici: isChrome ? 'Chrome' : (isFirefox ? 'Firefox' : 'Diğer')
+                });
+            }
             hideLoading();
             currentChannel.textContent = channel.name;
             
+            // Video player'ı zorla göster
+            if (videoPlayer) {
+                videoPlayer.style.display = 'block';
+                videoPlayer.style.visibility = 'visible';
+                videoPlayer.style.opacity = '1';
+            }
+            
             // Otomatik oynatmayı başlat
-            if (videoPlayer.paused) {
+            if (videoPlayer && videoPlayer.paused) {
                 const playPromise = videoPlayer.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(err => {
+                    playPromise.then(() => {
+                        console.log('Stream URL başarıyla oynatılıyor', {
+                            tarayici: isChrome ? 'Chrome' : (isFirefox ? 'Firefox' : 'Diğer')
+                        });
+                    }).catch(err => {
                         console.log('canplay autoplay prevented:', err);
                         // Muted ile tekrar dene
                         videoPlayer.muted = true;
