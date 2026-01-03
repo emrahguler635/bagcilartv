@@ -222,6 +222,7 @@ const channels = [
         category: "Haber",
         streamUrl: "",
         webUrl: "https://www.ahaber.com.tr/canli-yayin",
+        youtubeUrl: "https://www.youtube.com/watch?v=nmY9i63t6qo",
         logo: "logos/ahaber.png",
         description: "A Haber - Haber kanalı"
     },
@@ -1097,14 +1098,18 @@ async function fetchNewsFromAA() {
             // Aynı başlıklı haberleri kaldır
             const seen = new Set();
             const uniqueNews = allNews.filter(news => {
+                if (!news || news.trim().length === 0) return false;
                 const key = news.substring(0, 50).toLowerCase();
                 if (seen.has(key)) return false;
                 seen.add(key);
                 return true;
             });
-            currentNewsData = uniqueNews.sort(() => Math.random() - 0.5);
-            console.log('Toplam güncel haber sayısı:', currentNewsData.length);
-            return true;
+            
+            if (uniqueNews.length > 0) {
+                currentNewsData = uniqueNews.sort(() => Math.random() - 0.5);
+                console.log('Toplam güncel haber sayısı:', currentNewsData.length);
+                return true;
+            }
         }
         
     } catch (error) {
@@ -1112,8 +1117,7 @@ async function fetchNewsFromAA() {
     }
     
     // Kaynaklar başarısız olursa fallback haberleri kullan
-    console.log('Fallback haberleri kullanılıyor...');
-    currentNewsData = [...fallbackNews];
+    console.log('RSS feed\'lerden haber alınamadı, fallback haberler kullanılacak...');
     return false;
 }
 
@@ -1187,7 +1191,12 @@ function createNewsTicker() {
     }
     
     console.log('createNewsTicker called, currentNewsData length:', currentNewsData.length);
-    console.log('currentNewsData:', currentNewsData);
+    
+    // Eğer hala haber yoksa, fallback haberleri kullan
+    if (!currentNewsData || currentNewsData.length === 0) {
+        console.error('Hiç haber verisi yok, fallback kullanılıyor!');
+        currentNewsData = [...fallbackNews];
+    }
     
     // Haberleri karıştır
     const shuffledNews = [...currentNewsData].sort(() => Math.random() - 0.5);
@@ -1195,13 +1204,20 @@ function createNewsTicker() {
     
     // Her haberi tek tek göster - aralarında büyük boşluklar
     let htmlContent = '';
-    shuffledNews.forEach((news, index) => {
-        htmlContent += `<span class="news-item">${news}</span>`;
-        // Her haber arasında büyük boşluk ekle (ekran genişliği kadar)
-        if (index < shuffledNews.length - 1) {
-            htmlContent += `<span class="news-spacer"></span>`;
-        }
-    });
+    if (shuffledNews.length > 0) {
+        shuffledNews.forEach((news, index) => {
+            if (news && news.trim().length > 0) {
+                htmlContent += `<span class="news-item">${news}</span>`;
+                // Her haber arasında büyük boşluk ekle (ekran genişliği kadar)
+                if (index < shuffledNews.length - 1) {
+                    htmlContent += `<span class="news-spacer"></span>`;
+                }
+            }
+        });
+    } else {
+        // Eğer hala haber yoksa, en azından bir mesaj göster
+        htmlContent = `<span class="news-item">Haberler yükleniyor, lütfen bekleyin...</span>`;
+    }
     
     console.log('HTML content length:', htmlContent.length);
     
@@ -1223,19 +1239,28 @@ function createNewsTicker() {
 }
 
 async function updateNewsTicker() {
-    // İlk yüklemede haberleri çek
-    console.log('Haberler yükleniyor...');
+    // Önce fallback haberleri göster (anında görünürlük için)
+    console.log('Son dakika haberleri başlatılıyor...');
+    if (!currentNewsData || currentNewsData.length === 0) {
+        console.log('Fallback haberler yükleniyor...');
+        currentNewsData = [...fallbackNews];
+    }
+    createNewsTicker();
+    
+    // Arka planda güncel haberleri çek
+    console.log('Güncel haberler yükleniyor...');
     try {
-        await fetchNewsFromAA();
-        if (!currentNewsData || currentNewsData.length === 0) {
-            console.log('Haberler yüklenemedi, fallback kullanılıyor...');
-            currentNewsData = [...fallbackNews];
+        const success = await fetchNewsFromAA();
+        if (success && currentNewsData && currentNewsData.length > 0) {
+            console.log('Güncel haberler yüklendi, ticker güncelleniyor...');
+            createNewsTicker();
+        } else {
+            console.log('Güncel haberler yüklenemedi, fallback haberler gösteriliyor...');
+            // Fallback haberler zaten gösteriliyor
         }
-        createNewsTicker();
     } catch (error) {
         console.error('Haber yükleme hatası:', error);
-        currentNewsData = [...fallbackNews];
-        createNewsTicker();
+        // Fallback haberler zaten gösteriliyor
     }
     
     // Her 3 dakikada bir haberleri güncelle (daha sık güncelleme için güncel haberler)
@@ -1781,6 +1806,31 @@ function selectChannel(channel) {
     
     // Sadece Web URL varsa iframe içinde göster
     if (channel.webUrl) {
+        // A Haber gibi iframe engeli olan siteler için özel kontrol
+        const iframeBlockedSites = ['ahaber.com.tr'];
+        const isBlocked = iframeBlockedSites.some(domain => channel.webUrl.includes(domain));
+        
+        if (isBlocked) {
+            // Iframe engeli olan siteler için direkt yeni sekmede aç
+            window.open(channel.webUrl, '_blank');
+            videoWrapper.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 10px; padding: 40px;">
+                    <i class="fas fa-external-link-alt" style="font-size: 64px; color: #667eea; margin-bottom: 20px;"></i>
+                    <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 24px;">Yeni Sekmede Açılıyor...</h3>
+                    <p style="color: #718096; margin-bottom: 25px; text-align: center; max-width: 400px;">
+                        ${channel.name} kanalı yeni bir sekmede açılıyor. Eğer otomatik olarak açılmadıysa, aşağıdaki butona tıklayın.
+                    </p>
+                    <a href="${channel.webUrl}" target="_blank" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: transform 0.3s ease;">
+                        <i class="fas fa-external-link-alt"></i> Web Sitesinde Aç
+                    </a>
+                </div>
+            `;
+            currentChannel.textContent = channel.name;
+            channelDescription.innerHTML = channel.description;
+            updateControlButtons('web', channel.webUrl);
+            return;
+        }
+        
         videoWrapper.innerHTML = `
             <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
             <div id='externalWatchBtn'></div>
@@ -1790,23 +1840,15 @@ function selectChannel(channel) {
         document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
         updateControlButtons('web', channel.webUrl);
         
-        // Web iframe için otomatik oynatma kontrolü
+        // Web iframe için hata kontrolü
         const webIframe = document.getElementById('webIframe');
         if (webIframe) {
             webIframe.addEventListener('load', () => {
                 console.log('Web iframe loaded');
-                // İframe içindeki video elementlerine otomatik oynatma eklemeyi dene
-                try {
-                    const iframeDoc = webIframe.contentDocument || webIframe.contentWindow.document;
-                    const videos = iframeDoc.querySelectorAll('video');
-                    videos.forEach(video => {
-                        video.autoplay = true;
-                        video.play().catch(e => console.log('Web iframe autoplay prevented:', e));
-                    });
-                } catch (e) {
-                    // Cross-origin hatası normal, iframe'in kendi içinde autoplay çalışır
-                    console.log('Cross-origin iframe, autoplay handled by iframe content');
-                }
+            });
+            webIframe.addEventListener('error', () => {
+                console.log('Web iframe error, opening in new tab');
+                window.open(channel.webUrl, '_blank');
             });
         }
         return;
