@@ -207,7 +207,7 @@ const channels = [
         name: "A Haber",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=nmY9i63t6qo",
+        webUrl: "https://www.ahaber.com.tr/canli-yayin",
         logo: "logos/ahaber.png",
         description: "A Haber - Haber kanalı"
     },
@@ -363,7 +363,7 @@ const channels = [
         name: "Dream TV",
         category: "Müzik",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=nmY9i63t6qo",
+        webUrl: "https://www.dreamtv.com.tr/canli-yayin",
         logo: "logos/dreamtv.png",
         description: "Dream TV - Müzik ve eğlence kanalı"
     },
@@ -1347,13 +1347,28 @@ function createChannelList(channelsToShow = channels) {
                 <div class="channel-category">${channel.category}</div>
             </div>
         `;
-        channelItem.addEventListener('click', () => selectChannel(channel));
+        channelItem.addEventListener('click', () => {
+            // YouTube veya Web URL varsa direkt yeni sekmede aç
+            if (channel.youtubeUrl) {
+                window.open(channel.youtubeUrl, '_blank');
+            } else if (channel.webUrl && !channel.streamUrl) {
+                // Sadece web URL varsa (stream URL yoksa) direkt aç
+                window.open(channel.webUrl, '_blank');
+            } else {
+                // Stream URL varsa veya hiçbir URL yoksa normal akış
+                selectChannel(channel);
+            }
+        });
         channelList.appendChild(channelItem);
     });
 }
 
 function selectChannel(channel) {
     console.log('selectChannel called with:', channel);
+    
+    // İzleme sayfasına geç
+    showWatchPage();
+    
     document.querySelectorAll('.channel-item.active').forEach(item => item.classList.remove('active'));
     const selectedItem = document.querySelector(`[data-channel-id="${channel.id}"]`);
     if (selectedItem) selectedItem.classList.add('active');
@@ -1363,21 +1378,43 @@ function selectChannel(channel) {
     createProgramGuide(channel.id);
     let externalBtnHtml = '';
     
-    // Öncelik sırası: YouTube > Stream URL > Web URL
+    // YouTube URL varsa otomatik olarak yeni sekmede aç
     if (channel.youtubeUrl) {
-        const videoId = channel.youtubeUrl.split('v=')[1];
-        videoWrapper.innerHTML = `<iframe id="youtubeIframe" width="100%" height="400" src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&playsinline=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>\n<div id='externalWatchBtn'></div>`;
-        externalBtnHtml = `<a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>YouTube'da İzle</a>`;
+        console.log('Opening YouTube URL in new tab:', channel.youtubeUrl);
+        window.open(channel.youtubeUrl, '_blank');
+        
+        // Bilgi mesajı göster
+        videoWrapper.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 10px; padding: 40px;">
+                <i class="fab fa-youtube" style="font-size: 64px; color: #e53e3e; margin-bottom: 20px;"></i>
+                <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 24px;">YouTube'da Açılıyor...</h3>
+                <p style="color: #718096; margin-bottom: 25px; text-align: center; max-width: 400px;">
+                    ${channel.name} kanalı yeni bir sekmede açılıyor. Eğer otomatik olarak açılmadıysa, aşağıdaki butona tıklayın.
+                </p>
+                <a href="${channel.youtubeUrl}" target="_blank" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #e53e3e, #c53030); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3); transition: transform 0.3s ease;">
+                    <i class="fab fa-youtube"></i> YouTube'da İzle
+                </a>
+            </div>
+        `;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = channel.description;
-        document.getElementById('externalWatchBtn').innerHTML = externalBtnHtml;
         updateControlButtons('youtube', channel.youtubeUrl);
         return;
     }
     
     // Stream URL varsa önce onu dene
     if (channel.streamUrl) {
-        videoWrapper.innerHTML = `<video id="videoPlayer" controls style="width:100%;height:400px;border-radius:10px;background:#000;"></video>\n<div id='externalWatchBtn'></div>`;
+        videoWrapper.innerHTML = `
+            <div style="position: relative; width: 100%; height: 400px; background: #000; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                <div style="text-align: center; color: white;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 15px; color: #667eea;"></i>
+                    <div style="font-size: 16px; font-weight: 600;">Yükleniyor...</div>
+                    <div style="font-size: 12px; margin-top: 5px; opacity: 0.7;">Lütfen bekleyin</div>
+                </div>
+                <video id="videoPlayer" controls style="width:100%;height:100%;border-radius:10px;background:#000;display:none;"></video>
+            </div>
+            <div id='externalWatchBtn'></div>
+        `;
         currentChannel.textContent = `${channel.name} - Yükleniyor...`;
         channelDescription.textContent = channel.description;
         document.getElementById('externalWatchBtn').innerHTML = channel.webUrl ? `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Alternatif: Web Sitesinde Aç</a>` : '';
@@ -1385,8 +1422,67 @@ function selectChannel(channel) {
         if (window.hls) { window.hls.destroy(); window.hls = null; }
         if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
             videoPlayer.src = channel.streamUrl;
+            videoPlayer.preload = 'auto';
         } else if (window.Hls && Hls.isSupported()) {
-            window.hls = new Hls();
+            // HLS.js için optimize edilmiş ayarlar
+            window.hls = new Hls({
+                enableWorker: true,
+                lowLatencyMode: false,
+                backBufferLength: 90,
+                maxBufferLength: 30,
+                maxMaxBufferLength: 60,
+                maxBufferSize: 60 * 1000 * 1000,
+                maxBufferHole: 0.5,
+                highBufferWatchdogPeriod: 2,
+                nudgeOffset: 0.1,
+                nudgeMaxRetry: 3,
+                maxFragLoadingTimeOut: 10000,
+                fragLoadingTimeOut: 8000,
+                manifestLoadingTimeOut: 8000,
+                levelLoadingTimeOut: 8000,
+                fragLoadingMaxRetry: 4,
+                levelLoadingMaxRetry: 4,
+                startFragPrefetch: true,
+                testBandwidth: true,
+                progressive: false,
+                debug: false,
+                capLevelToPlayerSize: false
+            });
+            
+            // HLS event listeners - daha hızlı yükleme için
+            window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                console.log('HLS manifest parsed, starting playback');
+                const playPromise = videoPlayer.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        currentChannel.textContent = channel.name;
+                    }).catch(err => {
+                        console.error('Play error:', err);
+                        fallbackToWeb();
+                    });
+                }
+            });
+            
+            window.hls.on(Hls.Events.ERROR, (event, data) => {
+                console.error('HLS error:', data);
+                if (data.fatal) {
+                    switch(data.type) {
+                        case Hls.ErrorTypes.NETWORK_ERROR:
+                            console.log('Network error, trying to recover...');
+                            window.hls.startLoad();
+                            break;
+                        case Hls.ErrorTypes.MEDIA_ERROR:
+                            console.log('Media error, trying to recover...');
+                            window.hls.recoverMediaError();
+                            break;
+                        default:
+                            console.log('Fatal error, cannot recover');
+                            fallbackToWeb();
+                            break;
+                    }
+                }
+            });
+            
             window.hls.loadSource(channel.streamUrl);
             window.hls.attachMedia(videoPlayer);
         } else {
@@ -1410,6 +1506,11 @@ function selectChannel(channel) {
         
         // Stream URL hatası durumunda web URL'e geç
         const fallbackToWeb = () => {
+            // HLS cleanup
+            if (window.hls) {
+                window.hls.destroy();
+                window.hls = null;
+            }
             if (channel.webUrl) {
                 console.log('Stream URL failed, falling back to web URL');
                 videoWrapper.innerHTML = `
@@ -1423,41 +1524,99 @@ function selectChannel(channel) {
             }
         };
         
-        videoPlayer.addEventListener('canplay', () => { currentChannel.textContent = channel.name; });
+        // Loading timeout - 6 saniye içinde yüklenmezse web URL'e geç (daha hızlı)
+        const loadingTimeout = setTimeout(() => {
+            if (videoPlayer && (videoPlayer.readyState < 3 || videoPlayer.networkState === 2)) {
+                console.log('Loading timeout (6s), trying web URL fallback');
+                fallbackToWeb();
+            }
+        }, 6000);
+        
+        // Video yüklendiğinde loading indicator'ı kaldır
+        const hideLoading = () => {
+            const loadingDiv = videoWrapper.querySelector('div[style*="position: relative"]');
+            if (loadingDiv) {
+                loadingDiv.style.display = 'none';
+                if (videoPlayer) videoPlayer.style.display = 'block';
+            }
+        };
+        
+        videoPlayer.addEventListener('canplay', () => {
+            clearTimeout(loadingTimeout);
+            hideLoading();
+            currentChannel.textContent = channel.name;
+        });
+        
+        videoPlayer.addEventListener('playing', () => {
+            clearTimeout(loadingTimeout);
+            hideLoading();
+            currentChannel.textContent = channel.name;
+        });
+        
         videoPlayer.addEventListener('error', () => {
+            clearTimeout(loadingTimeout);
             console.log('Video player error, trying web URL fallback');
             fallbackToWeb();
         });
+        
         videoPlayer.addEventListener('stalled', () => {
-            console.log('Video player stalled, trying web URL fallback');
+            console.log('Video player stalled');
             setTimeout(() => {
-                if (videoPlayer.readyState < 3) {
+                if (videoPlayer && videoPlayer.readyState < 3) {
+                    console.log('Still stalled after 5s, trying web URL fallback');
                     fallbackToWeb();
                 }
-            }, 3000);
+            }, 5000); // 5 saniye bekledikten sonra
         });
+        
+        videoPlayer.addEventListener('waiting', () => {
+            console.log('Video player waiting for data');
+        });
+        
         videoPlayer.addEventListener('contextmenu', e => e.preventDefault());
-        const playPromise = videoPlayer.play();
-        if (playPromise !== undefined) {
-            playPromise.then(() => { currentChannel.textContent = channel.name; }).catch(() => {
-                console.log('Play promise rejected, trying web URL fallback');
-                fallbackToWeb();
-            });
+        
+        // Preload ve autoplay ayarları
+        videoPlayer.preload = 'auto';
+        videoPlayer.playsInline = true;
+        
+        // Native HLS için play promise
+        if (!window.hls) {
+            const playPromise = videoPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    clearTimeout(loadingTimeout);
+                    currentChannel.textContent = channel.name;
+                }).catch(() => {
+                    console.log('Play promise rejected, trying web URL fallback');
+                    clearTimeout(loadingTimeout);
+                    fallbackToWeb();
+                });
+            }
         }
         updateControlButtons('video');
         return;
     }
     
-    // Sadece Web URL varsa
+    // Sadece Web URL varsa otomatik olarak yeni sekmede aç
     if (channel.webUrl) {
-        // Web kanalları için iframe ile direkt yayın
+        console.log('Opening web URL in new tab:', channel.webUrl);
+        window.open(channel.webUrl, '_blank');
+        
+        // Bilgi mesajı göster
         videoWrapper.innerHTML = `
-            <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
-            <div id='externalWatchBtn'></div>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 10px; padding: 40px;">
+                <i class="fas fa-external-link-alt" style="font-size: 64px; color: #667eea; margin-bottom: 20px;"></i>
+                <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 24px;">Web Sitesinde Açılıyor...</h3>
+                <p style="color: #718096; margin-bottom: 25px; text-align: center; max-width: 400px;">
+                    ${channel.name} kanalı yeni bir sekmede açılıyor. Eğer otomatik olarak açılmadıysa, aşağıdaki butona tıklayın.
+                </p>
+                <a href="${channel.webUrl}" target="_blank" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: transform 0.3s ease;">
+                    <i class="fas fa-external-link-alt"></i> Web Sitesinde Aç
+                </a>
+            </div>
         `;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = channel.description;
-        document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
         updateControlButtons('web', channel.webUrl);
         return;
     }
@@ -1614,6 +1773,67 @@ document.addEventListener('keydown', e => {
         if (filteredChannels[newIndex]) selectChannel(filteredChannels[newIndex]);
     }
 });
+// Ana sayfa grid görünümü oluştur
+function createChannelsGrid(channelsToShow = channels) {
+    const channelsGrid = document.getElementById('channelsGrid');
+    if (!channelsGrid) return;
+    
+    channelsGrid.innerHTML = '';
+    
+    channelsToShow.forEach(channel => {
+        const channelCard = document.createElement('div');
+        channelCard.className = 'channel-card';
+        channelCard.innerHTML = `
+            <img src="${channel.logo}" alt="${channel.name}" class="channel-card-logo" onerror="this.onerror=null;this.src='https://via.placeholder.com/100x100/667eea/ffffff?text=${channel.name.charAt(0)}'">
+            <div class="channel-card-name">${channel.name}</div>
+            <div class="channel-card-category">${channel.category}</div>
+        `;
+        channelCard.addEventListener('click', () => {
+            // YouTube veya Web URL varsa direkt aç, yoksa izleme sayfasına geç
+            if (channel.youtubeUrl) {
+                window.open(channel.youtubeUrl, '_blank');
+            } else if (channel.webUrl) {
+                window.open(channel.webUrl, '_blank');
+            } else {
+                // Stream URL varsa izleme sayfasına geç
+                showWatchPage();
+                selectChannel(channel);
+            }
+        });
+        channelsGrid.appendChild(channelCard);
+    });
+}
+
+// Kategori filtreleme
+function filterByCategory(category) {
+    if (category === 'all') {
+        createChannelsGrid(channels);
+    } else {
+        const filtered = channels.filter(ch => ch.category === category);
+        createChannelsGrid(filtered);
+    }
+}
+
+// Ana sayfayı göster
+function showHomePage() {
+    const homePage = document.getElementById('homePage');
+    const watchPage = document.getElementById('watchPage');
+    if (homePage && watchPage) {
+        homePage.style.display = 'block';
+        watchPage.style.display = 'none';
+    }
+}
+
+// İzleme sayfasını göster
+function showWatchPage() {
+    const homePage = document.getElementById('homePage');
+    const watchPage = document.getElementById('watchPage');
+    if (homePage && watchPage) {
+        homePage.style.display = 'none';
+        watchPage.style.display = 'flex';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, programSchedules keys:', Object.keys(programSchedules));
     
@@ -1649,6 +1869,37 @@ document.addEventListener('DOMContentLoaded', () => {
         logo.addEventListener('error', () => console.log('Logo failed to load, using fallback'));
     }
     
+    // Ana sayfa grid görünümünü oluştur
+    const channelsGrid = document.getElementById('channelsGrid');
+    if (channelsGrid) {
+        setTimeout(() => {
+            createChannelsGrid();
+            console.log('Channels grid created with', channels.length, 'channels');
+        }, 500);
+    }
+    
+    // Kategori tab'larına event listener ekle
+    const categoryTabs = document.querySelectorAll('.category-tab');
+    categoryTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Aktif tab'ı güncelle
+            categoryTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // Kategoriye göre filtrele
+            const category = tab.dataset.category;
+            filterByCategory(category);
+        });
+    });
+    
+    // Geri butonuna event listener ekle
+    const backBtn = document.getElementById('backBtn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            showHomePage();
+        });
+    }
+    
     // Yükleme animasyonu göster
     if (channelList) {
         channelList.innerHTML = '<div style="text-align: center; padding: 20px; color: #718096;"><i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 10px;"></i><br>Kanallar yükleniyor...</div>';
@@ -1670,9 +1921,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Haber bandını başlat
     if (newsScroll) {
         console.log('newsScroll element found, starting news ticker...');
-        // Manuel haberlerle başlat
-        createNewsTicker();
-        console.log('News ticker initialized with manual news');
+        // Güncel haberlerle başlat
+        updateNewsTicker();
+        console.log('News ticker initialized');
     } else {
         console.error('newsScroll element not found!');
     }

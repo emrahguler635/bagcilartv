@@ -35,51 +35,92 @@
         </div>
         
         <main>
-            <div class="sidebar">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Kanal ara...">
-                    <i class="fas fa-search"></i>
+            <!-- Ana Sayfa - Hero ve Kanal Grid -->
+            <div id="homePage" class="home-page">
+                <div class="hero-section">
+                    <h2 class="hero-title">Canlı TV İzle</h2>
+                    <p class="hero-subtitle">Türkiye'nin en popüler kanallarını canlı izleyin</p>
                 </div>
                 
-                <div class="channel-list" id="channelList">
-                    <!-- Kanallar JavaScript ile yüklenecek -->
+                <div class="categories-section">
+                    <div class="category-tabs" id="categoryTabs">
+                        <button class="category-tab active" data-category="all">
+                            <i class="fas fa-th"></i> Tümü
+                        </button>
+                        <button class="category-tab" data-category="Ulusal">
+                            <i class="fas fa-tv"></i> Ulusal
+                        </button>
+                        <button class="category-tab" data-category="Haber">
+                            <i class="fas fa-newspaper"></i> Haber
+                        </button>
+                        <button class="category-tab" data-category="Spor">
+                            <i class="fas fa-futbol"></i> Spor
+                        </button>
+                        <button class="category-tab" data-category="Müzik">
+                            <i class="fas fa-music"></i> Müzik
+                        </button>
+                        <button class="category-tab" data-category="Çocuk">
+                            <i class="fas fa-child"></i> Çocuk
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="channels-grid" id="channelsGrid">
+                    <!-- Kanallar grid olarak yüklenecek -->
                 </div>
             </div>
             
-            <div class="content">
-                <div class="video-container">
-                    <div id="videoWrapper">
-                        <video id="videoPlayer" controls>
-                            <source src="" type="video/mp4">
-                            Tarayıcınız video oynatmayı desteklemiyor.
-                        </video>
+            <!-- Video İzleme Sayfası -->
+            <div id="watchPage" class="watch-page" style="display: none;">
+                <div class="sidebar">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Kanal ara...">
+                        <i class="fas fa-search"></i>
                     </div>
                     
-                    <!-- Kontrol butonları video altına taşındı -->
-                    <div class="controls">
-                        <button id="fullscreenBtn" class="control-btn">
-                            <i class="fas fa-expand"></i> Tam Ekran
-                        </button>
-                        <button id="muteBtn" class="control-btn">
-                            <i class="fas fa-volume-up"></i> Ses
-                        </button>
-                    </div>
-                    
-                    <div class="video-info">
-                        <h2 id="currentChannel">Kanal seçin</h2>
-                        <p id="channelDescription">Sol taraftan bir kanal seçin</p>
+                    <div class="channel-list" id="channelList">
+                        <!-- Kanallar JavaScript ile yüklenecek -->
                     </div>
                 </div>
                 
-                <!-- Yayın Akışı Bölümü - Sağa taşındı -->
-                <div class="program-guide">
-                    <div class="program-header">
-                        <h3><i class="fas fa-calendar-alt"></i> Yayın Akışı</h3>
-                        <div id="programDate" class="program-date"></div>
+                <div class="content">
+                    <div class="video-container">
+                        <div id="videoWrapper">
+                            <video id="videoPlayer" controls>
+                                <source src="" type="video/mp4">
+                                Tarayıcınız video oynatmayı desteklemiyor.
+                            </video>
+                        </div>
+                        
+                        <!-- Kontrol butonları video altına taşındı -->
+                        <div class="controls">
+                            <button id="backBtn" class="control-btn">
+                                <i class="fas fa-arrow-left"></i> Geri
+                            </button>
+                            <button id="fullscreenBtn" class="control-btn">
+                                <i class="fas fa-expand"></i> Tam Ekran
+                            </button>
+                            <button id="muteBtn" class="control-btn">
+                                <i class="fas fa-volume-up"></i> Ses
+                            </button>
+                        </div>
+                        
+                        <div class="video-info">
+                            <h2 id="currentChannel">Kanal seçin</h2>
+                            <p id="channelDescription">Sol taraftan bir kanal seçin</p>
+                        </div>
                     </div>
-                    <div class="program-list" id="programList">
-                        <div style="text-align: center; color: #718096; padding: 20px;">
-                            Bir kanal seçin
+                    
+                    <!-- Yayın Akışı Bölümü - Sağa taşındı -->
+                    <div class="program-guide">
+                        <div class="program-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Yayın Akışı</h3>
+                            <div id="programDate" class="program-date"></div>
+                        </div>
+                        <div class="program-list" id="programList">
+                            <div style="text-align: center; color: #718096; padding: 20px;">
+                                Bir kanal seçin
+                            </div>
                         </div>
                     </div>
                 </div>

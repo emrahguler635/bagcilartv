@@ -167,11 +167,17 @@ header h1 i {
 }
 
 main {
-    display: flex;
-    gap: 0;
     flex: 1;
     min-height: 0;
     margin-top: -10px;
+    width: 100%;
+}
+
+.watch-page {
+    display: flex;
+    gap: 0;
+    width: 100%;
+    min-height: 0;
     align-items: stretch;
 }
 
@@ -1256,5 +1262,295 @@ main {
         padding: 3px 6px;
         font-size: 13px;
         letter-spacing: 0.05px;
+    }
+}
+
+/* Modern Ana Sayfa Stilleri */
+.home-page {
+    width: 100%;
+    padding: 30px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 60px 20px;
+    margin-bottom: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #667eea);
+    background-size: 200% 100%;
+    animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+    letter-spacing: -2px;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: #718096;
+    font-weight: 500;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.categories-section {
+    margin-bottom: 40px;
+}
+
+.category-tabs {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.category-tab {
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #e2e8f0;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4a5568;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.category-tab i {
+    font-size: 16px;
+    color: #667eea;
+    transition: transform 0.3s ease;
+}
+
+.category-tab:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+}
+
+.category-tab:hover i {
+    transform: scale(1.2);
+}
+
+.category-tab.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.category-tab.active i {
+    color: white;
+}
+
+.channels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 0 20px;
+}
+
+.channel-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.channel-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.channel-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(102, 126, 234, 0.3);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.channel-card:hover::before {
+    transform: scaleX(1);
+}
+
+.channel-card-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    object-fit: contain;
+    background: white;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    border: 3px solid #f7fafc;
+}
+
+.channel-card:hover .channel-card-logo {
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.channel-card-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.channel-card-category {
+    font-size: 13px;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.watch-page {
+    width: 100%;
+}
+
+/* Responsive Ana Sayfa */
+@media (max-width: 1200px) {
+    .channels-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-page {
+        padding: 15px;
+    }
+    
+    .hero-section {
+        padding: 40px 15px;
+        margin-bottom: 30px;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .channels-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+        padding: 0 10px;
+    }
+    
+    .channel-card {
+        padding: 20px;
+    }
+    
+    .channel-card-logo {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .channel-card-name {
+        font-size: 16px;
+    }
+    
+    .category-tabs {
+        gap: 10px;
+        padding: 0 10px;
+    }
+    
+    .category-tab {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .channels-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+    }
+    
+    .channel-card {
+        padding: 15px;
+    }
+    
+    .channel-card-logo {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .category-tab {
+        padding: 8px 14px;
+        font-size: 12px;
     }
 } 
