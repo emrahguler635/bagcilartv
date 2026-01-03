@@ -1605,14 +1605,14 @@ function selectChannel(channel) {
     // Stream URL varsa önce onu dene
     if (channel.streamUrl) {
         videoWrapper.innerHTML = `
-            <div style="position: relative; width: 100%; height: 400px; background: #000; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <div id="loadingIndicator" style="position: absolute; width: 100%; height: 400px; background: #000; border-radius: 10px; display: flex; align-items: center; justify-content: center; z-index: 10;">
                 <div style="text-align: center; color: white;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 15px; color: #667eea;"></i>
                     <div style="font-size: 16px; font-weight: 600;">Yükleniyor...</div>
                     <div style="font-size: 12px; margin-top: 5px; opacity: 0.7;">Lütfen bekleyin</div>
                 </div>
-                <video id="videoPlayer" controls autoplay playsinline preload="auto" style="width:100%;height:100%;border-radius:10px;background:#000;display:none;"></video>
             </div>
+            <video id="videoPlayer" controls autoplay playsinline preload="auto" style="position: relative; width:100%;height:400px;border-radius:10px;background:#000;display:block;z-index:1;"></video>
             <div id='externalWatchBtn'></div>
         `;
         currentChannel.textContent = `${channel.name} - Yükleniyor...`;
@@ -1658,6 +1658,15 @@ function selectChannel(channel) {
             // HLS event listeners - daha hızlı yükleme için
             window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
                 console.log('HLS manifest parsed, starting playback');
+                
+                // Video player'ı göster
+                hideLoading();
+                if (videoPlayer) {
+                    videoPlayer.style.display = 'block';
+                    videoPlayer.style.visibility = 'visible';
+                    videoPlayer.style.opacity = '1';
+                }
+                
                 // Otomatik oynatmayı dene
                 videoPlayer.autoplay = true;
                 videoPlayer.muted = false;
@@ -1760,10 +1769,18 @@ function selectChannel(channel) {
         
         // Video yüklendiğinde loading indicator'ı kaldır
         const hideLoading = () => {
-            const loadingDiv = videoWrapper.querySelector('div[style*="position: relative"]');
-            if (loadingDiv && videoPlayer) {
-                loadingDiv.style.display = 'none';
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+                console.log('Loading indicator kaldırıldı');
+            }
+            if (videoPlayer) {
+                // Video player'ı göster
                 videoPlayer.style.display = 'block';
+                videoPlayer.style.visibility = 'visible';
+                videoPlayer.style.opacity = '1';
+                videoPlayer.style.zIndex = '2';
+                console.log('Video player gösterildi');
             }
         };
         
@@ -1792,6 +1809,13 @@ function selectChannel(channel) {
             if (loadingTimeout) clearTimeout(loadingTimeout);
             hideLoading();
             currentChannel.textContent = channel.name;
+            
+            // Video oynatılırken de görünür olduğundan emin ol
+            if (videoPlayer) {
+                videoPlayer.style.display = 'block';
+                videoPlayer.style.visibility = 'visible';
+                videoPlayer.style.opacity = '1';
+            }
         });
         
         videoPlayer.addEventListener('error', () => {
