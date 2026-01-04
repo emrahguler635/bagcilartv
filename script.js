@@ -221,7 +221,7 @@ const channels = [
         name: "A Haber",
         category: "Haber",
         streamUrl: "",
-        webUrl: "https://www.ahaber.com.tr/canli-yayin",
+        webUrl: "https://www.ahaber.com.tr/video/canli-yayin",
         youtubeUrl: "https://www.youtube.com/watch?v=nmY9i63t6qo",
         logo: "logos/ahaber.png",
         description: "A Haber - Haber kanalı"
@@ -231,7 +231,8 @@ const channels = [
         name: "Kral TV",
         category: "Müzik",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=A49bKX8gb-8",
+        webUrl: "https://www.kraltv.com.tr/canli-yayin",
+        youtubeUrl: "",
         logo: "logos/kraltv.png",
         description: "Kral TV - Müzik kanalı"
     },
@@ -249,7 +250,8 @@ const channels = [
         name: "Mekke TV",
         category: "Dini",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=7-Qf3g-0xEI",
+        webUrl: "https://www.youtube.com/watch?v=7-Qf3g-0xEI",
+        youtubeUrl: "",
         logo: "logos/mekke.png",
         description: "Mekke TV - Kabe'den canlı yayın. YouTube üzerinden izleyebilirsiniz."
     },
@@ -258,7 +260,8 @@ const channels = [
         name: "Medine TV",
         category: "Dini",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=F-QZqbWGuKs",
+        webUrl: "https://www.youtube.com/watch?v=F-QZqbWGuKs",
+        youtubeUrl: "",
         logo: "logos/medine.png",
         description: "Medine TV - Mescid-i Nebevi'den canlı yayın. YouTube üzerinden izleyebilirsiniz."
     },
@@ -267,7 +270,8 @@ const channels = [
         name: "Sözcü TV",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=ztmY_cCtUl0",
+        webUrl: "https://www.sozcu.com.tr/canli-yayin",
+        youtubeUrl: "",
         logo: "logos/sozcutv.png",
         description: "Sözcü TV - Bağımsız haber kanalı"
     },
@@ -294,7 +298,8 @@ const channels = [
         name: "Ulusal Kanal",
         category: "Haber",
         streamUrl: "",
-        youtubeUrl: "https://www.youtube.com/watch?v=dK96AZbCns0",
+        webUrl: "https://www.youtube.com/watch?v=dK96AZbCns0",
+        youtubeUrl: "",
         logo: "logos/ulusal.png",
         description: "Ulusal Kanal - Bağımsız haber kanalı"
     },
@@ -985,9 +990,13 @@ const programSchedules = {
     ]
 };
 
-// RSS Feed URL'leri - NTV ana kaynak (daha güvenilir)
+// RSS Feed URL'leri - NTV ve Anadolu Ajansı ana kaynaklar
 const NTV_RSS_URL = 'https://www.ntv.com.tr/son-dakika.rss';
 const NTV_RSS_URL_ALT = 'https://www.ntv.com.tr/gundem.rss';
+
+// Anadolu Ajansı RSS Feed URL'leri
+const AA_RSS_URL = 'https://www.aa.com.tr/tr/rss/default?cat=gundem';
+const AA_RSS_URL_ALT = 'https://www.aa.com.tr/tr/rss/default?cat=ekonomi';
 
 // Alternatif RSS Feed URL'leri (fallback)
 const CNN_RSS_URL = 'https://www.cnnturk.com/feed/rss/turkiye/news';
@@ -997,10 +1006,6 @@ const CNN_RSS_URL_ALT = 'https://www.cnnturk.com/feed/rss/all/news';
 const HABERTURK_RSS_URL = 'https://www.haberturk.com/rss/kategori/gundem.xml';
 const SABAH_RSS_URL = 'https://www.sabah.com.tr/rss/gundem.xml';
 const SOZCU_RSS_URL = 'https://www.sozcu.com.tr/rss/haber.xml';
-
-// Eski kaynaklar (kullanılmıyor)
-const AA_RSS_URL = 'https://www.aa.com.tr/tr/rss/default?cat=gundem';
-const AA_RSS_URL_ALT = 'https://www.aa.com.tr/tr/rss/default?cat=ekonomi';
 
 // Fallback haberler (internet bağlantısı yoksa) - Daha detaylı ve açıklayıcı
 const fallbackNews = [
@@ -1121,16 +1126,15 @@ function createFinanceTicker() {
     tickerElement.innerHTML = htmlContent;
     console.log('Finance ticker HTML içeriği eklendi:', tickerElement.innerHTML.length, 'karakter');
     
-    // Animasyonu hemen başlat (gecikme yok)
+    // Animasyonu hemen başlat (gecikme yok - doğrudan)
     if (tickerElement && tickerElement.innerHTML.trim()) {
         tickerElement.classList.remove('animate');
-        // Reflow trigger - hemen çalıştır
-        requestAnimationFrame(() => {
-            tickerElement.classList.add('animate');
-            console.log('Finance ticker animasyonu başlatıldı');
-        });
+        // Reflow trigger - hemen çalıştır (gecikme yok)
+        tickerElement.offsetHeight; // Force reflow
+        tickerElement.classList.add('animate');
+        console.log('✅ Finance ticker animasyonu hemen başlatıldı');
     } else {
-        console.error('Finance ticker elementi veya içeriği bulunamadı!');
+        console.error('❌ Finance ticker elementi veya içeriği bulunamadı!');
     }
     
     console.log('Finance ticker created successfully');
@@ -1190,37 +1194,61 @@ async function updateFinanceTicker() {
     }, 300000); // 5 dakika
 }
 
-// RSS feed'ini çek ve parse et - NTV ana kaynak
+// RSS feed'ini çek ve parse et - NTV ve Anadolu Ajansı
 async function fetchNewsFromAA() {
     try {
-        console.log('NTV RSS feed çekiliyor...');
+        console.log('📰 Haber kaynakları çekiliyor: NTV ve Anadolu Ajansı...');
         
-        // Önce NTV birincil URL'i dene
-        let news = await fetchNewsFromSingleSource(NTV_RSS_URL, 'NTV');
+        const allNews = [];
         
-        // Başarısız olursa NTV alternatif URL'i dene
-        if (!news || news.length === 0) {
-            console.log('NTV birincil RSS başarısız, alternatif deneniyor...');
-            news = await fetchNewsFromSingleSource(NTV_RSS_URL_ALT, 'NTV (Alt)');
+        // 1. NTV haberlerini çek (5 haber)
+        console.log('🔄 NTV RSS feed çekiliyor...');
+        let ntvNews = await fetchNewsFromSingleSource(NTV_RSS_URL, 'NTV');
+        
+        if (!ntvNews || ntvNews.length === 0) {
+            console.log('⚠️ NTV birincil RSS başarısız, alternatif deneniyor...');
+            ntvNews = await fetchNewsFromSingleSource(NTV_RSS_URL_ALT, 'NTV (Alt)');
         }
         
-        // Hala başarısızsa CNN Türk'ü dene
-        if (!news || news.length === 0) {
-            console.log('NTV RSS başarısız, CNN Türk deneniyor...');
-            news = await fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN Türk');
+        if (ntvNews && ntvNews.length > 0) {
+            // NTV haberlerinden 5 tanesini al
+            const ntvSelected = ntvNews.slice(0, 5);
+            allNews.push(...ntvSelected);
+            console.log('✅ NTV haberleri alındı:', ntvSelected.length, 'haber');
         }
         
-        // Hala başarısızsa CNN Türk alternatif'i dene
-        if (!news || news.length === 0) {
-            console.log('CNN Türk birincil RSS başarısız, alternatif deneniyor...');
-            news = await fetchNewsFromSingleSource(CNN_RSS_URL_ALT, 'CNN Türk (Alt)');
+        // 2. Anadolu Ajansı haberlerini çek (5 haber)
+        console.log('🔄 Anadolu Ajansı RSS feed çekiliyor...');
+        let aaNews = await fetchNewsFromSingleSource(AA_RSS_URL, 'Anadolu Ajansı');
+        
+        if (!aaNews || aaNews.length === 0) {
+            console.log('⚠️ AA birincil RSS başarısız, alternatif deneniyor...');
+            aaNews = await fetchNewsFromSingleSource(AA_RSS_URL_ALT, 'Anadolu Ajansı (Alt)');
+        }
+        
+        if (aaNews && aaNews.length > 0) {
+            // AA haberlerinden 5 tanesini al
+            const aaSelected = aaNews.slice(0, 5);
+            allNews.push(...aaSelected);
+            console.log('✅ Anadolu Ajansı haberleri alındı:', aaSelected.length, 'haber');
+        }
+        
+        // 3. Eğer yeterli haber yoksa CNN Türk'ten tamamla
+        if (allNews.length < 10) {
+            console.log('⚠️ Yeterli haber yok, CNN Türk deneniyor...');
+            let cnnNews = await fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN Türk');
+            if (cnnNews && cnnNews.length > 0) {
+                const needed = 10 - allNews.length;
+                allNews.push(...cnnNews.slice(0, needed));
+                console.log('✅ CNN Türk haberleri eklendi:', Math.min(needed, cnnNews.length), 'haber');
+            }
         }
         
         // Haberler başarıyla yüklendi
-        if (news && news.length > 0) {
+        if (allNews.length > 0) {
             // Duplicate haberleri kaldır
             const seen = new Set();
-            const uniqueNews = news.filter(item => {
+            const uniqueNews = allNews.filter(item => {
                 if (!item || item.trim().length === 0) return false;
                 const key = item.substring(0, 50).toLowerCase();
                 if (seen.has(key)) return false;
@@ -1230,17 +1258,23 @@ async function fetchNewsFromAA() {
             
             if (uniqueNews.length > 0) {
                 currentNewsData = uniqueNews.sort(() => Math.random() - 0.5);
-                console.log('Haberler başarıyla yüklendi:', currentNewsData.length, 'haber');
+                console.log('✅ Toplam haberler başarıyla yüklendi:', currentNewsData.length, 'haber');
+                console.log('📰 İlk 3 haber örneği:', currentNewsData.slice(0, 3));
+                // Haberler yüklendiğinde ticker'ı hemen güncelle
+                if (newsScroll) {
+                    createNewsTicker();
+                    console.log('🔄 Ticker güncellendi (haberler yüklendikten sonra)');
+                }
                 return true;
             }
         }
         
     } catch (error) {
-        console.error('Haber yükleme hatası:', error);
+        console.error('❌ Haber yükleme hatası:', error);
     }
     
     // Kaynak başarısız olursa fallback haberleri kullan
-    console.log('RSS feed\'lerden haber alınamadı, fallback haberler kullanılacak...');
+    console.log('⚠️ RSS feed\'lerden haber alınamadı, fallback haberler kullanılacak...');
     return false;
 }
 
@@ -1308,27 +1342,31 @@ function createNewsTicker() {
     }
     
     if (!newsScroll) {
-        console.error('newsScroll element not found!');
+        console.error('❌ newsScroll element not found!');
         return;
     }
     
-    // Eğer haber yoksa fallback kullan
+    console.log('🔵 createNewsTicker çağrıldı');
+    
+    // Eğer haber yoksa fallback kullan - GARANTİLİ
     if (!currentNewsData || currentNewsData.length === 0) {
-        console.log('Haber verisi yok, fallback kullanılıyor...');
+        console.log('⚠️ Haber verisi yok, fallback kullanılıyor...');
         currentNewsData = [...fallbackNews];
     }
-    
-    console.log('createNewsTicker called, currentNewsData length:', currentNewsData.length);
     
     // Eğer hala haber yoksa, fallback haberleri kullan
     if (!currentNewsData || currentNewsData.length === 0) {
-        console.error('Hiç haber verisi yok, fallback kullanılıyor!');
+        console.error('❌ Hiç haber verisi yok, fallback kullanılıyor!');
         currentNewsData = [...fallbackNews];
     }
     
-    // Haberleri karıştır
-    const shuffledNews = [...currentNewsData].sort(() => Math.random() - 0.5);
-    console.log('shuffledNews length:', shuffledNews.length);
+    console.log('📊 currentNewsData length:', currentNewsData.length);
+    console.log('📊 fallbackNews length:', fallbackNews.length);
+    
+    // Haberleri karıştır ve sadece ilk 10 haberini al
+    const shuffledNews = [...currentNewsData].sort(() => Math.random() - 0.5).slice(0, 10);
+    console.log('🔀 shuffledNews length (ilk 10):', shuffledNews.length);
+    console.log('📰 Gösterilecek haberler:', shuffledNews.map((n, i) => `${i + 1}. ${n.substring(0, 50)}...`));
     
     // Her haberi tek tek göster - aralarında büyük boşluklar
     let htmlContent = '';
@@ -1344,10 +1382,11 @@ function createNewsTicker() {
         });
     }
     
-    // Eğer hala içerik yoksa, fallback haberleri kesinlikle göster
+    // Eğer hala içerik yoksa, fallback haberleri kesinlikle göster (sadece ilk 10)
     if (!htmlContent || htmlContent.trim().length < 50) {
-        console.warn('HTML içeriği boş, fallback haberler gösteriliyor...');
-        const fallbackShuffled = [...fallbackNews].sort(() => Math.random() - 0.5);
+        console.warn('⚠️ HTML içeriği boş, fallback haberler gösteriliyor...');
+        htmlContent = ''; // Sıfırla
+        const fallbackShuffled = [...fallbackNews].sort(() => Math.random() - 0.5).slice(0, 10);
         fallbackShuffled.forEach((news, index) => {
             if (news && news.trim().length > 0) {
                 htmlContent += `<span class="news-item">${news}</span>`;
@@ -1360,31 +1399,57 @@ function createNewsTicker() {
     
     // Son çare: Hala içerik yoksa en azından bir mesaj göster
     if (!htmlContent || htmlContent.trim().length < 50) {
+        console.error('❌ Hala içerik yok! Mesaj gösteriliyor...');
         htmlContent = `<span class="news-item">Son dakika haberleri yükleniyor...</span>`;
     }
     
-    console.log('HTML content length:', htmlContent.length);
+    console.log('📝 HTML content length:', htmlContent.length);
+    console.log('📝 HTML content preview (ilk 200 karakter):', htmlContent.substring(0, 200));
     
     // HTML'i ekle - KESINLIKLE
     if (newsScroll) {
     newsScroll.innerHTML = htmlContent;
-        console.log('Haberler ticker\'a eklendi, içerik uzunluğu:', htmlContent.length);
+        console.log('✅ Haberler ticker\'a eklendi, içerik uzunluğu:', htmlContent.length);
+        
+        // DOM'a eklendiğini doğrula
+        const addedItems = newsScroll.querySelectorAll('.news-item');
+        console.log('✅ DOM\'da bulunan haber sayısı:', addedItems.length);
+        if (addedItems.length > 0) {
+            console.log('✅ İlk haber:', addedItems[0].textContent.substring(0, 50) + '...');
+        }
     } else {
-        console.error('newsScroll elementi hala bulunamadı!');
+        console.error('❌ newsScroll elementi hala bulunamadı!');
     }
     
-    // Animasyonu zorla başlat
+    // Animasyonu zorla başlat - içerik görünür başlasın
     setTimeout(() => {
         const tickerContent = document.querySelector('.news-ticker-content');
         if (tickerContent) {
+            // Önce animasyonu kaldır
             tickerContent.style.animation = 'none';
+            tickerContent.style.transform = 'translateX(0%)';
             tickerContent.offsetHeight; // Reflow trigger
+            
+            // Sonra animasyonu başlat (içerik görünür olarak)
             tickerContent.style.animation = 'scroll-news-single 450s linear infinite';
-            console.log('Animation restarted');
+            console.log('🎬 Animation restarted - içerik görünür başladı');
+            
+            // Ek kontrol - içeriğin görünür olduğunu doğrula
+            setTimeout(() => {
+                const rect = tickerContent.getBoundingClientRect();
+                console.log('📐 Ticker içerik pozisyonu:', {
+                    left: rect.left,
+                    top: rect.top,
+                    width: rect.width,
+                    visible: rect.width > 0 && rect.left < window.innerWidth
+                });
+            }, 200);
+        } else {
+            console.warn('⚠️ .news-ticker-content elementi bulunamadı');
         }
     }, 100);
     
-    console.log('News ticker created with', shuffledNews.length, 'news items (single scroll mode)');
+    console.log('✅ News ticker created with', shuffledNews.length, 'news items (single scroll mode)');
 }
 
 async function updateNewsTicker() {
@@ -1431,28 +1496,50 @@ async function updateNewsTicker() {
     
     // Arka planda güncel haberleri çek (async, hata olursa fallback korunur)
     // NOT: Proxy'ler çalışmıyorsa fallback haberler gösterilmeye devam eder
-    console.log('Güncel haberler arka planda yükleniyor... (proxy bağlantıları denenecek)');
+    console.log('🔄 Güncel haberler arka planda yükleniyor... (proxy bağlantıları denenecek)');
     
     // Hemen başlat (gecikme yok) - ama timeout kısa olsun
     setTimeout(() => {
         fetchNewsFromAA().then(success => {
+            console.log('📡 fetchNewsFromAA sonucu:', success, '| currentNewsData length:', currentNewsData?.length || 0);
             if (success && currentNewsData && currentNewsData.length > 0) {
                 console.log('✅ Güncel haberler yüklendi, ticker güncelleniyor...', currentNewsData.length, 'haber');
-                createNewsTicker();
+                // Ticker'ı kesinlikle güncelle
+                if (newsScroll) {
+                    createNewsTicker();
+                    console.log('🔄 Ticker güncellendi (updateNewsTicker içinde)');
+                    // Ek kontrol - eğer hala görünmüyorsa tekrar dene
+                    setTimeout(() => {
+                        const newsItems = newsScroll.querySelectorAll('.news-item');
+                        if (newsItems.length === 0) {
+                            console.warn('⚠️ Ticker hala boş, tekrar güncelleniyor...');
+                            createNewsTicker();
+                        } else {
+                            console.log('✅ Ticker başarıyla güncellendi,', newsItems.length, 'haber görünüyor');
+                        }
+                    }, 200);
+                } else {
+                    console.error('❌ newsScroll elementi bulunamadı!');
+                }
             } else {
                 console.log('⚠️ Güncel haberler yüklenemedi, fallback haberler kullanılıyor...');
+                console.log('   - success:', success);
+                console.log('   - currentNewsData:', currentNewsData ? currentNewsData.length : 'null');
                 // Fallback haberleri tekrar yükle (zaten yüklü ama emin olmak için)
                 if (!currentNewsData || currentNewsData.length === 0) {
                     currentNewsData = [...fallbackNews];
                     createNewsTicker();
+                    console.log('🔄 Fallback haberler yüklendi ve ticker güncellendi');
                 }
             }
         }).catch(error => {
             console.error('❌ Haber yükleme hatası (fallback korunuyor):', error.message);
+            console.error('   Hata detayı:', error);
             // Fallback haberler zaten gösteriliyor, hata durumunda korunuyor
             if (!currentNewsData || currentNewsData.length === 0) {
                 currentNewsData = [...fallbackNews];
                 createNewsTicker();
+                console.log('🔄 Fallback haberler yüklendi (hata durumunda)');
             }
         });
     }, 100); // Kısa bir gecikme ile başlat
@@ -1597,10 +1684,21 @@ async function fetchNewsFromSingleSource(url, source) {
                     throw new Error('XML parse hatası');
                 }
                 
-            const items = xmlDoc.querySelectorAll('item');
+                // Hem RSS 2.0 (item) hem Atom (entry) formatını destekle
+            let items = xmlDoc.querySelectorAll('item');
+            let isAtom = false;
+            
+            // Atom formatı kontrolü
+            if (items.length === 0) {
+                items = xmlDoc.querySelectorAll('entry');
+                isAtom = true;
+            }
+            
                 if (items.length === 0) {
-                    throw new Error('RSS feed\'de item bulunamadı');
+                    throw new Error('RSS/Atom feed\'de item/entry bulunamadı');
                 }
+                
+                console.log(`${source} feed formatı: ${isAtom ? 'Atom' : 'RSS 2.0'}, ${items.length} haber bulundu`);
                 
             const newsItems = [];
                 
@@ -1611,7 +1709,15 @@ async function fetchNewsFromSingleSource(url, source) {
             items.forEach((item, index) => {
                     if (index < 25) { // Her kaynaktan 25 haber al (daha kaliteli haberler için)
                     const title = item.querySelector('title')?.textContent || '';
-                        const pubDate = item.querySelector('pubDate')?.textContent || '';
+                    
+                        // Atom formatında farklı tarih alanları
+                        let pubDate = '';
+                        if (isAtom) {
+                            pubDate = item.querySelector('published')?.textContent || 
+                                     item.querySelector('updated')?.textContent || '';
+                        } else {
+                            pubDate = item.querySelector('pubDate')?.textContent || '';
+                        }
                         
                         // Tarih kontrolü - son 24 saat içindeki haberleri al (daha güncel)
                         let isValidDate = true;
@@ -1633,10 +1739,21 @@ async function fetchNewsFromSingleSource(url, source) {
                         }
                         
                         if (title && title.trim().length > 0) {
-                        const description = item.querySelector('description')?.textContent || '';
+                        // Atom formatında farklı açıklama alanları
+                        let description = '';
+                        if (isAtom) {
+                            description = item.querySelector('summary')?.textContent || 
+                                        item.querySelector('content')?.textContent || '';
+                        } else {
+                            description = item.querySelector('description')?.textContent || '';
+                        }
                         
                         let cleanTitle = title.replace(/<[^>]*>/g, '').trim();
                         let cleanDescription = description.replace(/<[^>]*>/g, '').trim();
+                        
+                        // CDATA içeriğinden temizle
+                        cleanTitle = cleanTitle.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim();
+                        cleanDescription = cleanDescription.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim();
                         
                         // Kaynak etiketlerini temizle
                             cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -|CNN|CNN Türk|CNN\/|CNN -|NTV|NTV\/|Habertürk|Haberturk|Sözcü|Sabah)/i, '').trim();
@@ -1657,7 +1774,8 @@ async function fetchNewsFromSingleSource(url, source) {
             });
             
                 if (newsItems.length > 0) {
-                    console.log(`${source} başarıyla yüklendi: ${newsItems.length} haber (proxy ${i + 1})`);
+                    console.log(`✅ ${source} başarıyla yüklendi: ${newsItems.length} haber (proxy ${i + 1})`);
+                    console.log(`📰 ${source} ilk 2 haber:`, newsItems.slice(0, 2).map(n => n.substring(0, 50) + '...'));
             return newsItems;
                 } else {
                     throw new Error('Hiç haber bulunamadı');
@@ -1831,29 +1949,141 @@ function selectChannel(channel) {
     
     // YouTube URL varsa iframe içinde göster
     if (channel.youtubeUrl) {
-        let videoId = channel.youtubeUrl.split('v=')[1];
+        console.log('YouTube URL bulundu:', channel.youtubeUrl);
+        let videoId = null;
+        
+        // Farklı YouTube URL formatlarını destekle
+        if (channel.youtubeUrl.includes('youtube.com/watch?v=')) {
+            videoId = channel.youtubeUrl.split('v=')[1];
+        } else if (channel.youtubeUrl.includes('youtu.be/')) {
+            videoId = channel.youtubeUrl.split('youtu.be/')[1];
+        } else if (channel.youtubeUrl.includes('youtube.com/embed/')) {
+            videoId = channel.youtubeUrl.split('embed/')[1];
+        } else if (channel.youtubeUrl.length === 11) {
+            // Direkt video ID
+            videoId = channel.youtubeUrl;
+        }
+        
         if (videoId) {
-            // URL parametrelerini temizle (örn: &t=...)
+            // URL parametrelerini temizle (örn: &t=..., ?feature=...)
             videoId = videoId.split('&')[0];
+            videoId = videoId.split('?')[0];
             videoId = videoId.split('#')[0];
+            videoId = videoId.trim();
             
-            // YouTube embed URL oluştur - autoplay (muted başlangıç, kullanıcı unmute edebilir)
-            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}`;
-            videoWrapper.innerHTML = `<iframe id="youtubeIframe" width="100%" height="400" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius:10px;"></iframe>\n<div id='externalWatchBtn'></div>`;
+            console.log('YouTube Video ID:', videoId);
             
-            // YouTube iframe yüklendiğinde otomatik oynatma kontrolü
-            const youtubeIframe = document.getElementById('youtubeIframe');
-            if (youtubeIframe) {
-                youtubeIframe.addEventListener('load', () => {
-                    console.log('YouTube iframe loaded, autoplay should work (muted for autoplay policy)');
-                });
+            // YouTube IFrame API kullanarak oynatıcı oluştur
+            const playerContainerId = `youtubePlayer_${channel.id}_${Date.now()}`;
+            videoWrapper.innerHTML = `
+                <div id="${playerContainerId}" style="width:100%;height:400px;border-radius:10px;background:#000;"></div>
+                <div id='externalWatchBtn' style="margin-top:10px;"></div>
+            `;
+            
+            // YouTube IFrame API ile oynatıcı oluştur
+            function initYouTubePlayer() {
+                if (typeof YT !== 'undefined' && YT.Player) {
+                    try {
+                        const player = new YT.Player(playerContainerId, {
+                            height: '400',
+                            width: '100%',
+                            videoId: videoId,
+                            playerVars: {
+                                'autoplay': 1,
+                                'mute': 1,
+                                'playsinline': 1,
+                                'enablejsapi': 1,
+                                'controls': 1,
+                                'rel': 0,
+                                'modestbranding': 1
+                            },
+                            events: {
+                                'onReady': function(event) {
+                                    console.log('✅ YouTube player ready, playing video');
+                                    event.target.playVideo();
+                                },
+                                'onError': function(event) {
+                                    console.error('❌ YouTube player error:', event.data);
+                                    // Hata durumunda basit iframe dene
+                                    fallbackToSimpleIframe();
+                                },
+                                'onStateChange': function(event) {
+                                    if (event.data === YT.PlayerState.PLAYING) {
+                                        console.log('✅ YouTube video playing');
+                                    }
+                                }
+                            }
+                        });
+                        window[`ytPlayer_${channel.id}`] = player; // Global erişim için sakla
+                    } catch (e) {
+                        console.error('YouTube Player oluşturma hatası:', e);
+                        fallbackToSimpleIframe();
+                    }
+                } else {
+                    console.warn('YouTube API henüz yüklenmedi, basit iframe kullanılıyor');
+                    fallbackToSimpleIframe();
+                }
             }
+            
+            function fallbackToSimpleIframe() {
+                const container = document.getElementById(playerContainerId);
+                if (container) {
+                    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1`;
+                    container.innerHTML = `
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            src="${embedUrl}" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen 
+                            style="border-radius:10px;">
+                        </iframe>
+                    `;
+                    console.log('✅ Basit iframe embed kullanılıyor');
+                }
+            }
+            
+            // YouTube API yüklendi mi kontrol et
+            if (typeof YT !== 'undefined' && YT.Player) {
+                initYouTubePlayer();
+            } else {
+                // API yüklenene kadar bekle
+                if (window.onYouTubeIframeAPIReady) {
+                    const oldReady = window.onYouTubeIframeAPIReady;
+                    window.onYouTubeIframeAPIReady = function() {
+                        oldReady();
+                        initYouTubePlayer();
+                    };
+                } else {
+                    window.onYouTubeIframeAPIReady = function() {
+                        initYouTubePlayer();
+                    };
+                }
+                
+                // 2 saniye sonra hala yüklenmediyse basit iframe kullan
+                setTimeout(() => {
+                    const container = document.getElementById(playerContainerId);
+                    if (container && !container.querySelector('iframe') && !container.querySelector('div[id^="youtube"]')) {
+                        console.log('YouTube API yüklenemedi, basit iframe kullanılıyor');
+                        fallbackToSimpleIframe();
+                    }
+                }, 2000);
+            }
+            
         externalBtnHtml = `<a href='${channel.youtubeUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>YouTube'da İzle</a>`;
         currentChannel.textContent = channel.name;
         channelDescription.innerHTML = channel.description;
-        document.getElementById('externalWatchBtn').innerHTML = externalBtnHtml;
+            
+            const externalBtnDiv = document.getElementById('externalWatchBtn');
+            if (externalBtnDiv) {
+                externalBtnDiv.innerHTML = externalBtnHtml;
+            }
+            
         updateControlButtons('youtube', channel.youtubeUrl);
         return;
+        } else {
+            console.error('❌ YouTube video ID çıkarılamadı:', channel.youtubeUrl);
         }
     }
     
@@ -2392,35 +2622,123 @@ function selectChannel(channel) {
         return;
     }
     
-    // Sadece Web URL varsa iframe içinde göster - Chrome'da geçme (stream URL öncelikli)
-    if (channel.webUrl && !isChrome) {
-        // A Haber gibi iframe engeli olan siteler için özel kontrol
-        const iframeBlockedSites = ['ahaber.com.tr'];
-        const isBlocked = iframeBlockedSites.some(domain => channel.webUrl.includes(domain));
+    // Web URL varsa iframe içinde göster (tüm tarayıcılar için deneme)
+    if (channel.webUrl && !channel.streamUrl && !channel.youtubeUrl) {
+        // YouTube URL'si webUrl içinde mi kontrol et (youtube.com/watch veya youtu.be)
+        const isYouTubeUrl = channel.webUrl.includes('youtube.com') || channel.webUrl.includes('youtu.be');
         
-        if (isBlocked) {
-            // Iframe engeli olan siteler için direkt yeni sekmede aç
-            window.open(channel.webUrl, '_blank');
-            videoWrapper.innerHTML = `
-                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 400px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-radius: 10px; padding: 40px;">
-                    <i class="fas fa-external-link-alt" style="font-size: 64px; color: #667eea; margin-bottom: 20px;"></i>
-                    <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 24px;">Yeni Sekmede Açılıyor...</h3>
-                    <p style="color: #718096; margin-bottom: 25px; text-align: center; max-width: 400px;">
-                        ${channel.name} kanalı yeni bir sekmede açılıyor. Eğer otomatik olarak açılmadıysa, aşağıdaki butona tıklayın.
-                    </p>
-                    <a href="${channel.webUrl}" target="_blank" style="display: inline-block; padding: 15px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: transform 0.3s ease;">
-                        <i class="fas fa-external-link-alt"></i> Web Sitesinde Aç
-                    </a>
-                </div>
-            `;
-            currentChannel.textContent = channel.name;
-            channelDescription.innerHTML = channel.description;
-            updateControlButtons('web', channel.webUrl);
-            return;
+        if (isYouTubeUrl) {
+            // YouTube URL'ini embed formatına çevir ve program içinde aç
+            let videoId = null;
+            if (channel.webUrl.includes('youtube.com/watch?v=')) {
+                videoId = channel.webUrl.split('v=')[1].split('&')[0].split('?')[0].split('#')[0].trim();
+            } else if (channel.webUrl.includes('youtu.be/')) {
+                videoId = channel.webUrl.split('youtu.be/')[1].split('?')[0].split('#')[0].trim();
+            }
+            
+            if (videoId && videoId.length === 11) {
+                // YouTube iframe'i deneyelim - Error 153 olsa bile iframe'i gösterelim
+                console.log('YouTube URL tespit edildi, program içinde iframe olarak açılıyor:', videoId);
+                
+                // Farklı embed formatlarını dene
+                const embedFormats = [
+                    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&rel=0`,
+                    `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1`,
+                    `https://www.youtube.com/embed/${videoId}`
+                ];
+                
+                let embedIndex = 0;
+                const tryEmbedFormat = () => {
+                    const embedUrl = embedFormats[embedIndex];
+                    console.log(`YouTube embed format ${embedIndex + 1} deneniyor:`, embedUrl);
+                    
+                    videoWrapper.innerHTML = `
+                        <div id="youtubeContainer" style="width:100%;height:400px;border-radius:10px;background:#000;position:relative;overflow:hidden;">
+                            <iframe 
+                                id="youtubeWebIframe" 
+                                width="100%" 
+                                height="100%" 
+                                src="${embedUrl}" 
+                                frameborder="0" 
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen 
+                                style="position:absolute;top:0;left:0;border-radius:10px;">
+                            </iframe>
+                            <div id="youtubeErrorOverlay" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:10;display:flex;align-items:center;justify-content:center;flex-direction:column;color:white;padding:20px;text-align:center;">
+                                <i class="fab fa-youtube" style="font-size:48px;color:#e53e3e;margin-bottom:15px;"></i>
+                                <p style="margin-bottom:20px;">Video yüklenemedi. YouTube'da açmak için butona tıklayın.</p>
+                                <a href="${channel.webUrl}" target="_blank" style="padding:12px 24px;background:#e53e3e;color:white;border-radius:8px;text-decoration:none;font-weight:600;">YouTube'da İzle</a>
+                            </div>
+                        </div>
+                        <div id='externalWatchBtn'></div>
+                    `;
+                    
+                    const youtubeIframe = document.getElementById('youtubeWebIframe');
+                    const errorOverlay = document.getElementById('youtubeErrorOverlay');
+                    
+                    if (youtubeIframe) {
+                        // İframe yüklendiğinde kontrol et
+                        youtubeIframe.addEventListener('load', () => {
+                            console.log('✅ YouTube iframe loaded');
+                            // 3 saniye sonra hata kontrolü yap
+                            setTimeout(() => {
+                                try {
+                                    const iframeDoc = youtubeIframe.contentDocument || youtubeIframe.contentWindow.document;
+                                    // Cross-origin hatası normal, video çalışıyor olabilir
+                                    if (errorOverlay) errorOverlay.style.display = 'none';
+                                } catch (e) {
+                                    // Cross-origin normal - video yüklenmiş olabilir
+                                    console.log('Cross-origin check (normal)');
+                                    if (errorOverlay) errorOverlay.style.display = 'none';
+                                }
+                            }, 3000);
+                        });
+                        
+                        // Error event (genellikle çalışmaz ama yine de ekleyelim)
+                        youtubeIframe.addEventListener('error', () => {
+                            console.log('❌ YouTube iframe error event');
+                            // Bir sonraki formatı dene
+                            embedIndex++;
+                            if (embedIndex < embedFormats.length) {
+                                setTimeout(tryEmbedFormat, 500);
+                            } else {
+                                // Tüm formatlar başarısız, hata mesajını göster
+                                if (errorOverlay) errorOverlay.style.display = 'flex';
+                            }
+                        });
+                        
+                        // 5 saniye sonra genel hata kontrolü
+                        setTimeout(() => {
+                            // Iframe görünür mü kontrol et
+                            const rect = youtubeIframe.getBoundingClientRect();
+                            if (rect.width === 0 || rect.height === 0) {
+                                console.log('Iframe görünmüyor, bir sonraki format deneniyor...');
+                                embedIndex++;
+                                if (embedIndex < embedFormats.length) {
+                                    tryEmbedFormat();
+                                } else if (errorOverlay) {
+                                    errorOverlay.style.display = 'flex';
+                                }
+                            }
+                        }, 5000);
+                    }
+                    
+                    currentChannel.textContent = channel.name;
+                    channelDescription.innerHTML = channel.description;
+                    document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>YouTube'da İzle</a>`;
+                    updateControlButtons('web', channel.webUrl);
+                };
+                
+                // İlk formatı dene
+                tryEmbedFormat();
+                return;
+            }
         }
         
+        // Normal web URL için iframe - A Haber gibi kanallar için
         videoWrapper.innerHTML = `
-            <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
+            <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
             <div id='externalWatchBtn'></div>
         `;
         currentChannel.textContent = channel.name;
@@ -2436,7 +2754,7 @@ function selectChannel(channel) {
             });
             webIframe.addEventListener('error', () => {
                 console.log('Web iframe error, opening in new tab');
-                window.open(channel.webUrl, '_blank');
+                // Yeni sekmede açma, sadece log
             });
         }
         return;
@@ -2632,10 +2950,39 @@ document.addEventListener('DOMContentLoaded', () => {
     newsScroll = document.getElementById('newsScroll');
     financeTicker = document.getElementById('financeTicker');
     
-    // Finansal ticker'ı HEMEN yükle (diğer işlemlerden önce)
-    if (financeTicker) {
-        // Hemen oluştur (gecikme yok)
-        createFinanceTicker();
+    // Finansal ticker'ı HEMEN yükle (diğer işlemlerden önce) - EN ÜSTTE - GARANTİLİ
+    function initFinanceTicker() {
+        if (!financeTicker) {
+            financeTicker = document.getElementById('financeTicker');
+        }
+        
+        if (financeTicker) {
+            console.log('💰 Finansal ticker elementi bulundu, hemen yükleniyor...');
+            // Hemen oluştur (gecikme yok, hiçbir setTimeout yok)
+            createFinanceTicker();
+            console.log('✅ Finansal ticker hemen yüklendi');
+            return true;
+        }
+        return false;
+    }
+    
+    // Hemen dene
+    if (!initFinanceTicker()) {
+        console.warn('⚠️ Finance ticker elementi bulunamadı, hemen tekrar deneniyor...');
+        // Element bulunamazsa hemen tekrar dene (gecikme yok)
+        requestAnimationFrame(() => {
+            if (!initFinanceTicker()) {
+                // Son çare: 10ms sonra tekrar dene (çok kısa)
+                setTimeout(() => {
+                    if (!initFinanceTicker()) {
+                        // Son çare 2: 50ms sonra tekrar dene
+                        setTimeout(() => {
+                            initFinanceTicker();
+                        }, 50);
+                    }
+                }, 10);
+            }
+        });
     }
     
     console.log('DOM elements found:', {
@@ -2651,14 +2998,9 @@ document.addEventListener('DOMContentLoaded', () => {
         financeTicker: !!financeTicker
     });
     
-    // Finansal ticker güncellemesini başlat (arka planda)
-    // Not: createFinanceTicker() zaten yukarıda çağrıldı, bu sadece periyodik güncelleme için
-    if (financeTicker) {
-        // Periyodik güncelleme için (her 5 dakikada bir)
-        setInterval(() => {
-            createFinanceTicker();
-        }, 300000); // 5 dakika
-    }
+    // Finansal ticker periyodik güncellemesini başlat (arka planda)
+    // Not: createFinanceTicker() zaten yukarıda hemen çağrıldı, bu sadece periyodik güncelleme için
+    // ÖNEMLİ: updateFinanceTicker() çağrılmıyor, sadece createFinanceTicker() kullanılıyor
     
     // Logo kontrolü
     const logo = document.querySelector('.app-logo');
@@ -2718,28 +3060,37 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProgramDate();
     }
     
-    // Haber bandını başlat - HEMEN
+    // Haber bandını başlat - HEMEN - GARANTİLİ
+    console.log('🚀 Haber ticker başlatılıyor...');
+    
+    // Önce fallback haberleri yükle
+    if (!currentNewsData || currentNewsData.length === 0) {
+        console.log('📰 Fallback haberler yükleniyor...');
+        currentNewsData = [...fallbackNews];
+    }
+    
     if (newsScroll) {
-        console.log('newsScroll element found, starting news ticker...');
+        console.log('✅ newsScroll element bulundu, ticker başlatılıyor...');
         // Önce fallback haberleri göster (anında görünürlük)
-        if (!currentNewsData || currentNewsData.length === 0) {
-            currentNewsData = [...fallbackNews];
         createNewsTicker();
-        }
+        
         // Güncel haberlerle başlat (arka planda)
         updateNewsTicker();
-        console.log('News ticker initialized');
+        console.log('✅ News ticker initialized');
     } else {
-        console.error('newsScroll element not found!');
+        console.error('❌ newsScroll element not found! Tekrar deneniyor...');
         // Biraz bekleyip tekrar dene
         setTimeout(() => {
             newsScroll = document.getElementById('newsScroll');
             if (newsScroll) {
+                console.log('✅ newsScroll element bulundu (retry), ticker başlatılıyor...');
                 if (!currentNewsData || currentNewsData.length === 0) {
                     currentNewsData = [...fallbackNews];
                 }
                 createNewsTicker();
                 updateNewsTicker();
+            } else {
+                console.error('❌ newsScroll hala bulunamadı!');
             }
         }, 100);
     }

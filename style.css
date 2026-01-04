@@ -1111,17 +1111,19 @@ main {
     margin: 0 10px;
     border-radius: 0 0 15px 15px;
     padding-left: 150px;
+    min-height: 50px;
 }
 
 .news-ticker-content {
     display: flex;
     align-items: center;
     white-space: nowrap;
-    animation: scroll-news-single 450s linear infinite;
     width: max-content;
     will-change: transform;
     min-height: 40px;
     overflow: visible;
+    animation: scroll-news-single 450s linear infinite;
+    transform: translateX(0%);
 }
 
 .news-label {
@@ -1187,7 +1189,7 @@ main {
 
 @keyframes scroll-news-single {
     0% {
-        transform: translateX(100%);
+        transform: translateX(0%);
     }
     100% {
         transform: translateX(-100%);
