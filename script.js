@@ -987,15 +987,19 @@ const programSchedules = {
 
 // RSS Feed URL'leri - Güncel ve çalışan feed'ler
 const AA_RSS_URL = 'https://www.aa.com.tr/tr/rss/default?cat=gundem';
-const CNN_RSS_URL = 'https://www.cnnturk.com/feed/rss/all/news';
+const CNN_RSS_URL = 'https://www.cnnturk.com/feed/rss/turkiye/news';
 
 // Alternatif RSS Feed URL'leri (fallback)
 const AA_RSS_URL_ALT = 'https://www.aa.com.tr/tr/rss/default?cat=ekonomi';
-const CNN_RSS_URL_ALT = 'https://www.cnnturk.com/feed/rss/turkiye/news';
+const CNN_RSS_URL_ALT = 'https://www.cnnturk.com/feed/rss/all/news';
 
 // Ek alternatif RSS feed'ler
 const NTV_RSS_URL = 'https://www.ntv.com.tr/son-dakika.rss';
 const HABERTURK_RSS_URL = 'https://www.haberturk.com/rss/kategori/gundem.xml';
+
+// Ek haber kaynakları
+const SABAH_RSS_URL = 'https://www.sabah.com.tr/rss/gundem.xml';
+const SOZCU_RSS_URL = 'https://www.sozcu.com.tr/rss/haber.xml';
 
 // Fallback haberler (internet bağlantısı yoksa) - Daha detaylı ve açıklayıcı
 const fallbackNews = [
@@ -1116,17 +1120,17 @@ function createFinanceTicker() {
     tickerElement.innerHTML = htmlContent;
     console.log('Finance ticker HTML içeriği eklendi:', tickerElement.innerHTML.length, 'karakter');
     
-    // Animasyonu başlat
-    setTimeout(() => {
-        if (tickerElement && tickerElement.innerHTML.trim()) {
-            tickerElement.classList.remove('animate');
-            tickerElement.offsetHeight; // Reflow trigger
+    // Animasyonu hemen başlat (gecikme yok)
+    if (tickerElement && tickerElement.innerHTML.trim()) {
+        tickerElement.classList.remove('animate');
+        // Reflow trigger - hemen çalıştır
+        requestAnimationFrame(() => {
             tickerElement.classList.add('animate');
             console.log('Finance ticker animasyonu başlatıldı');
-        } else {
-            console.error('Finance ticker elementi veya içeriği bulunamadı!');
-        }
-    }, 200);
+        });
+    } else {
+        console.error('Finance ticker elementi veya içeriği bulunamadı!');
+    }
     
     console.log('Finance ticker created successfully');
 }
@@ -1135,23 +1139,35 @@ function createFinanceTicker() {
 async function updateFinanceTicker() {
     console.log('updateFinanceTicker çağrıldı');
     
-    // Elementi kontrol et
+    // Elementi kontrol et - hemen dene, bekleme yok
     let tickerElement = financeTicker || document.getElementById('financeTicker');
+    
+    // Eğer element bulunamazsa, kısa bir süre sonra tekrar dene (ama önce hemen dene)
     if (!tickerElement) {
-        console.error('Finance ticker elementi bulunamadı, 1 saniye sonra tekrar denenecek...');
-        setTimeout(() => {
+        console.warn('Finance ticker elementi bulunamadı, kısa süre sonra tekrar denenecek...');
+        // Önce bir frame bekle (DOM henüz hazır olmayabilir)
+        requestAnimationFrame(() => {
             tickerElement = document.getElementById('financeTicker');
             if (tickerElement) {
                 financeTicker = tickerElement;
                 createFinanceTicker();
             } else {
-                console.error('Finance ticker hala bulunamadı!');
+                // Hala bulunamazsa 100ms sonra tekrar dene
+                setTimeout(() => {
+                    tickerElement = document.getElementById('financeTicker');
+                    if (tickerElement) {
+                        financeTicker = tickerElement;
+                        createFinanceTicker();
+                    } else {
+                        console.error('Finance ticker hala bulunamadı!');
+                    }
+                }, 100);
             }
-        }, 1000);
+        });
         return;
     }
     
-    // Demo verileri göster
+    // Demo verileri hemen göster
     createFinanceTicker();
     
     // Gerçek API'ye bağlanmak için (opsiyonel):
@@ -1182,9 +1198,11 @@ async function fetchNewsFromAA() {
         // Çoklu kaynak - paralel olarak tüm kaynaklardan haber çek (daha fazla kaynak)
         const promises = [
             fetchNewsFromSingleSource(AA_RSS_URL, 'AA'),
-            fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN'),
+            fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN Türk'),
             fetchNewsFromSingleSource(NTV_RSS_URL, 'NTV'),
-            fetchNewsFromSingleSource(HABERTURK_RSS_URL, 'Habertürk')
+            fetchNewsFromSingleSource(HABERTURK_RSS_URL, 'Habertürk'),
+            fetchNewsFromSingleSource(SABAH_RSS_URL, 'Sabah'),
+            fetchNewsFromSingleSource(SOZCU_RSS_URL, 'Sözcü')
         ];
         
         const results = await Promise.allSettled(promises);
@@ -1383,20 +1401,21 @@ async function updateNewsTicker() {
         // Fallback haberler zaten gösteriliyor, hata durumunda korunuyor
     });
     
-    // Her 3 dakikada bir haberleri güncelle (daha sık güncelleme için güncel haberler)
+    // Her 2 dakikada bir haberleri güncelle (daha sık güncelleme için güncel haberler)
     setInterval(async () => {
         console.log('Haberler güncelleniyor...');
         try {
-        await fetchNewsFromAA();
-            if (!currentNewsData || currentNewsData.length === 0) {
-                console.log('Güncelleme başarısız, mevcut haberler korunuyor...');
-                return;
-            }
+            const success = await fetchNewsFromAA();
+            if (success && currentNewsData && currentNewsData.length > 0) {
+                console.log('Haberler başarıyla güncellendi:', currentNewsData.length, 'haber');
         createNewsTicker();
+            } else {
+                console.log('Güncelleme başarısız, mevcut haberler korunuyor...');
+            }
         } catch (error) {
             console.error('Haber güncelleme hatası:', error);
         }
-    }, 180000); // 3 dakika = 180000 ms
+    }, 120000); // 2 dakika = 120000 ms (daha sık güncelleme)
 }
 
 // Çoklu kaynak haber çekme fonksiyonu
@@ -1448,7 +1467,7 @@ async function fetchNewsFromSingleSource(url, source) {
                 console.log(`${source} RSS feed çekiliyor (proxy ${i + 1}/${proxies.length}):`, url);
                 // Timeout için AbortController kullan (daha kısa timeout)
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 saniye timeout
+                const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 saniye timeout (daha fazla zaman)
                 
                 const response = await fetch(proxyUrl, {
                     method: 'GET',
@@ -1529,25 +1548,32 @@ async function fetchNewsFromSingleSource(url, source) {
                 
             const newsItems = [];
                 
-                // Son 48 saat içindeki haberleri filtrele (daha geniş zaman aralığı)
+                // Son 24 saat içindeki haberleri filtrele (daha güncel haberler için)
                 const now = new Date();
-                const twoDaysAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000);
+                const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
             
             items.forEach((item, index) => {
-                    if (index < 30) { // Her kaynaktan 30 haber al
+                    if (index < 25) { // Her kaynaktan 25 haber al (daha kaliteli haberler için)
                     const title = item.querySelector('title')?.textContent || '';
                         const pubDate = item.querySelector('pubDate')?.textContent || '';
                         
-                        // Tarih kontrolü - son 48 saat içindeki haberleri al
+                        // Tarih kontrolü - son 24 saat içindeki haberleri al (daha güncel)
+                        let isValidDate = true;
                         if (pubDate) {
                             try {
                                 const newsDate = new Date(pubDate);
-                                if (newsDate < twoDaysAgo) {
-                                    return; // Çok eski haber, atla
+                                if (newsDate < oneDayAgo) {
+                                    isValidDate = false; // Eski haber, atla
                                 }
                             } catch (e) {
                                 // Tarih parse edilemezse devam et (haberleri göster)
+                                isValidDate = true;
                             }
+                        }
+                        
+                        // Eski haberi atla
+                        if (!isValidDate) {
+                            return;
                         }
                         
                         if (title && title.trim().length > 0) {
@@ -2550,6 +2576,12 @@ document.addEventListener('DOMContentLoaded', () => {
     newsScroll = document.getElementById('newsScroll');
     financeTicker = document.getElementById('financeTicker');
     
+    // Finansal ticker'ı HEMEN yükle (diğer işlemlerden önce)
+    if (financeTicker) {
+        // Hemen oluştur (gecikme yok)
+        createFinanceTicker();
+    }
+    
     console.log('DOM elements found:', {
         searchInput: !!searchInput,
         channelList: !!channelList,
@@ -2563,9 +2595,13 @@ document.addEventListener('DOMContentLoaded', () => {
         financeTicker: !!financeTicker
     });
     
-    // Finansal ticker'ı başlat
+    // Finansal ticker güncellemesini başlat (arka planda)
+    // Not: createFinanceTicker() zaten yukarıda çağrıldı, bu sadece periyodik güncelleme için
     if (financeTicker) {
-        updateFinanceTicker();
+        // Periyodik güncelleme için (her 5 dakikada bir)
+        setInterval(() => {
+            createFinanceTicker();
+        }, 300000); // 5 dakika
     }
     
     // Logo kontrolü
