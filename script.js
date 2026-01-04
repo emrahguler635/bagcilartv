@@ -1666,20 +1666,21 @@ function selectChannel(channel) {
         }
     }
     
-    // Stream URL varsa önce onu dene
+    // Stream URL varsa önce onu dene - Chrome'da her zaman stream URL öncelikli
     if (channel.streamUrl) {
+        console.log('Stream URL bulundu, Chrome\'da direkt stream açılıyor:', channel.streamUrl);
         videoWrapper.innerHTML = `
             <div id="loadingIndicator" style="position: absolute; width: 100%; height: 400px; background: #000; border-radius: 10px; display: flex; align-items: center; justify-content: center; z-index: 10;">
                 <div style="text-align: center; color: white;">
                     <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 15px; color: #667eea;"></i>
-                    <div style="font-size: 16px; font-weight: 600;">Yükleniyor...</div>
+                    <div style="font-size: 16px; font-weight: 600;">Stream Yükleniyor...</div>
                     <div style="font-size: 12px; margin-top: 5px; opacity: 0.7;">Lütfen bekleyin</div>
                 </div>
             </div>
             <video id="videoPlayer" controls autoplay playsinline preload="auto" style="position: relative; width:100%;height:400px;border-radius:10px;background:#000;display:block;z-index:1;"></video>
             <div id='externalWatchBtn'></div>
         `;
-        currentChannel.textContent = `${channel.name} - Yükleniyor...`;
+        currentChannel.textContent = `${channel.name} - Stream Yükleniyor...`;
         channelDescription.textContent = channel.description;
         document.getElementById('externalWatchBtn').innerHTML = channel.webUrl ? `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Alternatif: Web Sitesinde Aç</a>` : '';
         const videoPlayer = document.getElementById('videoPlayer');
@@ -1709,12 +1710,13 @@ function selectChannel(channel) {
         const shouldTryHLS = hasNativeHLS || (hasHlsJS && (hlsSupported || isChrome));
         
         if (hasNativeHLS) {
-            console.log('Native HLS desteği kullanılıyor');
+            console.log('Native HLS desteği kullanılıyor - Stream URL açılıyor');
             videoPlayer.src = channel.streamUrl;
         } else if (hasHlsJS && shouldTryHLS) {
-            console.log('HLS.js ile Stream URL deneniyor', {
+            console.log('HLS.js ile Stream URL deneniyor (Chrome zorla deneme aktif)', {
                 hlsSupported: hlsSupported,
-                chromeFallback: isChrome && !hlsSupported
+                chromeFallback: isChrome && !hlsSupported,
+                streamUrl: channel.streamUrl
             });
             // HLS.js için optimize edilmiş ayarlar
             window.hls = new Hls({
@@ -1890,9 +1892,9 @@ function selectChannel(channel) {
             }
         };
         
-        // Loading timeout - Chrome için çok daha uzun süre bekle (15 saniye)
-        // Chrome'da stream URL'nin yüklenmesi daha uzun sürebilir
-        const timeoutDuration = isChrome ? 15000 : 6000;
+        // Loading timeout - Chrome'da çok daha uzun süre bekle (20 saniye)
+        // Chrome'da stream URL'yi direkt açmak için web URL'e geçmeden önce uzun bekle
+        const timeoutDuration = isChrome ? 20000 : 6000;
         const loadingTimeout = setTimeout(() => {
             if (videoPlayer) {
                 const readyState = videoPlayer.readyState;
@@ -1904,10 +1906,13 @@ function selectChannel(channel) {
                     tarayici: isChrome ? 'Chrome' : (isFirefox ? 'Firefox' : 'Diğer')
                 });
                 
-                // Sadece gerçekten yüklenemiyorsa fallback'e geç
-                if (readyState < 3 || networkState === 2) {
+                // Chrome'da stream URL başarısız olsa bile web URL'e geçme (sadece kullanıcı alternatif butona tıklarsa)
+                if (!isChrome && (readyState < 3 || networkState === 2)) {
                     console.log('Stream URL başarısız, web URL\'e geçiliyor');
                     fallbackToWeb();
+                } else if (isChrome) {
+                    console.log('Chrome: Stream URL hala yükleniyor, web URL\'e geçilmiyor - Kullanıcı alternatif butonu kullanabilir');
+                    // Chrome'da timeout olsa bile web URL'e geçme, stream URL'yi tut
                 } else {
                     console.log('Stream URL yükleniyor, timeout iptal ediliyor');
                     clearTimeout(loadingTimeout);
