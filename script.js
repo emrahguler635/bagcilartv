@@ -1596,10 +1596,11 @@ async function fetchNewsFromMultipleSources() {
 async function fetchNewsFromSingleSource(url, source) {
     try {
         // Farklı proxy servisleri deneme listesi (çalışan alternatifler)
+        // Not: Bazı proxy servisleri rate limit uygular, bu yüzden sırayla denenir
         const proxies = [
             `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
             `https://corsproxy.io/?${encodeURIComponent(url)}`,
-            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+            // api.codetabs.com rate limit uyguladığı için kaldırıldı (429 hatası)
             `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
         ];
         
@@ -1609,8 +1610,12 @@ async function fetchNewsFromSingleSource(url, source) {
                 const proxyUrl = proxies[i];
                 console.log(`${source} RSS feed çekiliyor (proxy ${i + 1}/${proxies.length}):`, url);
                 // Timeout için AbortController kullan (daha kısa timeout - hızlı başarısızlık)
+                // CORS proxy'leri genellikle yavaş olabilir, bu yüzden 3 saniye timeout
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 saniye timeout (hızlı fallback için)
+                const timeoutId = setTimeout(() => {
+                    controller.abort();
+                    console.log(`${source} proxy ${i + 1} timeout (3s)`);
+                }, 3000); // 3 saniye timeout (daha hızlı fallback)
                 
                 const response = await fetch(proxyUrl, {
                     method: 'GET',
@@ -1781,14 +1786,23 @@ async function fetchNewsFromSingleSource(url, source) {
                     throw new Error('Hiç haber bulunamadı');
                 }
             } catch (proxyError) {
-                const errorMsg = proxyError.name === 'AbortError' ? 'Timeout (5s)' : (proxyError.message || 'Bilinmeyen hata');
-                // Sadece ilk ve son hata loglanır (console spam'i azaltmak için)
+                const errorMsg = proxyError.name === 'AbortError' ? 'Timeout (3s)' : 
+                               proxyError.message === 'Failed to fetch' ? 'Bağlantı hatası (proxy kapalı/erişilemiyor)' :
+                               proxyError.message || 'Bilinmeyen hata';
+                
+                // Hata mesajlarını azaltmak için: sadece ilk ve son hata loglanır
+                // Console'da çok fazla hata görünmesini önlemek için
                 if (i === 0 || i === proxies.length - 1) {
-                    console.log(`${source} proxy ${i + 1} başarısız:`, errorMsg);
+                    console.log(`${source} proxy ${i + 1}/${proxies.length} başarısız:`, errorMsg);
+                } else {
+                    // Ara proxy hataları için kısa log (spam'i azaltır)
+                    console.log(`  ⚠️ Proxy ${i + 1} başarısız, sonrakine geçiliyor...`);
                 }
                 lastError = proxyError;
-                // Bir sonraki proxy'yi dene
+                
+                // Bir sonraki proxy'yi dene (kısa bekleme ile - rate limit'i önlemek için)
                 if (i < proxies.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 200)); // 200ms bekle
                     continue;
                 }
             }
