@@ -149,7 +149,7 @@ const channels = [
         name: "Star TV",
         category: "Ulusal",
         streamUrl: "",
-        webUrl: "https://www.star.com.tr/canli-yayin",
+        webUrl: "https://www.startv.com.tr/canli-yayin",
         logo: "logos/startv.png",
         description: "Star TV - Ulusal yayın kanalı"
     },
