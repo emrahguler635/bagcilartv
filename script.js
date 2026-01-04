@@ -1716,7 +1716,12 @@ function selectChannel(channel) {
             videoPlayer.src = channel.streamUrl;
         } else if (isChrome && channel.streamUrl) {
             // Chrome'da her zaman HLS.js ile yükle
-            console.log('Chrome: Stream URL HLS.js ile açılıyor');
+            console.log('Chrome: Stream URL bulundu, HLS.js ile açılıyor', {
+                hasHlsJS: hasHlsJS,
+                hlsSupported: hlsSupported,
+                streamUrl: channel.streamUrl
+            });
+            
             if (!hasHlsJS) {
                 console.log('Chrome: HLS.js yükleniyor, bekleniyor...');
                 let checkCount = 0;
@@ -1735,7 +1740,46 @@ function selectChannel(channel) {
                 }, 100);
                 return;
             }
-            // HLS.js var, normal akışla devam et (aşağıdaki kod)
+            
+            // Chrome'da HLS.js var, direkt HLS.js ile yükle
+            console.log('Chrome: HLS.js mevcut, Stream URL HLS.js ile açılıyor');
+            if (window.hls) { window.hls.destroy(); window.hls = null; }
+            
+            window.hls = new Hls({
+                enableWorker: true,
+                lowLatencyMode: false,
+                maxFragLoadingTimeOut: 20000,
+                fragLoadingTimeOut: 15000,
+                manifestLoadingTimeOut: 15000,
+                levelLoadingTimeOut: 15000
+            });
+            
+            window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                console.log('Chrome: HLS manifest parsed, starting playback');
+                hideLoading();
+                if (videoPlayer) {
+                    videoPlayer.style.display = 'block';
+                    videoPlayer.style.visibility = 'visible';
+                    videoPlayer.style.opacity = '1';
+                }
+                videoPlayer.play().catch(err => {
+                    console.log('Chrome: Autoplay prevented, trying muted:', err);
+                    videoPlayer.muted = true;
+                    videoPlayer.play();
+                });
+            });
+            
+            window.hls.on(Hls.Events.ERROR, (event, data) => {
+                console.error('Chrome: HLS error:', data);
+                if (data.fatal) {
+                    console.log('Chrome: Fatal HLS error');
+                }
+            });
+            
+            window.hls.loadSource(channel.streamUrl);
+            window.hls.attachMedia(videoPlayer);
+            return; // Chrome'da işlem tamamlandı
+            
         } else if ((hasHlsJS && shouldTryHLS)) {
             // Chrome'da HLS.js yoksa yüklenmesini bekle
             if (isChrome && !hasHlsJS) {
