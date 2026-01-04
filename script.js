@@ -985,21 +985,22 @@ const programSchedules = {
     ]
 };
 
-// RSS Feed URL'leri - Güncel ve çalışan feed'ler
-const AA_RSS_URL = 'https://www.aa.com.tr/tr/rss/default?cat=gundem';
-const CNN_RSS_URL = 'https://www.cnnturk.com/feed/rss/turkiye/news';
+// RSS Feed URL'leri - NTV ana kaynak (daha güvenilir)
+const NTV_RSS_URL = 'https://www.ntv.com.tr/son-dakika.rss';
+const NTV_RSS_URL_ALT = 'https://www.ntv.com.tr/gundem.rss';
 
 // Alternatif RSS Feed URL'leri (fallback)
-const AA_RSS_URL_ALT = 'https://www.aa.com.tr/tr/rss/default?cat=ekonomi';
+const CNN_RSS_URL = 'https://www.cnnturk.com/feed/rss/turkiye/news';
 const CNN_RSS_URL_ALT = 'https://www.cnnturk.com/feed/rss/all/news';
 
-// Ek alternatif RSS feed'ler
-const NTV_RSS_URL = 'https://www.ntv.com.tr/son-dakika.rss';
-const HABERTURK_RSS_URL = 'https://www.haberturk.com/rss/kategori/gundem.xml';
-
 // Ek haber kaynakları
+const HABERTURK_RSS_URL = 'https://www.haberturk.com/rss/kategori/gundem.xml';
 const SABAH_RSS_URL = 'https://www.sabah.com.tr/rss/gundem.xml';
 const SOZCU_RSS_URL = 'https://www.sozcu.com.tr/rss/haber.xml';
+
+// Eski kaynaklar (kullanılmıyor)
+const AA_RSS_URL = 'https://www.aa.com.tr/tr/rss/default?cat=gundem';
+const AA_RSS_URL_ALT = 'https://www.aa.com.tr/tr/rss/default?cat=ekonomi';
 
 // Fallback haberler (internet bağlantısı yoksa) - Daha detaylı ve açıklayıcı
 const fallbackNews = [
@@ -1189,57 +1190,39 @@ async function updateFinanceTicker() {
     }, 300000); // 5 dakika
 }
 
-// RSS feed'ini çek ve parse et
+// RSS feed'ini çek ve parse et - NTV ana kaynak
 async function fetchNewsFromAA() {
     try {
-        console.log('RSS feed çekiliyor...');
-        const allNews = [];
+        console.log('NTV RSS feed çekiliyor...');
         
-        // Çoklu kaynak - paralel olarak tüm kaynaklardan haber çek (daha fazla kaynak)
-        const promises = [
-            fetchNewsFromSingleSource(AA_RSS_URL, 'AA'),
-            fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN Türk'),
-            fetchNewsFromSingleSource(NTV_RSS_URL, 'NTV'),
-            fetchNewsFromSingleSource(HABERTURK_RSS_URL, 'Habertürk'),
-            fetchNewsFromSingleSource(SABAH_RSS_URL, 'Sabah'),
-            fetchNewsFromSingleSource(SOZCU_RSS_URL, 'Sözcü')
-        ];
+        // Önce NTV birincil URL'i dene
+        let news = await fetchNewsFromSingleSource(NTV_RSS_URL, 'NTV');
         
-        const results = await Promise.allSettled(promises);
-        
-        // Başarısız olanlar için alternatif URL'leri dene
-        const altPromises = [];
-        results.forEach((result, index) => {
-            if (result.status === 'fulfilled' && result.value && result.value.length > 0) {
-                allNews.push(...result.value);
-                console.log(`${index === 0 ? 'AA' : 'CNN Türk'} haberleri yüklendi:`, result.value.length, 'haber');
-            } else {
-                // Alternatif URL'i dene
-                console.log(`${index === 0 ? 'AA' : 'CNN Türk'} birincil RSS başarısız, alternatif deneniyor...`);
-                altPromises.push(
-                    fetchNewsFromSingleSource(index === 0 ? AA_RSS_URL_ALT : CNN_RSS_URL_ALT, index === 0 ? 'AA (Alt)' : 'CNN (Alt)')
-                );
-            }
-        });
-        
-        // Alternatif URL'lerden haberleri bekle
-        if (altPromises.length > 0) {
-            const altResults = await Promise.allSettled(altPromises);
-            altResults.forEach((result, index) => {
-                if (result.status === 'fulfilled' && result.value && result.value.length > 0) {
-                    allNews.push(...result.value);
-                    console.log('Alternatif haberler yüklendi:', result.value.length, 'haber');
-                }
-            });
+        // Başarısız olursa NTV alternatif URL'i dene
+        if (!news || news.length === 0) {
+            console.log('NTV birincil RSS başarısız, alternatif deneniyor...');
+            news = await fetchNewsFromSingleSource(NTV_RSS_URL_ALT, 'NTV (Alt)');
         }
         
-        // Duplicate haberleri kaldır ve karıştır
-        if (allNews.length > 0) {
-            // Aynı başlıklı haberleri kaldır
+        // Hala başarısızsa CNN Türk'ü dene
+        if (!news || news.length === 0) {
+            console.log('NTV RSS başarısız, CNN Türk deneniyor...');
+            news = await fetchNewsFromSingleSource(CNN_RSS_URL, 'CNN Türk');
+        }
+        
+        // Hala başarısızsa CNN Türk alternatif'i dene
+        if (!news || news.length === 0) {
+            console.log('CNN Türk birincil RSS başarısız, alternatif deneniyor...');
+            news = await fetchNewsFromSingleSource(CNN_RSS_URL_ALT, 'CNN Türk (Alt)');
+        }
+        
+        // Haberler başarıyla yüklendi
+        if (news && news.length > 0) {
+            // Duplicate haberleri kaldır
             const seen = new Set();
-            const uniqueNews = allNews.filter(news => {
-                if (!news || news.trim().length === 0) return false;
-                const key = news.substring(0, 50).toLowerCase();
+            const uniqueNews = news.filter(item => {
+                if (!item || item.trim().length === 0) return false;
+                const key = item.substring(0, 50).toLowerCase();
                 if (seen.has(key)) return false;
                 seen.add(key);
         return true;
@@ -1247,7 +1230,7 @@ async function fetchNewsFromAA() {
             
             if (uniqueNews.length > 0) {
                 currentNewsData = uniqueNews.sort(() => Math.random() - 0.5);
-                console.log('Toplam güncel haber sayısı:', currentNewsData.length);
+                console.log('Haberler başarıyla yüklendi:', currentNewsData.length, 'haber');
                 return true;
             }
         }
@@ -1256,7 +1239,7 @@ async function fetchNewsFromAA() {
         console.error('Haber yükleme hatası:', error);
     }
     
-    // Kaynaklar başarısız olursa fallback haberleri kullan
+    // Kaynak başarısız olursa fallback haberleri kullan
     console.log('RSS feed\'lerden haber alınamadı, fallback haberler kullanılacak...');
     return false;
 }
@@ -1319,6 +1302,11 @@ function parseRSSContent(xmlContent) {
 }
 
 function createNewsTicker() {
+    // Elementi tekrar kontrol et
+    if (!newsScroll) {
+        newsScroll = document.getElementById('newsScroll');
+    }
+    
     if (!newsScroll) {
         console.error('newsScroll element not found!');
         return;
@@ -1352,17 +1340,38 @@ function createNewsTicker() {
         if (index < shuffledNews.length - 1) {
             htmlContent += `<span class="news-spacer"></span>`;
                 }
-        }
-    });
-    } else {
-        // Eğer hala haber yoksa, en azından bir mesaj göster
-        htmlContent = `<span class="news-item">Haberler yükleniyor, lütfen bekleyin...</span>`;
+            }
+        });
+    }
+    
+    // Eğer hala içerik yoksa, fallback haberleri kesinlikle göster
+    if (!htmlContent || htmlContent.trim().length < 50) {
+        console.warn('HTML içeriği boş, fallback haberler gösteriliyor...');
+        const fallbackShuffled = [...fallbackNews].sort(() => Math.random() - 0.5);
+        fallbackShuffled.forEach((news, index) => {
+            if (news && news.trim().length > 0) {
+                htmlContent += `<span class="news-item">${news}</span>`;
+                if (index < fallbackShuffled.length - 1) {
+                    htmlContent += `<span class="news-spacer"></span>`;
+                }
+            }
+        });
+    }
+    
+    // Son çare: Hala içerik yoksa en azından bir mesaj göster
+    if (!htmlContent || htmlContent.trim().length < 50) {
+        htmlContent = `<span class="news-item">Son dakika haberleri yükleniyor...</span>`;
     }
     
     console.log('HTML content length:', htmlContent.length);
     
-    // HTML'i ekle
+    // HTML'i ekle - KESINLIKLE
+    if (newsScroll) {
     newsScroll.innerHTML = htmlContent;
+        console.log('Haberler ticker\'a eklendi, içerik uzunluğu:', htmlContent.length);
+    } else {
+        console.error('newsScroll elementi hala bulunamadı!');
+    }
     
     // Animasyonu zorla başlat
     setTimeout(() => {
@@ -1379,27 +1388,74 @@ function createNewsTicker() {
 }
 
 async function updateNewsTicker() {
-    // Önce fallback haberleri göster (anında görünürlük için)
+    // Önce newsScroll elementini kontrol et
+    if (!newsScroll) {
+        newsScroll = document.getElementById('newsScroll');
+    }
+    
+    if (!newsScroll) {
+        console.error('newsScroll elementi bulunamadı!');
+        // Element bulunamazsa fallback haberleri göster
+        setTimeout(() => {
+            newsScroll = document.getElementById('newsScroll');
+            if (newsScroll) {
+                if (!currentNewsData || currentNewsData.length === 0) {
+                    currentNewsData = [...fallbackNews];
+                }
+    createNewsTicker();
+            }
+        }, 100);
+        return;
+    }
+    
+    // Önce fallback haberleri GARANTİLİ göster (anında görünürlük için)
     console.log('Son dakika haberleri başlatılıyor...');
     if (!currentNewsData || currentNewsData.length === 0) {
         console.log('Fallback haberler yükleniyor...');
         currentNewsData = [...fallbackNews];
     }
+    
+    // HEMEN göster - kesinlikle haberler görünsün
     createNewsTicker();
     
-    // Arka planda güncel haberleri çek (async, hata olursa fallback korunur)
-    console.log('Güncel haberler arka planda yükleniyor...');
-    fetchNewsFromAA().then(success => {
-        if (success && currentNewsData && currentNewsData.length > 0) {
-            console.log('Güncel haberler yüklendi, ticker güncelleniyor...');
+    // Eğer haberler görünmüyorsa tekrar dene
+    setTimeout(() => {
+        if (!newsScroll || !newsScroll.innerHTML || newsScroll.innerHTML.trim().length < 50) {
+            console.warn('Haberler görünmüyor, tekrar yükleniyor...');
+            if (!currentNewsData || currentNewsData.length === 0) {
+                currentNewsData = [...fallbackNews];
+            }
             createNewsTicker();
-        } else {
-            console.log('Güncel haberler yüklenemedi, mevcut haberler korunuyor...');
         }
-    }).catch(error => {
-        console.error('Haber yükleme hatası (fallback korunuyor):', error);
-        // Fallback haberler zaten gösteriliyor, hata durumunda korunuyor
-    });
+    }, 500);
+    
+    // Arka planda güncel haberleri çek (async, hata olursa fallback korunur)
+    // NOT: Proxy'ler çalışmıyorsa fallback haberler gösterilmeye devam eder
+    console.log('Güncel haberler arka planda yükleniyor... (proxy bağlantıları denenecek)');
+    
+    // Hemen başlat (gecikme yok) - ama timeout kısa olsun
+    setTimeout(() => {
+        fetchNewsFromAA().then(success => {
+            if (success && currentNewsData && currentNewsData.length > 0) {
+                console.log('✅ Güncel haberler yüklendi, ticker güncelleniyor...', currentNewsData.length, 'haber');
+                createNewsTicker();
+            } else {
+                console.log('⚠️ Güncel haberler yüklenemedi, fallback haberler kullanılıyor...');
+                // Fallback haberleri tekrar yükle (zaten yüklü ama emin olmak için)
+                if (!currentNewsData || currentNewsData.length === 0) {
+                    currentNewsData = [...fallbackNews];
+                    createNewsTicker();
+                }
+            }
+        }).catch(error => {
+            console.error('❌ Haber yükleme hatası (fallback korunuyor):', error.message);
+            // Fallback haberler zaten gösteriliyor, hata durumunda korunuyor
+            if (!currentNewsData || currentNewsData.length === 0) {
+                currentNewsData = [...fallbackNews];
+                createNewsTicker();
+            }
+        });
+    }, 100); // Kısa bir gecikme ile başlat
     
     // Her 2 dakikada bir haberleri güncelle (daha sık güncelleme için güncel haberler)
     setInterval(async () => {
@@ -1452,12 +1508,12 @@ async function fetchNewsFromMultipleSources() {
 // Tek kaynaktan haber çekme fonksiyonu
 async function fetchNewsFromSingleSource(url, source) {
     try {
-        // Farklı proxy servisleri deneme listesi (en çalışan servisler)
+        // Farklı proxy servisleri deneme listesi (çalışan alternatifler)
         const proxies = [
-            `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
             `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
             `https://corsproxy.io/?${encodeURIComponent(url)}`,
-            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+            `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
         ];
         
         let lastError = null;
@@ -1465,9 +1521,9 @@ async function fetchNewsFromSingleSource(url, source) {
             try {
                 const proxyUrl = proxies[i];
                 console.log(`${source} RSS feed çekiliyor (proxy ${i + 1}/${proxies.length}):`, url);
-                // Timeout için AbortController kullan (daha kısa timeout)
+                // Timeout için AbortController kullan (daha kısa timeout - hızlı başarısızlık)
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 saniye timeout (daha fazla zaman)
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 saniye timeout (hızlı fallback için)
                 
                 const response = await fetch(proxyUrl, {
                     method: 'GET',
@@ -1583,8 +1639,8 @@ async function fetchNewsFromSingleSource(url, source) {
                         let cleanDescription = description.replace(/<[^>]*>/g, '').trim();
                         
                         // Kaynak etiketlerini temizle
-                            cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -|CNN|CNN Türk|CNN\/|CNN -|NTV|Habertürk)/i, '').trim();
-                            cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem|Son Dakika)/i, '').trim();
+                            cleanTitle = cleanTitle.replace(/^(AA|Anadolu Ajansı|AA\/|AA -|CNN|CNN Türk|CNN\/|CNN -|NTV|NTV\/|Habertürk|Haberturk|Sözcü|Sabah)/i, '').trim();
+                            cleanTitle = cleanTitle.replace(/^(Haber|News|Gündem|Son Dakika|BREAKING|Son dakika)/i, '').trim();
                         
                             // Çok kısa veya çok uzun haberleri filtrele
                             if (cleanTitle.length < 15 || cleanTitle.length > 200) return;
@@ -2662,14 +2718,30 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProgramDate();
     }
     
-    // Haber bandını başlat
+    // Haber bandını başlat - HEMEN
     if (newsScroll) {
         console.log('newsScroll element found, starting news ticker...');
-        // Güncel haberlerle başlat
+        // Önce fallback haberleri göster (anında görünürlük)
+        if (!currentNewsData || currentNewsData.length === 0) {
+            currentNewsData = [...fallbackNews];
+        createNewsTicker();
+        }
+        // Güncel haberlerle başlat (arka planda)
         updateNewsTicker();
         console.log('News ticker initialized');
     } else {
         console.error('newsScroll element not found!');
+        // Biraz bekleyip tekrar dene
+        setTimeout(() => {
+            newsScroll = document.getElementById('newsScroll');
+            if (newsScroll) {
+                if (!currentNewsData || currentNewsData.length === 0) {
+                    currentNewsData = [...fallbackNews];
+                }
+                createNewsTicker();
+                updateNewsTicker();
+            }
+        }, 100);
     }
     
     // Yayın akışı bölümünü başlat
