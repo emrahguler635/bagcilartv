@@ -1706,13 +1706,59 @@ function selectChannel(channel) {
             userAgent: navigator.userAgent
         });
         
-        // Chrome'da HLS.js varsa desteklenmese bile dene
+        // Chrome'da HLS.js kullan (native HLS yok), Firefox'ta native HLS varsa onu kullan
         const shouldTryHLS = hasNativeHLS || (hasHlsJS && (hlsSupported || isChrome));
         
-        if (hasNativeHLS) {
-            console.log('Native HLS desteği kullanılıyor - Stream URL açılıyor');
+        // Chrome'da native HLS yok, her zaman HLS.js kullan
+        // Firefox'ta native HLS varsa onu kullan
+        if (hasNativeHLS && !isChrome) {
+            console.log('Native HLS desteği kullanılıyor - Stream URL açılıyor (Firefox)');
             videoPlayer.src = channel.streamUrl;
-        } else if (hasHlsJS && shouldTryHLS) {
+        } else if (isChrome && channel.streamUrl) {
+            // Chrome'da her zaman HLS.js ile yükle
+            console.log('Chrome: Stream URL HLS.js ile açılıyor');
+            if (!hasHlsJS) {
+                console.log('Chrome: HLS.js yükleniyor, bekleniyor...');
+                let checkCount = 0;
+                const maxChecks = 50; // 5 saniye
+                const checkHLS = setInterval(() => {
+                    checkCount++;
+                    if (window.Hls && Hls.isSupported()) {
+                        clearInterval(checkHLS);
+                        console.log('Chrome: HLS.js yüklendi, Stream URL HLS.js ile açılıyor');
+                        // selectChannel'ı tekrar çağır
+                        selectChannel(channel);
+                    } else if (checkCount >= maxChecks) {
+                        clearInterval(checkHLS);
+                        console.log('Chrome: HLS.js yüklenemedi');
+                    }
+                }, 100);
+                return;
+            }
+            // HLS.js var, normal akışla devam et (aşağıdaki kod)
+        } else if ((hasHlsJS && shouldTryHLS)) {
+            // Chrome'da HLS.js yoksa yüklenmesini bekle
+            if (isChrome && !hasHlsJS) {
+                console.log('Chrome: HLS.js yükleniyor, bekleniyor...');
+                let checkCount = 0;
+                const maxChecks = 50; // 5 saniye
+                const checkHLS = setInterval(() => {
+                    checkCount++;
+                    if (window.Hls && Hls.isSupported()) {
+                        clearInterval(checkHLS);
+                        console.log('Chrome: HLS.js yüklendi, Stream URL HLS.js ile açılıyor');
+                        // HLS.js ile yükle (aşağıdaki kod bloğu çalışacak)
+                        selectChannel(channel);
+                    } else if (checkCount >= maxChecks) {
+                        clearInterval(checkHLS);
+                        console.log('Chrome: HLS.js yüklenemedi ama Stream URL native player ile deneniyor');
+                        videoPlayer.src = channel.streamUrl;
+                        videoPlayer.load();
+                    }
+                }, 100);
+                return;
+            }
+            
             console.log('HLS.js ile Stream URL deneniyor (Chrome zorla deneme aktif)', {
                 hlsSupported: hlsSupported,
                 chromeFallback: isChrome && !hlsSupported,
