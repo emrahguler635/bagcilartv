@@ -1801,10 +1801,76 @@ function selectChannel(channel) {
             window.hls.loadSource(channel.streamUrl);
             window.hls.attachMedia(videoPlayer);
         } else {
-            // Web URL fallback fonksiyonu
+            // Chrome'da stream URL'yi zorla dene - web URL'e geçme
+            if (isChrome && channel.streamUrl) {
+                console.log('Chrome: HLS.js yok ama Stream URL zorla deneniyor');
+                
+                // HLS.js yüklenmesi için bekle
+                const tryStreamWithHLS = () => {
+                    if (window.Hls) {
+                        console.log('Chrome: HLS.js bulundu, Stream URL HLS.js ile açılıyor');
+                        window.hls = new Hls({
+                            enableWorker: true,
+                            lowLatencyMode: false,
+                            maxFragLoadingTimeOut: 20000,
+                            fragLoadingTimeOut: 15000,
+                            manifestLoadingTimeOut: 15000,
+                            levelLoadingTimeOut: 15000
+                        });
+                        
+                        window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                            console.log('Chrome: Stream URL manifest parse edildi');
+                            hideLoading();
+                            if (videoPlayer) {
+                                videoPlayer.style.display = 'block';
+                                videoPlayer.style.visibility = 'visible';
+                                videoPlayer.style.opacity = '1';
+                            }
+                            videoPlayer.play().catch(err => {
+                                console.log('Chrome: Autoplay engellendi, muted ile deniyor');
+                                videoPlayer.muted = true;
+                                videoPlayer.play();
+                            });
+                        });
+                        
+                        window.hls.on(Hls.Events.ERROR, (event, data) => {
+                            console.error('Chrome: HLS error:', data);
+                            if (data.fatal) {
+                                console.log('Chrome: Fatal HLS error, ama web URL\'e geçilmiyor');
+                            }
+                        });
+                        
+                        window.hls.loadSource(channel.streamUrl);
+                        window.hls.attachMedia(videoPlayer);
+                        return true;
+                    }
+                    return false;
+                };
+                
+                // HLS.js yükleniyorsa bekle
+                if (!window.Hls && document.querySelector('script[src*="hls.js"]')) {
+                    console.log('Chrome: HLS.js yükleniyor, 5 saniye bekleniyor...');
+                    setTimeout(() => {
+                        if (!tryStreamWithHLS()) {
+                            console.log('Chrome: HLS.js yüklenemedi, yine de Stream URL native video player ile deneniyor');
+                            // Native video player ile dene
+                            videoPlayer.src = channel.streamUrl;
+                            videoPlayer.load();
+                        }
+                    }, 5000);
+                } else if (!tryStreamWithHLS()) {
+                    console.log('Chrome: HLS.js yok, Stream URL native video player ile deneniyor');
+                    // Native video player ile dene
+                    videoPlayer.src = channel.streamUrl;
+                    videoPlayer.load();
+                }
+                return; // Chrome'da web URL'e geçme
+            }
+            
+            // Firefox veya diğer tarayıcılarda normal fallback
             const fallbackToWebIfAvailable = () => {
-                if (channel.webUrl) {
-                    console.log('HLS desteklenmediği için web URL\'e geçiliyor');
+                if (channel.webUrl && !isChrome) {
+                    console.log('HLS desteklenmediği için web URL\'e geçiliyor (Chrome değil)');
                     videoWrapper.innerHTML = `
                         <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
                         <div id='externalWatchBtn'></div>
@@ -1816,7 +1882,6 @@ function selectChannel(channel) {
                 }
             };
             
-            // HLS desteklenmiyor - HLS.js yüklenmemiş olabilir, biraz bekle ve tekrar dene
             console.warn('HLS desteği bulunamadı:', {
                 hlsJSLoaded: !!window.Hls,
                 hlsSupported: window.Hls ? Hls.isSupported() : false,
@@ -1824,55 +1889,36 @@ function selectChannel(channel) {
                 tarayici: isChrome ? 'Chrome' : (isFirefox ? 'Firefox' : 'Diğer')
             });
             
-            // Chrome'da HLS.js yüklenmesi için daha uzun bekle
-            const waitTime = isChrome ? 3000 : 2000;
-            
-            // HLS.js yükleniyorsa bekle
             if (!window.Hls && document.querySelector('script[src*="hls.js"]')) {
-                console.log(`HLS.js yükleniyor, ${waitTime}ms bekleniyor...`);
                 setTimeout(() => {
                     if (window.Hls && Hls.isSupported()) {
-                        console.log('HLS.js yüklendi, stream URL tekrar deneniyor...');
-                        // Stream URL'yi tekrar dene
                         selectChannel(channel);
                         return;
                     } else {
-                        console.log('HLS.js hala yüklenmedi, web URL\'e geçiliyor');
                         fallbackToWebIfAvailable();
                     }
-                }, waitTime);
+                }, 2000);
                 return;
             }
             
-            // Chrome'da HLS.js yüklenmemişse, biraz daha bekle
-            if (isChrome && !window.Hls) {
-                console.log('Chrome: HLS.js yüklenmemiş, 3 saniye daha bekleniyor...');
-                setTimeout(() => {
-                    if (window.Hls && Hls.isSupported()) {
-                        console.log('Chrome: HLS.js yüklendi, stream URL tekrar deneniyor...');
-                        selectChannel(channel);
-                        return;
-                    } else {
-                        console.log('Chrome: HLS.js yüklenemedi, web URL\'e geçiliyor');
-                        fallbackToWebIfAvailable();
-                    }
-                }, 3000);
-                return;
-            }
-            
-            // HLS desteklenmiyorsa web URL'e geç
             fallbackToWebIfAvailable();
         }
         
-        // Stream URL hatası durumunda web URL'e geç
+        // Stream URL hatası durumunda web URL'e geç - Chrome'da geçme
         const fallbackToWeb = () => {
+            // Chrome'da web URL'e geçme
+            if (isChrome) {
+                console.log('Chrome: Stream URL hata verdi ama web URL\'e geçilmiyor');
+                return;
+            }
+            
             // HLS cleanup
             if (window.hls) {
                 window.hls.destroy();
                 window.hls = null;
             }
             if (channel.webUrl) {
-                console.log('Stream URL failed, falling back to web URL');
+                console.log('Stream URL failed, falling back to web URL (Chrome değil)');
                 videoWrapper.innerHTML = `
                     <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
                     <div id='externalWatchBtn'></div>
