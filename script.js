@@ -1745,6 +1745,20 @@ function selectChannel(channel) {
             console.log('Chrome: HLS.js mevcut, Stream URL HLS.js ile açılıyor');
             if (window.hls) { window.hls.destroy(); window.hls = null; }
             
+            // hideLoading fonksiyonunu önce tanımla
+            const hideLoading = () => {
+                const loadingIndicator = document.getElementById('loadingIndicator');
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
+                if (videoPlayer) {
+                    videoPlayer.style.display = 'block';
+                    videoPlayer.style.visibility = 'visible';
+                    videoPlayer.style.opacity = '1';
+                    videoPlayer.style.zIndex = '2';
+                }
+            };
+            
             window.hls = new Hls({
                 enableWorker: true,
                 lowLatencyMode: false,
