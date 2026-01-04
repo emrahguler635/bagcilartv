@@ -1041,7 +1041,7 @@ let currentNewsData = [
 ];
 
 // DOM elementleri - DOM yüklendikten sonra tanımlanacak
-let searchInput, channelList, currentChannel, channelDescription, fullscreenBtn, muteBtn, programList, programDate, newsScroll;
+let searchInput, channelList, currentChannel, channelDescription, fullscreenBtn, muteBtn, programList, programDate, newsScroll, financeTicker;
 let currentChannelId = null;
 let filteredChannels = [...channels];
 
@@ -1062,6 +1062,115 @@ function updateProgramDate() {
         timestamp: now.getTime(),
         iso: now.toISOString()
     });
+}
+
+// Finansal veriler (demo - gerçek API'ye bağlanabilir)
+let financeData = {
+    dolar: { value: 43.04, change: 'up' },
+    euro: { value: 50.48, change: 'down' },
+    altin: { value: 4333.15, change: 'up' },
+    gramAltin: { value: 5991.88, change: 'up' },
+    gumus: { value: 100.33, change: 'up' },
+    eth: { value: 3145.00, change: 'up' },
+    btc: { value: 91085.00, change: 'up' },
+    bist: { value: 11498.38, change: 'up' }
+};
+
+// Finansal ticker oluştur
+function createFinanceTicker() {
+    // Elementi tekrar kontrol et (eğer yoksa)
+    let tickerElement = financeTicker || document.getElementById('financeTicker');
+    
+    if (!tickerElement) {
+        console.error('financeTicker element not found!');
+        return;
+    }
+    
+    const items = [
+        { label: 'DOLAR', value: financeData.dolar.value.toFixed(2), change: financeData.dolar.change },
+        { label: 'EURO', value: financeData.euro.value.toFixed(2), change: financeData.euro.change },
+        { label: 'ALTIN', value: financeData.altin.value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), change: financeData.altin.change },
+        { label: 'GRAM ALTIN', value: financeData.gramAltin.value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), change: financeData.gramAltin.change },
+        { label: 'GÜMÜŞ', value: financeData.gumus.value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), change: financeData.gumus.change },
+        { label: 'ETH/USDT', value: financeData.eth.value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), change: financeData.eth.change },
+        { label: 'BTC/USDT', value: financeData.btc.value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), change: financeData.btc.change },
+        { label: 'BIST 100', value: financeData.bist.value.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), change: financeData.bist.change }
+    ];
+    
+    // İki kez ekle (sonsuz döngü için)
+    const allItems = [...items, ...items];
+    
+    let htmlContent = '';
+    allItems.forEach((item) => {
+        const arrow = item.change === 'up' ? '↑' : '↓';
+        const arrowClass = item.change === 'up' ? 'up' : 'down';
+        htmlContent += `
+            <div class="finance-item">
+                <span class="finance-label">${item.label}</span>
+                <span class="finance-arrow ${arrowClass}">${arrow}</span>
+                <span class="finance-value">${item.value}</span>
+            </div>
+        `;
+    });
+    
+    tickerElement.innerHTML = htmlContent;
+    console.log('Finance ticker HTML içeriği eklendi:', tickerElement.innerHTML.length, 'karakter');
+    
+    // Animasyonu başlat
+    setTimeout(() => {
+        if (tickerElement && tickerElement.innerHTML.trim()) {
+            tickerElement.classList.remove('animate');
+            tickerElement.offsetHeight; // Reflow trigger
+            tickerElement.classList.add('animate');
+            console.log('Finance ticker animasyonu başlatıldı');
+        } else {
+            console.error('Finance ticker elementi veya içeriği bulunamadı!');
+        }
+    }, 200);
+    
+    console.log('Finance ticker created successfully');
+}
+
+// Finansal verileri güncelle (gerçek API'ye bağlanabilir)
+async function updateFinanceTicker() {
+    console.log('updateFinanceTicker çağrıldı');
+    
+    // Elementi kontrol et
+    let tickerElement = financeTicker || document.getElementById('financeTicker');
+    if (!tickerElement) {
+        console.error('Finance ticker elementi bulunamadı, 1 saniye sonra tekrar denenecek...');
+        setTimeout(() => {
+            tickerElement = document.getElementById('financeTicker');
+            if (tickerElement) {
+                financeTicker = tickerElement;
+                createFinanceTicker();
+            } else {
+                console.error('Finance ticker hala bulunamadı!');
+            }
+        }, 1000);
+        return;
+    }
+    
+    // Demo verileri göster
+    createFinanceTicker();
+    
+    // Gerçek API'ye bağlanmak için (opsiyonel):
+    // try {
+    //     const response = await fetch('https://api.example.com/finance');
+    //     const data = await response.json();
+    //     financeData = data;
+    //     createFinanceTicker();
+    // } catch (error) {
+    //     console.error('Finance API error:', error);
+    //     // Demo verileri kullan
+    //     createFinanceTicker();
+    // }
+    
+    // Her 5 dakikada bir güncelle
+    setInterval(() => {
+        // Gerçek API çağrısı burada yapılabilir
+        createFinanceTicker();
+    }, 300000); // 5 dakika
 }
 
 // RSS feed'ini çek ve parse et
@@ -1364,7 +1473,7 @@ async function fetchNewsFromSingleSource(url, source) {
                     if (contentType.includes('application/json')) {
                         data = await response.json();
                         // Proxy response format kontrolü
-                        if (data.contents) {
+        if (data.contents) {
                             xmlContent = data.contents;
                         } else if (data.content) {
                             xmlContent = data.content;
@@ -1489,7 +1598,7 @@ async function fetchNewsFromSingleSource(url, source) {
         return [];
     } catch (error) {
         console.error(`${source} haberleri yüklenirken genel hata:`, error.message || error);
-        return [];
+    return [];
     }
 }
 
@@ -1975,14 +2084,14 @@ function selectChannel(channel) {
             const fallbackToWebIfAvailable = () => {
                 if (channel.webUrl && !isChrome) {
                     console.log('HLS desteklenmediği için web URL\'e geçiliyor (Chrome değil)');
-                    videoWrapper.innerHTML = `
-                        <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
-                        <div id='externalWatchBtn'></div>
-                    `;
-                    currentChannel.textContent = channel.name;
-                    channelDescription.innerHTML = channel.description;
-                    document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
-                    updateControlButtons('web', channel.webUrl);
+        videoWrapper.innerHTML = `
+            <iframe id="webIframe" width="100%" height="400" src="${channel.webUrl}" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="border-radius:10px;background:#000;"></iframe>
+            <div id='externalWatchBtn'></div>
+        `;
+        currentChannel.textContent = channel.name;
+        channelDescription.innerHTML = channel.description;
+        document.getElementById('externalWatchBtn').innerHTML = `<a href='${channel.webUrl}' target='_blank' style='display:inline-block;padding:12px 24px;background:#e53e3e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;margin:16px 0 0 0;'>Web Sitesinde Aç</a>`;
+        updateControlButtons('web', channel.webUrl);
                 }
             };
             
@@ -1997,13 +2106,13 @@ function selectChannel(channel) {
                 setTimeout(() => {
                     if (window.Hls && Hls.isSupported()) {
                         selectChannel(channel);
-                        return;
+        return;
                     } else {
                         fallbackToWebIfAvailable();
-                    }
+    }
                 }, 2000);
-                return;
-            }
+        return;
+    }
             
             fallbackToWebIfAvailable();
         }
@@ -2013,8 +2122,8 @@ function selectChannel(channel) {
             // Chrome'da web URL'e geçme
             if (isChrome) {
                 console.log('Chrome: Stream URL hata verdi ama web URL\'e geçilmiyor');
-                return;
-            }
+        return;
+    }
             
             // HLS cleanup
             if (window.hls) {
@@ -2162,7 +2271,7 @@ function selectChannel(channel) {
             console.log('Video player waiting for data');
         });
         
-        videoPlayer.addEventListener('contextmenu', e => e.preventDefault());
+    videoPlayer.addEventListener('contextmenu', e => e.preventDefault());
         
         // Preload ve autoplay ayarları
         videoPlayer.preload = 'auto';
@@ -2173,8 +2282,8 @@ function selectChannel(channel) {
         if (!window.hls) {
             // canplay event'inde otomatik oynatılacak, burada sadece ayarları yap
             videoPlayer.addEventListener('loadeddata', () => {
-                const playPromise = videoPlayer.play();
-                if (playPromise !== undefined) {
+    const playPromise = videoPlayer.play();
+    if (playPromise !== undefined) {
                     playPromise.then(() => {
                         clearTimeout(loadingTimeout);
                         currentChannel.textContent = channel.name;
@@ -2439,6 +2548,7 @@ document.addEventListener('DOMContentLoaded', () => {
     programList = document.getElementById('programList');
     programDate = document.getElementById('programDate');
     newsScroll = document.getElementById('newsScroll');
+    financeTicker = document.getElementById('financeTicker');
     
     console.log('DOM elements found:', {
         searchInput: !!searchInput,
@@ -2449,8 +2559,14 @@ document.addEventListener('DOMContentLoaded', () => {
         muteBtn: !!muteBtn,
         programList: !!programList,
         programDate: !!programDate,
-        newsScroll: !!newsScroll
+        newsScroll: !!newsScroll,
+        financeTicker: !!financeTicker
     });
+    
+    // Finansal ticker'ı başlat
+    if (financeTicker) {
+        updateFinanceTicker();
+    }
     
     // Logo kontrolü
     const logo = document.querySelector('.app-logo');

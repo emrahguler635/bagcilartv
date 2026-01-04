@@ -1265,6 +1265,88 @@ main {
     }
 }
 
+/* Finansal Ticker */
+.finance-ticker {
+    position: relative;
+    background: linear-gradient(90deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #e0e0e0;
+    padding: 10px 0;
+    z-index: 99;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    margin: 0 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+.finance-ticker-content {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    width: max-content;
+    will-change: transform;
+    min-height: 35px;
+    overflow: visible;
+    gap: 40px;
+    padding: 0 20px;
+}
+
+.finance-ticker-content.animate {
+    animation: scroll-finance 120s linear infinite;
+}
+
+.finance-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+    font-family: 'Inter', 'Courier New', monospace;
+    font-weight: 600;
+    font-size: 14px;
+    color: #e0e0e0;
+    white-space: nowrap;
+}
+
+.finance-label {
+    font-weight: 700;
+    color: #a0a0a0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 12px;
+}
+
+.finance-value {
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
+.finance-arrow {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.finance-arrow.up {
+    color: #4ade80;
+}
+
+.finance-arrow.down {
+    color: #f87171;
+}
+
+@keyframes scroll-finance {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
 /* Modern Ana Sayfa Stilleri */
 .home-page {
     width: 100%;
