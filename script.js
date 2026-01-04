@@ -2035,8 +2035,13 @@ function selectChannel(channel) {
         
         videoPlayer.addEventListener('error', () => {
             if (loadingTimeout) clearTimeout(loadingTimeout);
-            console.log('Video player error, trying web URL fallback');
-            fallbackToWeb();
+            console.log('Video player error');
+            if (isChrome) {
+                console.log('Chrome: Video player error ama web URL\'e geçilmiyor, stream URL tutuluyor');
+            } else {
+                console.log('Video player error, trying web URL fallback');
+                fallbackToWeb();
+            }
         });
         
         videoPlayer.addEventListener('stalled', () => {
@@ -2092,8 +2097,8 @@ function selectChannel(channel) {
         return;
     }
     
-    // Sadece Web URL varsa iframe içinde göster
-    if (channel.webUrl) {
+    // Sadece Web URL varsa iframe içinde göster - Chrome'da geçme (stream URL öncelikli)
+    if (channel.webUrl && !isChrome) {
         // A Haber gibi iframe engeli olan siteler için özel kontrol
         const iframeBlockedSites = ['ahaber.com.tr'];
         const isBlocked = iframeBlockedSites.some(domain => channel.webUrl.includes(domain));
