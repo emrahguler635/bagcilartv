@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BağcılarTV Uygulaması</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="logos/bagcilartv-logo.png" alt="BağcılarTV Logo" class="app-logo" onerror="this.onerror=null;this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iMTAiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl8xXzEpIi8+CjxwYXRoIGQ9Ik0xNSAyMEg0NVY0MEgxNVYyMFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0yMCAyNUg0MFYzNUgyMFYyNVoiIGZpbGw9IiM2NjdFRUEiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZGllbnQwX2xpbmVhcl8xXzEiIHgxPSIwIiB5MT0iMCIgeDI9IjYwIiB5Mj0iNjAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzY2N0VFQSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3NjRCQTIiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K'">
+                    <h1 class="colorful-title">BağcılarTV Uygulaması</h1>
+                </div>
+                <!-- Hava Durumu Bilgisi -->
+                <div class="weather-info">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span id="weatherInfo">Yükleniyor...</span>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Ana Sayfa - Kanal Grid -->
+            <div id="homePage" class="home-page">
+                <div class="categories-section">
+                    <div class="category-tabs" id="categoryTabs">
+                        <button class="category-tab active" data-category="all">
+                            <i class="fas fa-th"></i> Tümü
+                        </button>
+                        <button class="category-tab" data-category="Ulusal">
+                            <i class="fas fa-tv"></i> Ulusal
+                        </button>
+                        <button class="category-tab" data-category="Haber">
+                            <i class="fas fa-newspaper"></i> Haber
+                        </button>
+                        <button class="category-tab" data-category="Spor">
+                            <i class="fas fa-futbol"></i> Spor
+                        </button>
+                        <button class="category-tab" data-category="Müzik">
+                            <i class="fas fa-music"></i> Müzik
+                        </button>
+                        <button class="category-tab" data-category="Çocuk">
+                            <i class="fas fa-child"></i> Çocuk
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="channels-grid" id="channelsGrid">
+                    <!-- Kanallar grid olarak yüklenecek -->
+                </div>
+            </div>
+            
+            <!-- Video İzleme Sayfası -->
+            <div id="watchPage" class="watch-page" style="display: none;">
+                <div class="sidebar">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Kanal ara...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    
+                    <div class="channel-list" id="channelList">
+                        <!-- Kanallar JavaScript ile yüklenecek -->
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <div class="video-container">
+                        <div id="videoWrapper">
+                            <video id="videoPlayer" controls>
+                                <source src="" type="video/mp4">
+                                Tarayıcınız video oynatmayı desteklemiyor.
+                            </video>
+                        </div>
+                        
+                        <!-- Kontrol butonları video altına taşındı -->
+                        <div class="controls">
+                            <button id="backBtn" class="control-btn">
+                                <i class="fas fa-arrow-left"></i> Geri
+                            </button>
+                            <button id="fullscreenBtn" class="control-btn">
+                                <i class="fas fa-expand"></i> Tam Ekran
+                            </button>
+                            <button id="muteBtn" class="control-btn">
+                                <i class="fas fa-volume-up"></i> Ses
+                            </button>
+                        </div>
+                        
+                        <div class="video-info">
+                            <h2 id="currentChannel">Kanal seçin</h2>
+                            <p id="channelDescription">Sol taraftan bir kanal seçin</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Yayın Akışı Bölümü - Sağa taşındı -->
+                    <div class="program-guide">
+                        <div class="program-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Yayın Akışı</h3>
+                            <div id="programDate" class="program-date"></div>
+                        </div>
+                        <div class="program-list" id="programList">
+                            <div style="text-align: center; color: #718096; padding: 20px;">
+                                Bir kanal seçin
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
